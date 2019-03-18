@@ -13,9 +13,6 @@ import java.util.ArrayList;
 enum eUserValidation{validUser, wrongPassword, invalidUser};
 
 public class MainActivity extends AppCompatActivity {
-    int i = 5;
-    int j = 8;
-    int m = i + j;
     ArrayList<User> tempUsers;
 
     @Override
