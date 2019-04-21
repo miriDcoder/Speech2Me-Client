@@ -1,6 +1,6 @@
 package com.example.project;
 
-public class Student extends User {
+public class  Student extends User {
     private int mLevel;
     private String mAge;
     private int mScore;

@@ -1,6 +1,7 @@
 package com.example.project;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,12 +21,14 @@ public class SignUp extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         Button btnSignUp = (Button)findViewById(R.id.buttonSignup);
+        Button btnBack = (Button)findViewById(R.id.buttonBack);
         final EditText editTextFirstName = (EditText) findViewById(R.id.editTextFirstName);
         final EditText editTextLastName = (EditText) findViewById(R.id.editTextLastName);
         final EditText editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         final EditText editTextPassword = (EditText)findViewById(R.id.editTextPassword);
         final Switch switchIsStudent = (Switch) findViewById(R.id.switchSignupAsStudent);
         final EditText editTextTeacherId = (EditText)findViewById(R.id.editTextTeacherId);
+
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +78,16 @@ public class SignUp extends AppCompatActivity {
                 editTextTeacherId.setEnabled(isChecked);
             }
         });
+
+        btnBack.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(SignUp.this, LoginPage.class));
+            }
+        });
     }
+
+
 
     private boolean validateUserDetails(EditText iFirstName, EditText iLastName, EditText iEmail,
                                         EditText iPassword, boolean iIsStudent, EditText iTeacherID){
