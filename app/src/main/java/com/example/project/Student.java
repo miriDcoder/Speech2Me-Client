@@ -18,6 +18,15 @@ public class Student extends User {
         this.mTeacherId = iTeacherId;
     }
 
+    public Student (String iEmail, String iPassword, String iFirstName,
+                    String iLastName, String iTeacherId)
+    {
+        super(iEmail, iPassword, iFirstName, iLastName, "", "");
+        this.mLevel = 0;
+        this.mScore = 0;
+        this.mTeacherId = iTeacherId;
+    }
+
     public int getmLevel() {
         return mLevel;
     }

@@ -13,7 +13,14 @@ public class Teacher extends User {
         super(iEmail, iPassword, iFirstName, iLastName, iCity, iId);
         this.mStudents = new ArrayList<Student>();
         this.mNumOfStudents = 0;
+    }
 
+    public Teacher(String iEmail, String iPassword, String iFirstName,
+                   String iLastName)
+    {
+        super(iEmail, iPassword, iFirstName, iLastName, "", "");
+        this.mStudents = new ArrayList<Student>();
+        this.mNumOfStudents = 0;
     }
 
     public int getmNumOfStudents() {
