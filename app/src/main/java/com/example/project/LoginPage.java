@@ -33,6 +33,8 @@ public class LoginPage extends AppCompatActivity {
                 {
                     loginBtn.setText("Logging in");
                     loginBtn.setEnabled(false);
+                    startActivity(new Intent(LoginPage.this, HomePage.class));
+
                 }
                 else if(userValidation == eUserValidation.wrongPassword)
                 {
