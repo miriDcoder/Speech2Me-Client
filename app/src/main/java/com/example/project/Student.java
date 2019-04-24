@@ -7,6 +7,7 @@ public class  Student extends User {
     private String mTeacherId;
 
 
+
     public Student(String iEmail, String iPassword, String iFirstName,
                    String iLastName, String iCity, String iId,
                    int iLevel, String iAge, int iScore,
@@ -16,6 +17,7 @@ public class  Student extends User {
         this.mAge = iAge;
         this.mScore = iScore;
         this.mTeacherId = iTeacherId;
+        setmType(eType.STUDENT);
     }
 
     public Student (String iEmail, String iPassword, String iFirstName,

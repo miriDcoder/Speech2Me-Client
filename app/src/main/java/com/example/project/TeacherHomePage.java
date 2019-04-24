@@ -8,8 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
-
-public class HomePage extends AppCompatActivity {
+public class TeacherHomePage extends AppCompatActivity {
 
     private DrawerLayout drawer;
     private String mEmail;
@@ -25,17 +24,10 @@ public class HomePage extends AppCompatActivity {
         drawer = findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle= new ActionBarDrawerToggle(this, drawer, toolbar,
-              R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        Intent intent = getIntent();
-        String email = intent.getStringExtra("eMail");
-        DataBase db = new DataBase();
-        User currUser = DbUtils.GetUserByMail(db.makeUserList(), email);
-        if (currUser.getmType()==User.eType.STUDENT){
-
-        }
 
     }
 

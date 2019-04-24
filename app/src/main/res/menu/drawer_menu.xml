@@ -1,34 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="navigation_view"
-       >
+    tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_account"
-            android:icon="@drawable/ic_account"
-            android:title="Account" />
-        <item
-            android:id="@+id/nav_setting"
-            android:icon="@drawable/ic_settings"
-            android:title="Settings" />
         <item
             android:id="@+id/nav_play"
             android:icon="@drawable/ic_play"
             android:title="Play" />
         <item
-            android:id="@+id/nav_flag"
-            android:icon="@drawable/ic_flag"
-            android:title="Flag" />
+            android:id="@+id/nav_account"
+            android:icon="@drawable/ic_account"
+            android:title="Account" />
+        <item
+            android:id="@+id/nav_score"
+            android:icon="@drawable/ic_trophy"
+            android:title="Score" />
     </group>
-
-    <item android:title="Communicate">
-        <menu>
+      <group>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_share"
-                android:title="Share" />
-        </menu>
-    </item>
+                android:id="@+id/nav_info"
+                android:icon="@drawable/ic_info"
+                android:title="About">
+            </item>
+            <item
+                android:id="@+id/nav_setting"
+                android:icon="@drawable/ic_settings"
+                android:title="Setting" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_logout"
+                android:title="Log Out" />
+        </group>
 </menu>

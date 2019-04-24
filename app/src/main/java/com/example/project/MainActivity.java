@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-enum eUserValidation{validUser, wrongPassword, invalidUser};
+;
 
 public class MainActivity extends AppCompatActivity {
 

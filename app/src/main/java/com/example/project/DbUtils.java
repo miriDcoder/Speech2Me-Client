@@ -1,5 +1,7 @@
 package com.example.project;
 
+import java.util.ArrayList;
+
 public class DbUtils {
 
     /*
@@ -10,4 +12,19 @@ public class DbUtils {
     1.3 student to teacher
     2. check if given teacher id is in db
     */
+    public static User GetUserByMail(ArrayList<User> iUsers, String iEmail)
+    {
+        User userFound = null;
+
+        for(User user : iUsers)
+        {
+            if(iEmail == user.getmEmail())
+            {
+                userFound = user;
+                break;
+            }
+        }
+
+        return userFound;
+    }
 }
