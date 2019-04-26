@@ -1,10 +1,11 @@
 package com.example.project;
 
-public class Student extends User {
+public class  Student extends User {
     private int mLevel;
     private String mAge;
     private int mScore;
     private String mTeacherId;
+
 
 
     public Student(String iEmail, String iPassword, String iFirstName,
@@ -16,6 +17,7 @@ public class Student extends User {
         this.mAge = iAge;
         this.mScore = iScore;
         this.mTeacherId = iTeacherId;
+        setmType(eType.STUDENT);
     }
 
     public Student (String iEmail, String iPassword, String iFirstName,
