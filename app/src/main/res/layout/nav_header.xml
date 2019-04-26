@@ -13,7 +13,7 @@
         android:layout_width="134dp"
         android:layout_height="103dp"
         android:src="@drawable/therapy_icon2"
-        android:textAlignment="textEnd" />
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -23,6 +23,5 @@
         android:textColor="@color/colorAccent"
         android:textSize="24sp"
         android:textStyle="bold" />
-        //android:textAppearance="@style/TextAppearance.AppCompat.Body1"
 
 </LinearLayout>

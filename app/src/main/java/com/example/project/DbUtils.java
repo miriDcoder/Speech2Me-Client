@@ -18,13 +18,27 @@ public class DbUtils {
 
         for(User user : iUsers)
         {
-            if(iEmail == user.getmEmail())
+            if(iEmail.equals(user.getmEmail()))
             {
                 userFound = user;
                 break;
             }
         }
+        return userFound;
+    }
 
+    public static User GetUserById(ArrayList<User> iUsers, String iId)
+    {
+        User userFound = null;
+
+        for(User user : iUsers)
+        {
+            if(iId.equals(user.getmId()))
+            {
+                userFound = user;
+                break;
+            }
+        }
         return userFound;
     }
 }
