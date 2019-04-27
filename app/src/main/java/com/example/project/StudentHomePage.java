@@ -52,9 +52,9 @@ public class StudentHomePage extends AppCompatActivity {
     }
 
     private void displayMyInfo(Student iStudent, TextView iTextViewHeader, TextView iTextViewScore, TextView iTextViewLevel) {
-        iTextViewHeader.setText(String.format("Hello, %s!", iStudent.getmFirstName()));
-        iTextViewScore.setText(String.format("Score: %d", iStudent.getmScore()));
-        iTextViewLevel.setText(String.format("Level: %d", iStudent.getmLevel()));
+        iTextViewHeader.setText(String.format("שלום, %s!", iStudent.getmFirstName()));
+        iTextViewScore.setText(String.format("ניקוד: %d", iStudent.getmScore()));
+        iTextViewLevel.setText(String.format("שלב: %d", iStudent.getmLevel()));
     }
 
     private void setEditTextsPositions(TextView iTextViewHeader, TextView iTextViewScore, TextView iTextViewLevel){

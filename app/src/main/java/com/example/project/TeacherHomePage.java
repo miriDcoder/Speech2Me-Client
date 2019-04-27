@@ -53,8 +53,8 @@ public class TeacherHomePage extends AppCompatActivity {
     }
 
     private void displayMyInfo(Teacher iTeacher, TextView iTextViewHeader, TextView iTextViewNumOfStuds) {
-        iTextViewHeader.setText(String.format("Hello, %s!", iTeacher.getmFirstName()));
-        iTextViewNumOfStuds.setText(String.format("Students enrolled to app: %s", iTeacher.getmNumOfStudents()));
+        iTextViewHeader.setText(String.format("שלום, %s!", iTeacher.getmFirstName()));
+        iTextViewNumOfStuds.setText(String.format("תלמידים באפליקציה: %s", iTeacher.getmNumOfStudents()));
     }
 
     private void setEditTextsPositions(TextView iTextViewHeader, TextView iTextViewNumOfStuds){

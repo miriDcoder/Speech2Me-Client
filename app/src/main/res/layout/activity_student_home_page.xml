@@ -65,7 +65,7 @@
                 android:layout_width="200dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center_vertical|center_horizontal"
-                android:text="Let's Play!"
+                android:text="התחל משחק!"
                 android:textColor="#FFFFFF"
                 android:textSize="30sp"
 
