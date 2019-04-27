@@ -10,11 +10,11 @@
             android:title="Play" />
         <item
             android:id="@+id/nav_account"
-            android:icon="@drawable/ic_account"
+            android:icon="@drawable/ic_settings"
             android:title="Account" />
         <item
             android:id="@+id/nav_score"
-            android:icon="@drawable/ic_trophy"
+            android:icon="@drawable/ic_score"
             android:title="Score" />
     </group>
       <group>

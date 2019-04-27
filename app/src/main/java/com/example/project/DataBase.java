@@ -7,7 +7,7 @@ public class DataBase {
     ArrayList<User> users = new ArrayList<User>();
 
     public ArrayList<User> makeUserList() {
-        users.add(new Teacher("shula@gmail.com", "aA2020", "Shula", "Katz", "Rehovot", "1001"));
+        users.add(new Teacher("shula@gmail.com", "1234", "Shula", "Katz", "Rehovot", "1001"));
         users.add(new Teacher("dana@gmail.com", "danaA2020", "Dana", "Levi", "Tel Aviv", "1002"));
 
         users.add(new Student("dan@gmail.com", "1234", "Dan", "Strik", "Rehovot", "0001", 1, "12", 0, "1001"));

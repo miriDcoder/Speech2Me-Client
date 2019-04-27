@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#b3ecff"
+    android:background="#FFFFFF"
     tools:context=".LoginPage">
 
     <EditText
@@ -50,9 +50,15 @@
         android:layout_marginRight="8dp"
         android:text="Login"
         app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="#FFFFFF"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordEditText"
+        android:background="@drawable/button_shape"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"/>
 
     <Button
         android:id="@+id/signUpBtn"
@@ -63,11 +69,17 @@
         android:layout_marginTop="172dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:textColor="#FFFFFF"
         android:text="Sign Up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LoginBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/LoginBtn"
+        android:background="@drawable/button_shape"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"/>
 
 
 </android.support.constraint.ConstraintLayout>
