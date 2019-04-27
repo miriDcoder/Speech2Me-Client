@@ -31,12 +31,8 @@ public class LoginPage extends AppCompatActivity {
                 {
                     loginBtn.setText("Logging in");
                     loginBtn.setEnabled(false);
-
                     User currUser = DbUtils.GetUserByMail(db.makeUserList(), email.getText().toString());
                     moveToHomePage(currUser);
-                    startActivity(new Intent(LoginPage.this, HomePage.class));
-
-
                 }
                 else if(userValidation == eUserValidation.wrongPassword)
                 {
