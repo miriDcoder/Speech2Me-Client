@@ -18,12 +18,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginPage" />
-        <activity android:name=".MyStudentProfile" />
         <activity
             android:name=".HomePage"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".StudentHomePage" />
-        <activity android:name=".TeacherHomePage"></activity>
+        <activity
+            android:name=".StudentHomePage"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".TeacherHomePage"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>

@@ -25,7 +25,15 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent" >
+
+            <EditText
+                android:id="@+id/editTextMyInfo"
+                android:layout_width="336dp"
+                android:layout_height="315dp"
+                android:ems="10"
+                android:inputType="text" />
+        </FrameLayout>
 
     </LinearLayout>
 
@@ -36,7 +44,5 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_menu" />
-
-    <!--gravity & openDrawer = "end" is right-->
 
 </android.support.v4.widget.DrawerLayout>

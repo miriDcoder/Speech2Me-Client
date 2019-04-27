@@ -1,18 +1,20 @@
 package com.example.project;
 
 import android.content.Intent;
+import android.os.Environment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.widget.EditText;
 
 
 public class HomePage extends AppCompatActivity {
 
     private DrawerLayout drawer;
-    private String mEmail;
+    public DataBase db = new DataBase();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +32,10 @@ public class HomePage extends AppCompatActivity {
         toggle.syncState();
 
         Intent intent = getIntent();
-        String email = intent.getStringExtra("eMail");
-        DataBase db = new DataBase();
-        User currUser = DbUtils.GetUserByMail(db.makeUserList(), email);
-        if (currUser.getmType()==User.eType.STUDENT){
+        String id = intent.getStringExtra("id");
 
-        }
-
+        Student currStudent = (Student)DbUtils.GetUserById(db.makeUserList(), id);
+        displayMyInfo(currStudent);
     }
 
     public void onBackPressed(){
@@ -46,5 +45,16 @@ public class HomePage extends AppCompatActivity {
         else {
             super.onBackPressed();
         }
+    }
+
+    private void displayMyInfo(Student iStudent) {
+        EditText editTextMyInfo = (EditText) findViewById(R.id.editTextMyInfo);
+        String myInfo = String.format("Hello, %s!{\n}Level: %s%nScore: %s%nKeep up the good work!",
+
+                iStudent.getmFirstName(), iStudent.getmLevel(), iStudent.getmScore());
+        String myInfo2= ("Hello, " +iStudent.getmFirstName() + "!Level:" + iStudent.getmLevel()+ "\nScore:" + iStudent.getmScore());
+
+
+        editTextMyInfo.setText(myInfo2);
     }
 }
