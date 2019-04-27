@@ -7,6 +7,9 @@ public abstract class User {
     private String mLastName;
     private String mCity;
     private String mId;
+    private eType mType;
+
+    enum eType{TEACHER, STUDENT}
 
     public User()
     {
@@ -70,5 +73,13 @@ public abstract class User {
 
     public void setmPassword(String mPassword) {
         this.mPassword = mPassword;
+    }
+
+    public eType getmType(){
+        return mType;
+    }
+
+    public void setmType(eType mType){
+        this.mType=mType;
     }
 }
