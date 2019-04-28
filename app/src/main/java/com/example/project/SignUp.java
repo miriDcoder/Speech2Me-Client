@@ -44,6 +44,7 @@ public class SignUp extends AppCompatActivity {
                     String teacherId = editTextTeacherId.getText().toString();
 
                     User currUser;
+                    Intent intent;
                     if(switchIsStudent.isChecked())
                     {
                         //TODO: insert to students db
@@ -52,14 +53,18 @@ public class SignUp extends AppCompatActivity {
                         currUser = new Student(email, password, firstName,
                                                         lastName, teacherId);
 
-                        //TODO: move to student main page
+                        intent = new Intent(SignUp.this, StudentHomePage.class);
+                        intent.putExtra("id", currUser.getmId());
+                        startActivity(intent);
                     }
                     else
                     {
                         //TODO: insert to teacher db
                         //id = what we got from db. then insert to constructor
                         currUser = new Teacher(email, password, firstName, lastName);
-                        //TODO: move to teacher main page
+                        intent = new Intent(SignUp.this, TeacherHomePage.class);
+                        intent.putExtra("id", currUser.getmId());
+                        startActivity(intent);
                     }
                 }
                 else
