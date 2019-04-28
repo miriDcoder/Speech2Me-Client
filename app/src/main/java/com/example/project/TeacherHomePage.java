@@ -1,14 +1,14 @@
 package com.example.project;
 
 import android.content.Intent;
-import android.os.Environment;
+import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.widget.EditText;
+import android.widget.Button;
+import android.widget.TextView;
 
 
 public class TeacherHomePage extends AppCompatActivity {
@@ -19,7 +19,7 @@ public class TeacherHomePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_page);
+        setContentView(R.layout.activity_teacher_home_page);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -33,9 +33,14 @@ public class TeacherHomePage extends AppCompatActivity {
 
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
-
-        Student currStudent = (Student)DbUtils.GetUserById(db.makeUserList(), id);
-        displayMyInfo(currStudent);
+        TextView textViewHeader = (TextView)findViewById(R.id.textViewHeader);
+        TextView textViewNumOfStuds = (TextView)findViewById(R.id.textViewNumStudents);
+        Teacher currTeacher = (Teacher)DbUtils.GetUserById(db.makeUserList(), id);
+        setEditTextsPositions(textViewHeader, textViewNumOfStuds);
+        displayMyInfo(currTeacher, textViewHeader, textViewNumOfStuds);
+        Button buttonStats = (Button)findViewById(R.id.buttonStatistics);
+        Button buttonPlay = (Button)findViewById(R.id.buttonPlay);
+        buttonStats.setY(buttonPlay.getY() + buttonPlay.getBottom() + 230);
     }
 
     public void onBackPressed(){
@@ -47,14 +52,15 @@ public class TeacherHomePage extends AppCompatActivity {
         }
     }
 
-    private void displayMyInfo(Student iStudent) {
-        EditText editTextMyInfo = (EditText) findViewById(R.id.editTextMyInfo);
-        String myInfo = String.format("Hello, %s!{\n}Level: %s%nScore: %s%nKeep up the good work!",
+    private void displayMyInfo(Teacher iTeacher, TextView iTextViewHeader, TextView iTextViewNumOfStuds) {
+        iTextViewHeader.setText(String.format("שלום, %s!", iTeacher.getmFirstName()));
+        iTextViewNumOfStuds.setText(String.format("תלמידים באפליקציה: %s", iTeacher.getmNumOfStudents()));
+    }
 
-                iStudent.getmFirstName(), iStudent.getmLevel(), iStudent.getmScore());
-        String myInfo2= ("Hello, " +iStudent.getmFirstName() + "!Level:" + iStudent.getmLevel()+ "\nScore:" + iStudent.getmScore());
-
-
-        editTextMyInfo.setText(myInfo2);
+    private void setEditTextsPositions(TextView iTextViewHeader, TextView iTextViewNumOfStuds){
+        iTextViewHeader.setX(0);
+        iTextViewHeader.setY(150);
+        iTextViewNumOfStuds.setX(iTextViewHeader.getX());
+        iTextViewNumOfStuds.setY(iTextViewHeader.getY() + iTextViewHeader.getHeight() + 100);
     }
 }

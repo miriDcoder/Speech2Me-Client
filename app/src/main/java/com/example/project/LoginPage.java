@@ -2,14 +2,13 @@ package com.example.project;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 
 public class LoginPage extends AppCompatActivity {
     EditText email, password;
@@ -22,14 +21,17 @@ public class LoginPage extends AppCompatActivity {
         final Button loginBtn = (Button) findViewById(R.id.LoginBtn);
         email = (EditText) findViewById(R.id.emailEditText);
         password = (EditText) findViewById(R.id.passwordEditText);
-
+        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Montserrat-Regular.ttf");
+        email.setTypeface(custom_font);
+        password.setTypeface(custom_font);
+        loginBtn.setTypeface(custom_font);
         loginBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 eUserValidation userValidation = isValidDetails(email.getText().toString(), password.getText().toString());
                 if(userValidation == eUserValidation.validUser)
                 {
-                    loginBtn.setText("Logging in");
+                    loginBtn.setText("מתחבר");
                     loginBtn.setEnabled(false);
                     User currUser = DbUtils.GetUserByMail(db.makeUserList(), email.getText().toString());
                     moveToHomePage(currUser);
@@ -38,7 +40,7 @@ public class LoginPage extends AppCompatActivity {
                 {
                     password.getText().clear();
                     Context context = getApplicationContext();
-                    CharSequence text = "Invalid password!";
+                    CharSequence text = "סיסמה שגויה!";
                     int duration = Toast.LENGTH_SHORT;
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
@@ -50,7 +52,7 @@ public class LoginPage extends AppCompatActivity {
                     password.getText().clear();
                     email.getText().clear();
                     Context context = getApplicationContext();
-                    CharSequence text = "Invalid details! Please insert valid details or press sign up";
+                    CharSequence text = "הפרטים שהזנת שגויים! אנא הכנס פרטים תקינים, או הירשם";
                     int duration = Toast.LENGTH_SHORT;
 
                     Toast toast = Toast.makeText(context, text, duration);
