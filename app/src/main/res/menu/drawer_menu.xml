@@ -10,7 +10,7 @@
             android:title="Play" />
         <item
             android:id="@+id/nav_account"
-            android:icon="@drawable/ic_settings"
+            android:icon="@drawable/ic_account"
             android:title="Account" />
         <item
             android:id="@+id/nav_score"
@@ -24,12 +24,16 @@
                 android:title="About">
             </item>
             <item
-                android:id="@+id/nav_setting"
+                android:id="@+id/nav_settings"
                 android:icon="@drawable/ic_settings"
-                android:title="Setting" />
+                android:title="Settings" />
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_logout"
                 android:title="Log Out" />
+            <item
+              android:id="@+id/nav_home_page"
+              android:icon="@drawable/ic_home"
+              android:title="Home page" />
         </group>
 </menu>

@@ -8,7 +8,7 @@ public class DataBase {
 
     public ArrayList<User> makeUserList() {
         users.add(new Teacher("shula@gmail.com", "1234", "שולה", "כץ", "Rehovot", "1001"));
-        users.add(new Teacher("dana@gmail.com", "danaA2020", "Dana", "Levi", "Tel Aviv", "1002"));
+        users.add(new Teacher("dana@gmail.com", "1234", "Dana", "Levi", "Tel Aviv", "1002"));
 
         users.add(new Student("dan@gmail.com", "1234", "Dan", "Gan", "Rehovot", "0001", 1, "12", 0, "1001"));
         users.add(new Student("ofer@gmail.com", "1234", "Ofer", "Feder", "Rehovot", "0002", 1, "12", 0, "1001"));
