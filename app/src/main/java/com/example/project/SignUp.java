@@ -3,7 +3,6 @@ package com.example.project;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Patterns;
@@ -108,7 +107,7 @@ public class SignUp extends AppCompatActivity {
     private boolean validateName(EditText iName){
         boolean isValidName = false;
 
-        if(iName.equals("") || iName == null || !(isLetters(iName.getText().toString()))) {
+        if(iName.equals("") || iName == null || !(AppUtils.IsLetters(iName.getText().toString()))) {
             iName.setBackgroundColor(Color.RED);
             iName.setText("");
         }
@@ -118,21 +117,6 @@ public class SignUp extends AppCompatActivity {
         }
 
         return isValidName;
-    }
-
-    private boolean isLetters(String str)
-    {
-        boolean isAllLetters = true;
-        char[] letters = str.toCharArray();
-
-        for(char c:letters){
-            if(!Character.isLetter(c)){
-                isAllLetters = false;
-                break;
-            }
-        }
-
-        return isAllLetters;
     }
 
     private boolean validateMail(EditText iEmail){
