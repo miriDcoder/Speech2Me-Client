@@ -39,11 +39,12 @@ public class LoginPage extends AppCompatActivity {
                 else if(userValidation == eUserValidation.wrongPassword)
                 {
                     password.getText().clear();
-                    Context context = getApplicationContext();
-                    CharSequence text = "סיסמה שגויה!";
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
+                    messageToUser("סיסמה שגויה!");
+                    //Context context = getApplicationContext();
+                    //CharSequence text = "סיסמה שגויה!";
+                    //int duration = Toast.LENGTH_SHORT;
+                    //Toast toast = Toast.makeText(context, text, duration);
+                    //toast.show();
                 }
                 else
                 {
@@ -51,12 +52,12 @@ public class LoginPage extends AppCompatActivity {
                     //or move to sign up page.
                     password.getText().clear();
                     email.getText().clear();
-                    Context context = getApplicationContext();
+                    messageToUser("הפרטים שהזנת שגויים! אנא הכנס פרטים תקינים, או הירשם");
+                    /*Context context = getApplicationContext();
                     CharSequence text = "הפרטים שהזנת שגויים! אנא הכנס פרטים תקינים, או הירשם";
                     int duration = Toast.LENGTH_SHORT;
-
                     Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
+                    toast.show();*/
                 }
             }
         });
@@ -98,5 +99,13 @@ public class LoginPage extends AppCompatActivity {
             intent.putExtra("id", iCurrUser.getmId());
             startActivity(intent);
         }
+    }
+
+    private void messageToUser(CharSequence text)
+    {
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 }
