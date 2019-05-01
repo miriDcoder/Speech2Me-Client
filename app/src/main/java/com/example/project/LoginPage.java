@@ -18,7 +18,7 @@ public class LoginPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
 
-        final Button loginBtn = (Button) findViewById(R.id.LoginBtn);
+        final Button loginBtn = (Button) findViewById(R.id.loginBtn);
         email = (EditText) findViewById(R.id.emailEditText);
         password = (EditText) findViewById(R.id.passwordEditText);
         Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Montserrat-Regular.ttf");
@@ -68,6 +68,24 @@ public class LoginPage extends AppCompatActivity {
             public void onClick(View v){
                 email = (EditText) findViewById(R.id.emailEditText);
                 startActivity(new Intent(LoginPage.this, SignUp.class));
+            }
+        });
+
+        Button studentTestingBtn = (Button)findViewById(R.id.studentTestingBtn);
+        studentTestingBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                User currUser = DbUtils.GetUserByMail(db.makeUserList(), "roni@gmail.com");
+                moveToHomePage(currUser);
+            }
+        });
+
+        Button teacherTestingBtn = (Button)findViewById(R.id.teacherTestingBtn);
+        teacherTestingBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                User currUser = DbUtils.GetUserByMail(db.makeUserList(), "dana@gmail.com");
+                moveToHomePage(currUser);
             }
         });
     }

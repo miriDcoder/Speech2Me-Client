@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,7 +17,7 @@ import android.widget.TextView;
 
 public class StudentHomePage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
-
+    public User currUser;
     private DrawerLayout drawer;
     public DataBase db = new DataBase();
 
@@ -38,36 +39,64 @@ public class StudentHomePage extends AppCompatActivity implements NavigationView
         toggle.syncState();
         if (savedInstanceState==null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container,
-                    new SettingsFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_settings);
+                    new StudentHomePageFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_home_page);
         }
-
         Intent intent = getIntent();
+        Bundle bundle = new Bundle();
         String id = intent.getStringExtra("id");
-        TextView textViewHello = (TextView)findViewById(R.id.textViewHeader);
-        TextView textViewScore = (TextView)findViewById(R.id.textViewScore);
-        TextView textViewLevel = (TextView)findViewById(R.id.textViewLevel);
-        Student currStudent = (Student)DbUtils.GetUserById(db.makeUserList(), id);
-        setEditTextsPositions(textViewHello, textViewScore, textViewLevel);
-        displayMyInfo(currStudent, textViewHello, textViewScore, textViewLevel);
-        Button buttonPlay = (Button)findViewById(R.id.buttonPlay);
+        bundle.putString("id", id);
+        StudentHomePageFragment fragmentInfo = new StudentHomePageFragment();
+        fragmentInfo.setArguments(bundle);
+        currUser = DbUtils.GetUserById(db.makeUserList(), id);
+//        TextView textViewHello = (TextView)findViewById(R.id.textViewHeader);
+//        TextView textViewScore = (TextView)findViewById(R.id.textViewScore);
+//        TextView textViewLevel = (TextView)findViewById(R.id.textViewLevel);
+//        Student currStudent = (Student)DbUtils.GetUserById(db.makeUserList(), id);
+//        setEditTextsPositions(textViewHello, textViewScore, textViewLevel);
+//        displayMyInfo(currStudent, textViewHello, textViewScore, textViewLevel);
+//        Button buttonPlay = (Button)findViewById(R.id.buttonPlay);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
        switch(menuItem.getItemId()){
-           case R.id.nav_settings:
-               getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new SettingsFragment()).commit();
-               break;
-           case R.id.nav_score:
-               getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new StudentScoreFragment()).commit();
+           case R.id.nav_home_page:
+               getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new StudentHomePageFragment()).commit();
                break;
            case R.id.nav_play:
                getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new PlayFragment()).commit();
                break;
-           case R.id.nav_home_page:
+           case R.id.nav_account:
+               getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new AccountFragment()).commit();
+               break;
+           case R.id.nav_score:
+               getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new StudentScoreFragment()).commit();
+
+               //*********code to switch betweem student/teacher home page*******
+               //*********add abstract class homePageFragment*******
+//               HomePageFragment homePagefragment;
+//               if (currUser.getmType()==User.eType.STUDENT){
+//                   homePagefragment = new StudentHomePageFragment();
+//               }
+//               if (currUser.getmType()==User.eType.TEACHER){
+//                   homePagefragment = new TeacherHomePageFragment();
+//               }
+//               if (homePagefragment != null) {
+//                   getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, homePagefragment).commit();
+//               }
+               break;
+           case R.id.nav_info:
                getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new StudentHomePageFragment()).commit();
                break;
+           case R.id.nav_settings:
+               getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new SettingsFragment()).commit();
+               break;
+           case R.id.nav_logout:
+               startActivity(new Intent(StudentHomePage.this, LoginPage.class));
+               break;
+
+
        }
        drawer.closeDrawer(GravityCompat.START);
         return true;

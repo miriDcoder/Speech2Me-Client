@@ -5,20 +5,18 @@
     android:layout_height="match_parent"
     >
 
-    <!--<TextView-->
-        <!--android:id="@+id/textViewScore"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_marginStart="0dp"-->
-        <!--android:layout_marginLeft="0dp"-->
-        <!--android:layout_marginBottom="131dp"-->
-        <!--android:text="Student Score Page"-->
-        <!--android:textAlignment="center"-->
-        <!--android:textColor="@android:color/darker_gray"-->
-        <!--android:textSize="30sp"-->
-        <!--android:typeface="sans" />-->
+    <TextView
+        android:id="@+id/textViewSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="137dp"
+        android:text="Score Page"
+        android:textAlignment="center"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="30sp"
+        android:typeface="sans" />
 
 </RelativeLayout>
