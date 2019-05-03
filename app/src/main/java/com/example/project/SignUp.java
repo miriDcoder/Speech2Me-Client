@@ -14,6 +14,15 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
 public class SignUp extends AppCompatActivity {
 
     @Override
@@ -22,6 +31,7 @@ public class SignUp extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         Button btnSignUp = (Button)findViewById(R.id.buttonSignup);
+        final EditText textViewRequest = (EditText) findViewById(R.id.editTextRequest);
         ImageView imageViewArrowBack = (ImageView) findViewById(R.id.imgArrowBack);
         final EditText editTextFirstName = (EditText) findViewById(R.id.editTextFirstName);
         final EditText editTextLastName = (EditText) findViewById(R.id.editTextLastName);
@@ -51,7 +61,7 @@ public class SignUp extends AppCompatActivity {
                         //id = what we got from db. then insert to constructor
                         currUser = new Student(email, password, firstName,
                                                         lastName, teacherId);
-
+                        InsertNewStudentToDataBase(currUser);
                         intent = new Intent(SignUp.this, StudentHomePage.class);
                         intent.putExtra("id", currUser.getmId());
                         startActivity(intent);
@@ -91,6 +101,23 @@ public class SignUp extends AppCompatActivity {
                 startActivity(new Intent(SignUp.this, LoginPage.class));
             }
         });
+        /*RequestQueue queue = Volley.newRequestQueue(this);
+        String url ="http://www.google.com";
+// Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        textViewRequest.setText(response.substring(0,500));
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                textViewRequest.setText("Error!");
+            }
+        });
+        queue.add(stringRequest);*/
     }
 
 
@@ -183,6 +210,45 @@ public class SignUp extends AppCompatActivity {
         return true;
     }
 
-    //TODO: for every page, see how to make a return button
+    private void InsertNewStudentToDataBase(User iUser)
+    {
+        try {
+            //JSONObject request = new JSONObject(new Gson().toJson(iUser, User.class));
+            //System.out.print(request);
+
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("first_name", iUser.getmFirstName());
+            jsonBody.put("last_name", iUser.getmLastName());
+            jsonBody.put("password", iUser.getmPassword());
+            jsonBody.put("user_type", iUser.getmType());
+            jsonBody.put("email", iUser.getmEmail());
+            jsonBody.put("user_type", "student");
+            RequestQueue queue = Volley.newRequestQueue(this);
+            String url ="https://speech-rec-server.herokuapp.com/user_signup/";
+// Request a string response from the provided URL.
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            System.out.print(response);
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.print("ERROR!");
+                }
+            });
+            queue.add(jsonRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        //System.out.print(reques);
+        //JSONparser json = (JSONObject)parser.parse(request);
+
+    }
+
     //TODO: app design and colors
+
 }
