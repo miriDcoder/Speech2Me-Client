@@ -33,18 +33,14 @@ public class LoginPage extends AppCompatActivity {
                 {
                     loginBtn.setText("מתחבר");
                     loginBtn.setEnabled(false);
-                    User currUser = DbUtils.GetUserByMail(db.makeUserList(), email.getText().toString());
+                    User currUser = DbUtils
+                            .GetUserByMail(db.makeUserList(), email.getText().toString());
                     moveToHomePage(currUser);
                 }
                 else if(userValidation == eUserValidation.wrongPassword)
                 {
                     password.getText().clear();
                     messageToUser("סיסמה שגויה!");
-                    //Context context = getApplicationContext();
-                    //CharSequence text = "סיסמה שגויה!";
-                    //int duration = Toast.LENGTH_SHORT;
-                    //Toast toast = Toast.makeText(context, text, duration);
-                    //toast.show();
                 }
                 else
                 {
@@ -53,11 +49,6 @@ public class LoginPage extends AppCompatActivity {
                     password.getText().clear();
                     email.getText().clear();
                     messageToUser("הפרטים שהזנת שגויים! אנא הכנס פרטים תקינים, או הירשם");
-                    /*Context context = getApplicationContext();
-                    CharSequence text = "הפרטים שהזנת שגויים! אנא הכנס פרטים תקינים, או הירשם";
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();*/
                 }
             }
         });

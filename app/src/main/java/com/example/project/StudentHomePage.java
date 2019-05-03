@@ -4,14 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -125,4 +123,6 @@ public class StudentHomePage extends AppCompatActivity implements NavigationView
         iTextViewLevel.setX(iTextViewHeader.getX());
         iTextViewLevel.setY(iTextViewScore.getY() + iTextViewScore.getHeight() + 100);
     }
+
+
 }

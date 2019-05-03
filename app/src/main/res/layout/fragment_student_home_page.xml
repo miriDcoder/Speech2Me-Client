@@ -30,15 +30,15 @@
                 android:textAlignment="center"
                 />
 
-            <TextView
-                android:id="@+id/textViewLevel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Level"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="30sp"
-                android:typeface="sans" />
+        <TextView
+            android:id="@+id/textViewLevel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Level"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="30sp"
+            android:typeface="sans" />
 
             <Button
                 android:id="@+id/buttonPlay"
