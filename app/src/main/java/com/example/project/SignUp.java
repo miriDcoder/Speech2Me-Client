@@ -31,7 +31,7 @@ public class SignUp extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         Button btnSignUp = (Button)findViewById(R.id.buttonSignup);
-        final EditText textViewRequest = (EditText) findViewById(R.id.editTextRequest);
+        //final EditText textViewRequest = (EditText) findViewById(R.id.editTextRequest);
         ImageView imageViewArrowBack = (ImageView) findViewById(R.id.imgArrowBack);
         final EditText editTextFirstName = (EditText) findViewById(R.id.editTextFirstName);
         final EditText editTextLastName = (EditText) findViewById(R.id.editTextLastName);

@@ -17,7 +17,6 @@ public class LoginPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
-
         final Button loginBtn = (Button) findViewById(R.id.loginBtn);
         email = (EditText) findViewById(R.id.emailEditText);
         password = (EditText) findViewById(R.id.passwordEditText);
@@ -83,6 +82,7 @@ public class LoginPage extends AppCompatActivity {
 
      private eUserValidation isValidDetails(String iEmail, String iPassword) {
         eUserValidation res = eUserValidation.invalidUser;
+
         for (User user : db.makeUserList()) {
             if (iEmail.equals(user.getmEmail()) && iPassword.equals(user.getmPassword())) {
                 res = eUserValidation.validUser;

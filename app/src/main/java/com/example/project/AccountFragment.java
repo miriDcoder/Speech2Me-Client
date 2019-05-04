@@ -31,11 +31,12 @@ public class AccountFragment extends Fragment {
         final EditText editTextFirstName = (EditText)v.findViewById(R.id.editTextAccountFirstName);
         final EditText editTextLastName = (EditText)v.findViewById(R.id.editTextAccountLastName);
         final EditText editTextEmail = (EditText)v.findViewById(R.id.editTextAccountMail);
-        EditText editTextCity = (EditText)v.findViewById(R.id.editTextAccountCity);
+        final EditText editTextCity = (EditText)v.findViewById(R.id.editTextAccountCity);
         final EditText editTextCurrPassword = (EditText)v.findViewById(R.id.editTextAccountCurrPassword);
         final EditText editTextNewPassword = (EditText)v.findViewById(R.id.editTextAccountNewPassword);
         final EditText editTextNewPasswordAgain = (EditText)v.findViewById(R.id.editTextAccountNewPasswordAgain);
-        Button buttonSaveChanges = (Button)v.findViewById(R.id.buttonSaveChanges);
+        final Button buttonSaveChanges = (Button)v.findViewById(R.id.buttonSaveChanges);
+        final Button buttonEdit = (Button)v.findViewById(R.id.buttonAccountEditDetails);
         //-----------------NEED TO CHANGE AFTER CONNECTING REAL DB-------------
         ArrayList<User> users = tempDb.makeUserList();
         mUser = users.get(3);
@@ -60,6 +61,13 @@ public class AccountFragment extends Fragment {
         editTextFirstName.setFilters(new InputFilter[] {filter});
         editTextLastName.setFilters(new InputFilter[] {filter});
         editTextCity.setFilters(new InputFilter[] {filter});
+        editTextFirstName.setEnabled(false);
+        editTextLastName.setEnabled(false);
+        editTextEmail.setEnabled(false);
+        editTextCurrPassword.setEnabled(false);
+        editTextCity.setEnabled(false);
+        editTextNewPassword.setEnabled(false);
+        editTextNewPasswordAgain.setEnabled(false);
 
         editTextEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -100,6 +108,23 @@ public class AccountFragment extends Fragment {
                 }
 
                 //TODO: UPDATE FIELDS IN DB
+            }
+        });
+
+        buttonEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buttonEdit.setVisibility(View.INVISIBLE);
+                buttonEdit.setEnabled(false);
+                buttonSaveChanges.setVisibility(View.VISIBLE);
+                buttonSaveChanges.setEnabled(true);
+                editTextFirstName.setEnabled(true);
+                editTextLastName.setEnabled(true);
+                editTextEmail.setEnabled(true);
+                editTextCurrPassword.setEnabled(true);
+                editTextCity.setEnabled(true);
+                editTextNewPassword.setEnabled(true);
+                editTextNewPasswordAgain.setEnabled(true);
             }
         });
 

@@ -1,14 +1,16 @@
 package com.example.project;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import java.io.IOException;
-
-public class RecordTry extends AppCompatActivity {
+public class RecordTry extends AppCompatActivity implements View.OnClickListener {
     MediaRecorder recorder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,31 +19,43 @@ public class RecordTry extends AppCompatActivity {
 
         Button buttonRecord = (Button)findViewById(R.id.buttonRecord);
         Button buttonStopRecord = (Button)findViewById(R.id.buttonStopRecord);
-        recorder = new MediaRecorder();
 
-        buttonRecord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-                recorder.setOutputFile("C:/Users/miril/Desktop");
-                try {
-                    recorder.prepare();
-                    recorder.start();   // Recording is now started
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        buttonRecord.setOnClickListener(this);
+        buttonStopRecord.setOnClickListener(this);
+    }
 
-        buttonStopRecord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                recorder.stop();
-                recorder.reset();   // You can reuse the object by going back to setAudioSource() step
-                recorder.release(); // Now the object cannot be reused
+        @Override
+    public void onClick(View v) {
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions((Activity) getApplicationContext(), new String[]{Manifest.permission.RECORD_AUDIO}, 0);
+
+        } else {
+            switch (v.getId()) {
+                case R.id.buttonRecord:
+                    startRecording();
+                    break;
+                case R.id.buttonStopRecord:
+                    stopRecording();
+                    break;
             }
-        });
+        }
+    }
+
+    private void startRecording()
+    {
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
+        {
+        ActivityCompat.requestPermissions((Activity) getApplicationContext(), new String[]{Manifest.permission.RECORD_AUDIO}, 0);
+        }
+        else
+        {
+
+        }
+    }
+
+    private void stopRecording()
+    {
+
     }
 }
