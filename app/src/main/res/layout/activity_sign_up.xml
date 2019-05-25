@@ -169,5 +169,14 @@
             app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/ic_arrow_back" />
 
+        <EditText
+            android:id="@+id/responseSignup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            tools:layout_editor_absoluteX="85dp"
+            tools:layout_editor_absoluteY="602dp" />
+
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

@@ -141,5 +141,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/responseLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        tools:layout_editor_absoluteX="73dp"
+        tools:layout_editor_absoluteY="457dp" />
+
 
 </android.support.constraint.ConstraintLayout>

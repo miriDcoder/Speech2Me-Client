@@ -47,6 +47,8 @@ public class StudentHomePage extends AppCompatActivity implements NavigationView
         StudentHomePageFragment fragmentInfo = new StudentHomePageFragment();
         fragmentInfo.setArguments(bundle);
         currUser = DbUtils.GetUserById(db.makeUserList(), id);
+        System.out.println(currUser.getmFirstName());
+
 //        TextView textViewHello = (TextView)findViewById(R.id.textViewHeader);
 //        TextView textViewScore = (TextView)findViewById(R.id.textViewScore);
 //        TextView textViewLevel = (TextView)findViewById(R.id.textViewLevel);

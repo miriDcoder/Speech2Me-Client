@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SignUp extends AppCompatActivity {
@@ -53,35 +54,29 @@ public class SignUp extends AppCompatActivity {
                     String teacherId = editTextTeacherId.getText().toString();
 
                     User currUser;
-                    Intent intent;
+                    //Intent intent;
+                    String type = null;
                     if(switchIsStudent.isChecked())
                     {
                         //TODO: insert to students db
                         //TODO: insert to teacher to students db
-                        //id = what we got from db. then insert to constructor
                         currUser = new Student(email, password, firstName,
                                                         lastName, teacherId);
-                        InsertNewStudentToDataBase(currUser);
-                        intent = new Intent(SignUp.this, StudentHomePage.class);
-                        intent.putExtra("id", currUser.getmId());
-                        startActivity(intent);
+                        type = "student";
                     }
                     else
                     {
                         //TODO: insert to teacher db
-                        //id = what we got from db. then insert to constructor
                         currUser = new Teacher(email, password, firstName, lastName);
-                        intent = new Intent(SignUp.this, TeacherHomePage.class);
-                        intent.putExtra("id", currUser.getmId());
-                        startActivity(intent);
+                        type = "teacher";
                     }
+                    InsertNewUserToDatabase(currUser, type);
                 }
                 else
                 {
                     Context context = getApplicationContext();
                     CharSequence text = "Some details were invalid";
                     int duration = Toast.LENGTH_SHORT;
-
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 }
@@ -101,23 +96,6 @@ public class SignUp extends AppCompatActivity {
                 startActivity(new Intent(SignUp.this, LoginPage.class));
             }
         });
-        /*RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://www.google.com";
-// Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        textViewRequest.setText(response.substring(0,500));
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                textViewRequest.setText("Error!");
-            }
-        });
-        queue.add(stringRequest);*/
     }
 
 
@@ -127,8 +105,7 @@ public class SignUp extends AppCompatActivity {
         return validateName(iFirstName) &&
                                     validateName(iLastName) &&
                                     validateMail(iEmail) &&
-                                    validatePassword(iPassword) &&
-                                    validateTeacherId(iIsStudent, iTeacherID);
+                                    validatePassword(iPassword);
     }
 
     private boolean validateName(EditText iName){
@@ -185,44 +162,21 @@ public class SignUp extends AppCompatActivity {
         return isValid;
     }
 
-    private boolean validateTeacherId(boolean iIsStudent, EditText iTeacherId){
-        boolean isValid = true;
-        String teacherId = iTeacherId.getText().toString();
-
-        if(iIsStudent)
-        {
-            if(teacherId.matches("") || !isTeacherIdExists(teacherId))
-            {
-                iTeacherId.setBackgroundColor(Color.RED);
-                isValid = false;
-            }
-            else
-            {
-                iTeacherId.setBackgroundColor(Color.TRANSPARENT);
-            }
-        }
-
-        return isValid;
-    }
-
-    private boolean isTeacherIdExists(String iTeacherId){
-        //TODO: the real check
-        return true;
-    }
-
-    private void InsertNewStudentToDataBase(User iUser)
+    private void InsertNewUserToDatabase(User iUser, String iType)
     {
         try {
             //JSONObject request = new JSONObject(new Gson().toJson(iUser, User.class));
             //System.out.print(request);
-
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("first_name", iUser.getmFirstName());
             jsonBody.put("last_name", iUser.getmLastName());
             jsonBody.put("password", iUser.getmPassword());
-            jsonBody.put("user_type", iUser.getmType());
             jsonBody.put("email", iUser.getmEmail());
-            jsonBody.put("user_type", "student");
+            jsonBody.put("user_type", iType);
+            if(iType.equals("student"))
+            {
+                jsonBody.put("user_type", iUser.getmType());
+            }
             RequestQueue queue = Volley.newRequestQueue(this);
             String url ="https://speech-rec-server.herokuapp.com/user_signup/";
 // Request a string response from the provided URL.
@@ -231,6 +185,24 @@ public class SignUp extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             System.out.print(response);
+                            EditText responseSignup = (EditText)findViewById(R.id.responseSignup);
+                            responseSignup.setText(response.toString());
+                            Intent intent = null;
+                            try {
+                                if(response.getString("user_type").equals("student"))
+                                {
+                                    intent = new Intent(SignUp.this, StudentHomePage.class);
+                                }
+                                else if(response.getString("user_type").equals("teacher"))
+                                {
+                                    intent = new Intent(SignUp.this, TeacherHomePage.class);
+                                }
+                                intent.putExtra("id", response.getString("id"));
+                                startActivity(intent);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
+                            }
                         }
                     }, new Response.ErrorListener() {
                 @Override
@@ -242,11 +214,6 @@ public class SignUp extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-        //System.out.print(reques);
-        //JSONparser json = (JSONObject)parser.parse(request);
-
     }
 
     //TODO: app design and colors
