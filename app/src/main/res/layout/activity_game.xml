@@ -20,11 +20,11 @@
         android:text="השמע הקלטה"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.695"
+        app:layout_constraintHorizontal_bias="0.663"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonRecord"
-        app:layout_constraintVertical_bias="0.065" />
-    <RecordButton></RecordButton>
+        app:layout_constraintTop_toBottomOf="@+id/btnStartRecord"
+        app:layout_constraintVertical_bias="0.178" />
+
     <Button
         android:id="@+id/btnStop"
         android:layout_width="wrap_content"
@@ -37,10 +37,10 @@
         android:layout_marginBottom="292dp"
         android:text="הפסק השמעה"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnStartRecord"
+        app:layout_constraintEnd_toStartOf="@+id/btnPlay"
         app:layout_constraintHorizontal_bias="0.855"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonStopRecord"
+        app:layout_constraintTop_toBottomOf="@+id/btnStopRecord"
         app:layout_constraintVertical_bias="0.188" />
 
     <Button
@@ -68,7 +68,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:text="עצור הקלטה"
-        app:layout_constraintEnd_toStartOf="@+id/buttonRecord"
+        app:layout_constraintEnd_toStartOf="@+id/btnStartRecord"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

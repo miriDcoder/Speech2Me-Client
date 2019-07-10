@@ -22,7 +22,6 @@ public class Game extends AppCompatActivity {
     String pathSave = "";
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
-
     final int REQUEST_PREMISSION_CODE = 1000;
 
     @Override
@@ -40,21 +39,20 @@ public class Game extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (checkPermissionFromDevice()) {
-
                         pathSave = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
-                                UUID.randomUUID().toString() + "_audio_record.3gp";
-                        System.out.println("&&&&&&&&&&&&&&" + pathSave + "&&&&&&&&&&&&");
+                                UUID.randomUUID().toString() + "_audio_record.mp3";
                         setupMediaRecorder();
                         try {
                             mediaRecorder.prepare();
                             mediaRecorder.start();
+                            btnStopRecord.setEnabled(true); //enable stop record
+                            btnPlay.setEnabled(false); //shouldn't be able to play while recording too
+                            btnRecord.setEnabled(false); //yours to see if should be able to restart record while recording, but probably not if it crashes
+                            btnStop.setEnabled(false); //probably should be disabled too on record
                         } catch (IOException e) {
                             e.printStackTrace();
-
                         }
 
-                        btnPlay.setEnabled(false);
-                        btnStop.setEnabled(false);
                         Toast.makeText(Game.this, "Recording...", Toast.LENGTH_SHORT).show(); //CHECK IF ITS OK
                     } else {
                         requestPermission();
@@ -73,16 +71,14 @@ public class Game extends AppCompatActivity {
                     btnRecord.setEnabled(true);
                     btnStop.setEnabled(false);
                     Toast.makeText(Game.this, "Stop Recoding done", Toast.LENGTH_SHORT).show(); //CHECK IF ITS OK
-
+                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Recording done");
                 }
             });
 
             btnPlay.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-
-                    Toast.makeText(Game.this, "Play starts", Toast.LENGTH_SHORT).show(); //CHECK IF ITS OK
-
+                    System.out.println("++++++++++++++++++++++++++++++++In Play");
                     btnStopRecord.setEnabled(false);
                     btnRecord.setEnabled(false);
                     btnStop.setEnabled(true);
@@ -101,7 +97,7 @@ public class Game extends AppCompatActivity {
                 }
             });
 
-            btnPlay.setOnClickListener(new View.OnClickListener(){
+            btnStop.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
                     btnStopRecord.setEnabled(false);
@@ -121,9 +117,11 @@ public class Game extends AppCompatActivity {
     private void setupMediaRecorder() {
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
         mediaRecorder.setOutputFile(pathSave);
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SETTING RECORD");
+        System.out.println("pathSave");
     }
 
     private void requestPermission() {
