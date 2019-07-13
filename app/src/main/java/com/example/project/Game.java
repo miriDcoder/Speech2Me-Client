@@ -83,7 +83,8 @@ public class Game extends AppCompatActivity {
                     btnRecord.setEnabled(false);
                     btnStop.setEnabled(true);
                     mediaPlayer = new MediaPlayer();
-                    try{
+                    try
+                    {
                         mediaPlayer.setDataSource(pathSave);
                         mediaPlayer.prepare();
                     }
@@ -142,7 +143,6 @@ public class Game extends AppCompatActivity {
             break;
         }
     }
-
 
     private boolean checkPermissionFromDevice() {
         int write_external_storage_result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
