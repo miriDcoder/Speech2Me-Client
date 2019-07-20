@@ -5,67 +5,85 @@ public class WordRecognition {
     private String mWordClue;
     private String mAudioClue;
     private int mNumOfTries = 0;
+    private int mScore = 0;
     private boolean mIsWordClueUsed = false;
     private boolean mIsAudioClueUsed = false;
     private String mWord;
 
     public String getmImgPath(){
-        return mImgPath;
+        return this.mImgPath;
     }
 
     public void SetmImgPath(String iPath)
     {
-        mImgPath = iPath;
+        this.mImgPath = iPath;
     }
 
     public String GetmWordClue(){
-        return mWordClue;
+        return this.mWordClue;
     }
 
     public void SetmWordClue(String iWordClue)
     {
-        mWordClue = iWordClue;
+        this.mWordClue = iWordClue;
     }
 
     public String GetmAudioClue()
     {
-        return mAudioClue;
+        return this.mAudioClue;
     }
 
     public void SetmAudioClue(String iAudioClue)
     {
-        mAudioClue = iAudioClue;
+        this.mAudioClue = iAudioClue;
     }
 
     public int GetmNumOfTries()
     {
-        return mNumOfTries;
+        return this.mNumOfTries;
     }
 
-    public void IncreaseNumOfTries()
+    public void IncreasemNumOfTries()
     {
-        mNumOfTries++;
+        this.mNumOfTries++;
+    }
+
+    public int GetmScore()
+    {
+        return this.mScore;
+    }
+
+    public void SetmScore(int iScore)
+    {
+        this.mScore = iScore;
     }
 
     public boolean IsWordClueUsed()
     {
-        return mIsWordClueUsed;
+        return this.mIsWordClueUsed;
     }
 
     public void WordClueUsed(){
-        mIsWordClueUsed = true;
+        this.mIsWordClueUsed = true;
     }
 
     public boolean IsAudioClueUsed()
     {
-        return mIsAudioClueUsed;
+        return this.mIsAudioClueUsed;
     }
 
     public void AudioClueUsed()
     {
-        mIsAudioClueUsed = true;
+        this.mIsAudioClueUsed = true;
     }
 
-    public String GetWord(){ return mWord;}
-    public void SetWord(String iWord) {mWord = iWord;}
+    public void SetmWord(String iWord)
+    {
+        this.mWord = iWord;
+    }
+
+    public String GetmWord()
+    {
+        return this.mWord;
+    }
 }

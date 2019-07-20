@@ -1,6 +1,7 @@
 package com.example.project;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -27,9 +28,14 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.UUID;
+
+//import org.apache.commons.io.FileUtils;
 
 public class WordRecognitionGame extends AppCompatActivity {
     private WordRecognition mLevel;
@@ -46,16 +52,16 @@ public class WordRecognitionGame extends AppCompatActivity {
         if(!checkPermissionFromDevice()) {
             requestPermission();
         }
-        ImageView imgWord = (ImageView)findViewById(R.id.imageViewWord);
-        final Button answer = (Button)findViewById(R.id.buttonAnswerWordRecognition);
-        final Button wordClue = (Button)findViewById(R.id.buttonWordClue);
-        Button audioClue = (Button)findViewById(R.id.buttonAudioClue);
+        ImageView imgWord = findViewById(R.id.imageViewWord);
+        final Button answer = findViewById(R.id.buttonAnswerWordRecognition);
+        final Button wordClue = findViewById(R.id.buttonWordClue);
+        Button audioClue = findViewById(R.id.buttonAudioClue);
 
         mLevel = new WordRecognition();
         mLevel.SetmImgPath("https://image.freepik.com/free-vector/little-white-house_88088-10.jpg");
         Picasso.with(this).load(mLevel.getmImgPath()).into(imgWord);
         mLevel.SetmWordClue("המשפחה גרה בו");
-        mLevel.SetWord("בית");
+        mLevel.SetmWord("בית");
         //System.out.println("~~~~~~~~is word clue used: " + mLevel.IsWordClueUsed());
 
         wordClue.setOnClickListener(new View.OnClickListener() {
@@ -169,16 +175,18 @@ public class WordRecognitionGame extends AppCompatActivity {
         InputStream inFile = null;
         try {
             inFile = new FileInputStream(mPathSave);
-            String bytes = inputStreamToByteArray(inFile);
-            System.out.println("+++++++++++++++++++++++" + bytes);
+            byte[] bytes = inputStreamToByteArray(inFile);
+            bytesToAudio(bytes);
             try {
                 JSONObject jsonBody = new JSONObject();
-                jsonBody.put("original_text", mLevel.GetWord());
+                jsonBody.put("original_text", mLevel.GetmWord());
                 jsonBody.put("email", "ofer.feder@gmail.com");
                 jsonBody.put("audio_file", bytes);
                 final RequestQueue queue = Volley.newRequestQueue(this);
                 RequestFuture<JSONObject> future = RequestFuture.newFuture();
                 //final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, future, future);
+                System.out.println("+++++++++++++++++++++++" + bytes);
+
                 final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
                         new Response.Listener<JSONObject>() {
                             @Override
@@ -202,15 +210,69 @@ public class WordRecognitionGame extends AppCompatActivity {
         }
     }
 
-    public String inputStreamToByteArray(InputStream inStream) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        byte[] buffer = new byte[8192];
-        int bytesRead;
-        while ((bytesRead = inStream.read(buffer)) > 0) {
-            baos.write(buffer, 0, bytesRead);
-            System.out.println("---------------------" + baos.toString());
+    private void bytesToAudio(byte[] bytes) {
+        File root = new File(Environment.getExternalStorageDirectory(), "Notes");
+        if (!root.exists()) {
+            root.mkdirs();
+        }
+        File file = new File(root, "ToAudio");
+        try {
+            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXX" + file.getAbsolutePath());
+            FileWriter fw = new FileWriter(file);
+            fw.write(bytes.toString());
+            fw.close();
+            mMediaPlayer = new MediaPlayer();
+                    try
+                    {
+                        System.out.println(">>>>>>>> ABOUT TO PLAY");
+                        mMediaPlayer.setDataSource(file.getAbsolutePath());
+                        mMediaPlayer.prepare();
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                        System.out.println("~~~~~~~~~~~~~~~~~~~MESSAGE:" + e.getMessage());
+                    }
+
+                    mMediaPlayer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        return baos.toString();
+    }
+
+        public byte[] inputStreamToByteArray(InputStream inStream) throws IOException {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = inStream.read(buffer)) > 0) {
+                baos.write(buffer, 0, bytesRead);
+//            System.out.println("---------------------" + baos.toString());
+            }
+
+            byte[] result = baos.toByteArray();
+
+            writeToFile(result.toString(), WordRecognitionGame.this);
+//        System.out.println("---------------------" + baos.toString());
+
+        return result;//baos.toString("UTF-8");
+    }
+
+    private void writeToFile(String data, Context context) {
+        try {
+            File root = new File(Environment.getExternalStorageDirectory(), "Notes");
+            if (!root.exists()) {
+                root.mkdirs();
+            }
+            File gpxfile = new File(root, "for_ofer.txt");
+            FileWriter writer = new FileWriter(gpxfile);
+            writer.append(data);
+            writer.flush();
+            writer.close();
+            System.out.println("((((((((((((((((((((((" + gpxfile.getAbsolutePath());
+        } catch (IOException e) {
+            System.out.println("------------>EXCEPTION");
+            e.printStackTrace();
+        }
     }
 }
