@@ -7,6 +7,7 @@ public class WordRecognition {
     private int mNumOfTries = 0;
     private boolean mIsWordClueUsed = false;
     private boolean mIsAudioClueUsed = false;
+    private String mWord;
 
     public String getmImgPath(){
         return mImgPath;
@@ -64,4 +65,7 @@ public class WordRecognition {
     {
         mIsAudioClueUsed = true;
     }
+
+    public String GetWord(){ return mWord;}
+    public void SetWord(String iWord) {mWord = iWord;}
 }
