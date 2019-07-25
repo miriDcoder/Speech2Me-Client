@@ -1,38 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="navigation_view">
+    tools:showIn="navigation_view"
+    android:layout_gravity="end"
+    android:gravity="end"
+    android:layoutDirection="rtl">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single"
+        android:layout_gravity="end"
+        android:gravity="end">>
+
         <item
             android:id="@+id/nav_home_page"
             android:icon="@drawable/ic_home"
-            android:title="Home page" />
-        <item
-            android:id="@+id/nav_play"
-            android:icon="@drawable/ic_play"
-            android:title="Play" />
+            android:title="הבית שלי"
+            android:gravity="end"
+            android:layout_gravity="end"/>
         <item
             android:id="@+id/nav_account"
             android:icon="@drawable/ic_account"
-            android:title="Account" />
-        <item
-            android:id="@+id/nav_score"
-            android:icon="@drawable/ic_score"
-            android:title="Score" />
-         <item
-                android:id="@+id/nav_info"
-                android:icon="@drawable/ic_info"
-                android:title="About">
-            </item>
-            <item
-                android:id="@+id/nav_settings"
-                android:icon="@drawable/ic_settings"
-                android:title="Settings" />
-            <item
-                android:id="@+id/nav_logout"
-                android:icon="@drawable/ic_logout"
-                android:title="Log Out" />
+            android:title="פרופיל"
+            android:gravity="end"
+            android:layout_gravity="end"/>
 
-        </group>
+        <item
+            android:id="@+id/nav_info"
+            android:icon="@drawable/ic_info"
+            android:title="אודות"
+            android:gravity="end"
+            android:layout_gravity="end"/>
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="הגדרות"
+            android:gravity="end"
+            android:layout_gravity="end"/>
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout"
+            android:title="התנתק/י"
+            android:gravity="end"
+            android:layout_gravity="end"/>
+    </group>
 </menu>

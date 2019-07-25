@@ -12,28 +12,38 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class StudentHomePageFragment extends Fragment {
+public class TeacherHomePageFragment extends Fragment {
 
     public DataBase db = new DataBase();
 
-    public StudentHomePageFragment(){
+    public TeacherHomePageFragment(){
 
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_student_home_page, container, false);
+        View v = inflater.inflate(R.layout.fragment_teacher_home_page, container, false);
         TextView textViewHello = (TextView)v.findViewById(R.id.textViewHeader);
-        TextView textViewScore = (TextView)v.findViewById(R.id.textViewScore);
-        TextView textViewLevel = (TextView)v.findViewById(R.id.textViewLevel);
-        //       String this_id = this.getArguments().getString("id");
-        Student currStudent = (Student)DbUtils.GetUserById(db.makeUserList(), "0005");
-        setEditTextsPositions(textViewHello, textViewScore, textViewLevel);
-        displayMyInfo(currStudent, textViewHello, textViewScore, textViewLevel);
+        Bundle bundle = getArguments();
+        System.out.println("+++++++++++++"+bundle);
+        Teacher currTeacher = (Teacher)bundle.getSerializable("user");
+        setEditTextsPositions(textViewHello);
+        displayMyInfo(currTeacher, textViewHello);
+        Button buttonStatistics = (Button)v.findViewById(R.id.buttonStatistics);
         Button buttonPlayWord = (Button)v.findViewById(R.id.buttonPlayWord);
         Button buttonPlayRecord = (Button)v.findViewById(R.id.buttonPlayRecord);
         setPlayButtons(buttonPlayWord, buttonPlayRecord);
+
+        buttonStatistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), WordRecognitionGame.class);
+                startActivity(intent);
+                ((Activity) getActivity()).overridePendingTransition(0, 0);
+            }
+        });
+
         buttonPlayWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,19 +65,17 @@ public class StudentHomePageFragment extends Fragment {
         return v;
     }
 
-    private void displayMyInfo(Student iStudent, TextView iTextViewHeader, TextView iTextViewScore, TextView iTextViewLevel) {
-        iTextViewHeader.setText(String.format("שלום, %s!", iStudent.getmFirstName()));
-        iTextViewScore.setText(String.format("ניקוד: %d", iStudent.getmScore()));
-        iTextViewLevel.setText(String.format("שלב: %d", iStudent.getmLevel()));
+    private void displayMyInfo(Teacher iTeacher, TextView iTextViewHeader) {
+        iTextViewHeader.setText(String.format("שלום, %s!", iTeacher.getmFirstName()));
     }
 
-    private void setEditTextsPositions(TextView iTextViewHeader, TextView iTextViewScore, TextView iTextViewLevel){
+    private void setEditTextsPositions(TextView iTextViewHeader){
         iTextViewHeader.setX(10);
         iTextViewHeader.setY(150);
-        iTextViewScore.setX(iTextViewHeader.getX());
-        iTextViewScore.setY(iTextViewHeader.getY() + iTextViewHeader.getHeight() + 100);
-        iTextViewLevel.setX(iTextViewHeader.getX());
-        iTextViewLevel.setY(iTextViewScore.getY() + iTextViewScore.getHeight() + 100);
+//        iTextViewScore.setX(iTextViewHeader.getX());
+//        iTextViewScore.setY(iTextViewHeader.getY() + iTextViewHeader.getHeight() + 100);
+//        iTextViewLevel.setX(iTextViewHeader.getX());
+//        iTextViewLevel.setY(iTextViewScore.getY() + iTextViewScore.getHeight() + 100);
     }
 
     private void setPlayButtons(Button iWord, Button iVoice)

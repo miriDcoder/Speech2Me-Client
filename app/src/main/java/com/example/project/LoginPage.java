@@ -49,23 +49,23 @@ public class LoginPage extends AppCompatActivity {
             }
         });
 
-//        Button studentTestingBtn = (Button)findViewById(R.id.studentTestingBtn);
-//        studentTestingBtn.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v){
-//                User currUser = DbUtils.GetUserByMail(db.makeUserList(), "roni@gmail.com");
-//                moveToHomePage(currUser);
-//            }
-//        });
+        Button studentTestingBtn = (Button)findViewById(R.id.studentTestingBtn);
+        studentTestingBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                User currUser = DbUtils.GetUserByMail(db.makeUserList(), "roni@gmail.com");
+                moveToHomePage(currUser.getmId(), currUser.getmType().toString());
+            }
+        });
 
-//        Button teacherTestingBtn = (Button)findViewById(R.id.teacherTestingBtn);
-//        teacherTestingBtn.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v){
-//                User currUser = DbUtils.GetUserByMail(db.makeUserList(), "dana@gmail.com");
-//                moveToHomePage(currUser);
-//            }
-//        });
+        Button teacherTestingBtn = (Button)findViewById(R.id.teacherTestingBtn);
+        teacherTestingBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                User currUser = DbUtils.GetUserByMail(db.makeUserList(), "dana@gmail.com");
+                moveToHomePage(currUser.getmId(), currUser.getmType().toString());
+            }
+        });
 
         loginBtn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -123,26 +123,26 @@ public class LoginPage extends AppCompatActivity {
             RequestFuture<JSONObject> future = RequestFuture.newFuture();
             //final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, future, future);
             final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
-                      new Response.Listener<JSONObject>() {
-                          @Override
-                          public void onResponse(JSONObject response) {
-                              System.out.print(response);
-                              EditText responseLogin = (EditText) findViewById(R.id.responseLogin);
-                              responseLogin.setText(response.toString());
-                              //mResponse = response;
-                              try {
-                                  moveToHomePage(response.getString("id"), response.getString("user_type"));
-                              } catch (JSONException e) {
-                                  e.printStackTrace();
-                              }
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            System.out.print(response);
+                            EditText responseLogin = (EditText) findViewById(R.id.responseLogin);
+                            responseLogin.setText(response.toString());
+                            //mResponse = response;
+                            try {
+                                moveToHomePage(response.getString("id"), response.getString("user_type"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
 
-                          }
-                      },  new Response.ErrorListener() {
+                        }
+                    },  new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     System.out.print("ERROR!");
                 }
-              });
+            });
             //JsonObjectRequest request = new JsonObjectRequest()
 //            try{
 //                JSONObject response = future.get(10,TimeUnit.SECONDS);
@@ -172,17 +172,9 @@ public class LoginPage extends AppCompatActivity {
 
     private void moveToHomePage(String iCurrUserId, String iUserType)
     {
-        Intent intent;
-        if (iUserType.toLowerCase().equals("student")){
-            intent = new Intent(LoginPage.this, StudentHomePage.class);
-            intent.putExtra("id", iCurrUserId);
-            startActivity(intent);
-        }
-        else if (iUserType.toLowerCase().equals("teacher")){
-            intent = new Intent(LoginPage.this, TeacherHomePage.class);
-            intent.putExtra("id", iCurrUserId);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(LoginPage.this, HomePage.class);
+        intent.putExtra("id", iCurrUserId);
+        startActivity(intent);
     }
 
     private void messageToUser(CharSequence text)

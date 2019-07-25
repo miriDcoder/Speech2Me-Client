@@ -189,14 +189,7 @@ public class SignUp extends AppCompatActivity {
                             responseSignup.setText(response.toString());
                             Intent intent = null;
                             try {
-                                if(response.getString("user_type").equals("student"))
-                                {
-                                    intent = new Intent(SignUp.this, StudentHomePage.class);
-                                }
-                                else if(response.getString("user_type").equals("teacher"))
-                                {
-                                    intent = new Intent(SignUp.this, TeacherHomePage.class);
-                                }
+                                intent = new Intent(SignUp.this, LoginPage.class);
                                 intent.putExtra("id", response.getString("id"));
                                 startActivity(intent);
                             } catch (JSONException e) {

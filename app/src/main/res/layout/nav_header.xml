@@ -4,24 +4,16 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="176dp"
-    android:gravity="bottom"
+    android:gravity="end"
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
-    android:background="#00fffb">
+    android:background="#ffffff"
+    >
 
     <ImageView
         android:layout_width="134dp"
         android:layout_height="103dp"
-        android:src="@drawable/therapy_icon2"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:text="SPEECH2ME"
-        android:textColor="@color/colorAccent"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layout_marginRight="100dp"
+        android:src="@drawable/logo" />
 
 </LinearLayout>

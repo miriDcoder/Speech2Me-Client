@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".StudentHomePage"
+    tools:context=".HomePage"
     tools:openDrawer="start">
 
     <LinearLayout
@@ -27,11 +27,11 @@
             android:id="@+id/student_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-        <!--<fragment-->
-            <!--android:id="@+id/studenHomePageFragment"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:name="com.example.project.StudentHomePageFragment"/>-->
+        <fragment
+            android:id="@+id/studenHomePageFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.example.project.StudentHomePageFragment"/>
 
     </LinearLayout>
 

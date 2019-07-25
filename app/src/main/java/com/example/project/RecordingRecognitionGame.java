@@ -142,7 +142,7 @@ public class RecordingRecognitionGame extends AppCompatActivity {
                                 //UPDATE STUDENT'S SCORE
 
                                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                                transaction.replace(R.id.play_fragment_container, new PlayFragment()).commit();
+                                transaction.replace(R.id.student_fragment_container, new StudentHomePageFragment()).commit();
                                 transaction.addToBackStack(null);
 //                                transaction.commit();
                             }
