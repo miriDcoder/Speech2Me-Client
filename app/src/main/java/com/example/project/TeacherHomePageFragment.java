@@ -13,23 +13,25 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class TeacherHomePageFragment extends Fragment {
-
+    private Teacher mTeacher;
     public DataBase db = new DataBase();
 
     public TeacherHomePageFragment(){
 
     }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_teacher_home_page, container, false);
         TextView textViewHello = (TextView)v.findViewById(R.id.textViewHeader);
-        Bundle bundle = getArguments();
-        System.out.println("+++++++++++++"+bundle);
-        Teacher currTeacher = (Teacher)bundle.getSerializable("user");
+        if(getArguments() != null)
+        {
+            mTeacher = getArguments().getParcelable("user");
+        }
+        //Bundle bundle = getArguments();
+//        Teacher currTeacher = (Teacher)bundle.getSerializable("user");
         setEditTextsPositions(textViewHello);
-        displayMyInfo(currTeacher, textViewHello);
+        displayMyInfo(mTeacher, textViewHello);
         Button buttonStatistics = (Button)v.findViewById(R.id.buttonStatistics);
         Button buttonPlayWord = (Button)v.findViewById(R.id.buttonPlayWord);
         Button buttonPlayRecord = (Button)v.findViewById(R.id.buttonPlayRecord);

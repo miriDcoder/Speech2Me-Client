@@ -48,7 +48,10 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
             else if (currUser.getmType()==User.eType.TEACHER){
 //                bundle.putSerializable("user", (Teacher)currUser);
 //                intent.putExtras(bundle);
-                getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new TeacherHomePageFragment()).commit();
+                bundle.putParcelable("user", (Teacher)currUser);
+                TeacherHomePageFragment teacherPage = new TeacherHomePageFragment();
+                teacherPage.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, teacherPage).commit();
             }
             navigationView.setCheckedItem(R.id.nav_home_page);
         }
