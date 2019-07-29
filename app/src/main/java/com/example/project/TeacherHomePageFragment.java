@@ -28,8 +28,6 @@ public class TeacherHomePageFragment extends Fragment {
         {
             mTeacher = getArguments().getParcelable("user");
         }
-        //Bundle bundle = getArguments();
-//        Teacher currTeacher = (Teacher)bundle.getSerializable("user");
         setEditTextsPositions(textViewHello);
         displayMyInfo(mTeacher, textViewHello);
         Button buttonStatistics = (Button)v.findViewById(R.id.buttonStatistics);
@@ -40,7 +38,7 @@ public class TeacherHomePageFragment extends Fragment {
         buttonStatistics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), WordRecognitionGame.class);
+                Intent intent = new Intent(getActivity(), PictureRecognitionLevel.class);
                 startActivity(intent);
                 ((Activity) getActivity()).overridePendingTransition(0, 0);
             }
@@ -49,7 +47,7 @@ public class TeacherHomePageFragment extends Fragment {
         buttonPlayWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), WordRecognitionGame.class);
+                Intent intent = new Intent(getActivity(), PictureRecognitionLevel.class);
                 startActivity(intent);
                 ((Activity) getActivity()).overridePendingTransition(0, 0);
             }
@@ -58,7 +56,7 @@ public class TeacherHomePageFragment extends Fragment {
         buttonPlayRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), RecordingRecognitionGame.class);
+                Intent intent = new Intent(getActivity(), AudioRecognitionLevel.class);
                 startActivity(intent);
                 ((Activity) getActivity()).overridePendingTransition(0, 0);
             }

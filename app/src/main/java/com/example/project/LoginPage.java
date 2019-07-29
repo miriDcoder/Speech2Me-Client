@@ -53,7 +53,7 @@ public class LoginPage extends AppCompatActivity {
         studentTestingBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                User currUser = DbUtils.GetUserByMail(db.makeUserList(), "roni@gmail.com");
+                User currUser = DbUtils.GetUserByMail(db.makeUserList(), "miri@gmail.com");
                 moveToHomePage(currUser.getmId(), currUser.getmType().toString());
             }
         });

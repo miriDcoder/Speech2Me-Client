@@ -41,13 +41,12 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         currUser = DbUtils.GetUserById(db.makeUserList(), id);
         if (savedInstanceState==null) {
             if (currUser.getmType()==User.eType.STUDENT){
-//                bundle.putSerializable("user", (Student)currUser);
-//                intent.putExtras(bundle);
-                getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new StudentHomePageFragment()).commit();
+                bundle.putParcelable("user",(Student)currUser);
+                StudentHomePageFragment studentPage = new StudentHomePageFragment();
+                studentPage.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, studentPage).commit();
             }
             else if (currUser.getmType()==User.eType.TEACHER){
-//                bundle.putSerializable("user", (Teacher)currUser);
-//                intent.putExtras(bundle);
                 bundle.putParcelable("user", (Teacher)currUser);
                 TeacherHomePageFragment teacherPage = new TeacherHomePageFragment();
                 teacherPage.setArguments(bundle);
@@ -67,15 +66,12 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        System.out.println("++++++++++++++++++++++++++"+currUser.getmType());
         switch(menuItem.getItemId()){
             case R.id.nav_home_page:
-                System.out.println("++++++++++++++++++++++++++"+currUser.getmType());
                if (currUser.getmType()==User.eType.STUDENT){
                    getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new StudentHomePageFragment()).commit();
                }
                if (currUser.getmType()==User.eType.TEACHER){
-                   System.out.println("---------------------here");
                    getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new TeacherHomePageFragment()).commit();
                }
                 break;

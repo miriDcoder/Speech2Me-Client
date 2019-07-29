@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -32,115 +33,148 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
+//MISSING:
+//handle returning answer from requset if answered false/ requset failed
+//return currUser and score to home page
+//handle get currUser from getArguments & parceable
+//save question statistics in ArrayList<PictureRecognitionQuestion>
+//send statistics to server (to teacher)
 
-//import org.apache.commons.io.FileUtils;
 
-public class WordRecognitionGame extends AppCompatActivity {
-    private WordRecognition mLevel;
+public class PictureRecognitionLevel extends AppCompatActivity {
+    DataBase db = new DataBase();
+    private PictureRegocnitionQuestion mQuestion;
+    private Student mStudent;
+    public QuestionsData questions = new QuestionsData();
+    //NEEDS TO GET LEVEL FROM STUDENT
+    private int level = 2;
+    private int sizeOfLevel = 5;
+    private int questionNumber = 1;
     private boolean mIsRecording = false;
     private String mPathSave = "";
-    MediaRecorder mMediaRecorder;
-    MediaPlayer mMediaPlayer;
-    final int REQUEST_PREMISSION_CODE = 1000;
+    private MediaRecorder mMediaRecorder;
+    private MediaPlayer mMediaPlayer;
+    private MediaPlayer mAudioCluePlayer;
+    private final int REQUEST_PREMISSION_CODE = 1000;
+    private int REQUEST_ANSWER= 200;
+    private Question currQuestion;
+    private ImageView imgWord;
+    private int[] answeredQuestions;
+    private Button answer;
+    private Button audioClue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_word_recognition_game);
+        setContentView(R.layout.activity_picture_recognition_level);
         if(!checkPermissionFromDevice()) {
             requestPermission();
         }
-        ImageView imgWord = findViewById(R.id.imageViewWord);
-        final Button answer = findViewById(R.id.buttonAnswerWordRecognition);
-        final Button wordClue = findViewById(R.id.buttonWordClue);
-        Button audioClue = findViewById(R.id.buttonAudioClue);
-
-        mLevel = new WordRecognition();
-        mLevel.SetmImgPath("https://image.freepik.com/free-vector/little-white-house_88088-10.jpg");
-        Picasso.with(this).load(mLevel.getmImgPath()).into(imgWord);
-        mLevel.SetmWordClue("המשפחה גרה בו");
-        mLevel.SetmWord("בית");
-        //System.out.println("~~~~~~~~is word clue used: " + mLevel.IsWordClueUsed());
-
-        wordClue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mLevel.WordClueUsed();
-                wordClue.setEnabled(false);
-                wordClue.setText(mLevel.GetmWordClue());
-                //System.out.println("~~~~~~~~is word clue used: " + mLevel.IsWordClueUsed());
-            }
-        });
+        imgWord = findViewById(R.id.imageViewWord);
+        answer = findViewById(R.id.buttonAnswerWordRecognition);
+        audioClue = findViewById(R.id.buttonAudioClue);
+        questions.makeQuestionList();
+        answeredQuestions = new int [questions.getSizeOfLevel(level)];
+        initNewQuestion();
 
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!mIsRecording) //start recording
+                if (!mIsRecording) //start recording
                 {
                     answer.setText("עצור הקלטה");
                     if (checkPermissionFromDevice()) {
                         mPathSave = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
                                 UUID.randomUUID().toString() + "_audio_record.mp3";
-                        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + mPathSave);
                         setupMediaRecorder();
                         try {
                             mMediaRecorder.prepare();
                             mMediaRecorder.start();
                             mIsRecording = !mIsRecording;
-                        }
-                        catch (IOException e)
-                        {
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
-                    }
-                    else
-                    {
+                    } else {
                         requestPermission();
                     }
-
-                }
-                else
-                {
+                } else {
                     answer.setText("אנא המתן");
                     mMediaRecorder.stop();
                     Thread thread = new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            isCorrectAnswer(mMediaRecorder, answer);
+//                                    isCorrectAnswer(mMediaRecorder, answer);
                         }
                     });
                     thread.start();
                     mMediaRecorder.release();
                     mMediaRecorder = null;
-                    //***********FOR DEBUG**************
-//                    mMediaPlayer = new MediaPlayer();
-//                    try
-//                    {
-//                        mMediaPlayer.setDataSource(mPathSave);
-//                        mMediaPlayer.prepare();
-//                    }
-//                    catch (IOException e)
-//                    {
-//                        e.printStackTrace();
-//                        System.out.println("~~~~~~~~~~~~~~~~~~~MESSAGE:" + e.getMessage());
-//                    }
-//
-//                    mMediaPlayer.start();
-                    //***********END OF DEBUG***********
-                    mIsRecording = !mIsRecording;
-                    //TODO: send the recording to relevant things etc...
-                }
 
+                    mIsRecording = !mIsRecording;
+                    //TODO: sent answer to server and get result in REQUEST_ANSWER
+                    if (REQUEST_ANSWER == 200) {
+                        initNewQuestion();
+                    }else{
+                        mQuestion.IncreasemNumOfTries();
+                    }
+                }
             }
         });
 
-//        audioClue.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                MediaPlayer ring= MediaPlayer.create(WordRecognitionGame.this,R.raw.ring);
-//                ring.start();
-//            }
-//        });
+        audioClue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAudioCluePlayer = MediaPlayer.create(PictureRecognitionLevel.this, R.raw.boker_tov);
+                mAudioCluePlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        mAudioCluePlayer.stop();
+                        audioClue.setText("רמז");
+                    }
+                });
+                mAudioCluePlayer.start();
+                audioClue.setText("משמיע רמז...");
+            }
+        });
+    }
+
+    private void initNewQuestion(){
+        do
+        {
+            currQuestion = questions.getRandomQuestion(level);
+        } while(answeredQuestions[currQuestion.GetmId()] == 1);
+        answeredQuestions[currQuestion.GetmId()] = 1;
+        mQuestion = new PictureRegocnitionQuestion(currQuestion);
+        Picasso.with(PictureRecognitionLevel.this).load(mQuestion.getmImgPath()).into(imgWord);
+        answer.setText("ענה");
+        questionNumber++;
+
+        //finished level
+        if (questionNumber == sizeOfLevel) {
+            Toast toast = Toast.makeText(PictureRecognitionLevel.this, String.format("כל הכבוד! סיימת את שלב %d!", level), Toast.LENGTH_LONG);
+            for (int i= 0; i< questions.getSizeOfLevel(level);i++){
+                answeredQuestions[i] = 0;
+            }
+            moveToHomePage("0002");
+        }
+    }
+
+    private void moveToHomePage(String id){
+        User currUser = DbUtils.GetUserById(db.makeUserList(), id);
+//        if (savedInstanceState==null) {
+            if (currUser.getmType()==User.eType.STUDENT){
+//                bundle.putParcelable("user",(Student)currUser);
+                StudentHomePageFragment studentPage = new StudentHomePageFragment();
+//                studentPage.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, studentPage).commit();
+            }
+            else if (currUser.getmType()==User.eType.TEACHER){
+//                bundle.putParcelable("user", (Teacher)currUser);
+                TeacherHomePageFragment teacherPage = new TeacherHomePageFragment();
+//                teacherPage.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, teacherPage).commit();
+            }
+
     }
 
     private boolean checkPermissionFromDevice()
@@ -177,7 +211,7 @@ public class WordRecognitionGame extends AppCompatActivity {
             bytesToAudio(bytes);
             try {
                 JSONObject jsonBody = new JSONObject();
-                jsonBody.put("original_text", mLevel.GetmWord());
+                jsonBody.put("original_text", mQuestion.GetmAnswer());
                 jsonBody.put("email", "ofer.feder@gmail.com");
                 jsonBody.put("audio_file", bytes);
                 final RequestQueue queue = Volley.newRequestQueue(this);
@@ -250,7 +284,7 @@ public class WordRecognitionGame extends AppCompatActivity {
 
             byte[] result = baos.toByteArray();
 
-            writeToFile(result.toString(), WordRecognitionGame.this);
+            writeToFile(result.toString(), PictureRecognitionLevel.this);
 //        System.out.println("---------------------" + baos.toString());
 
         return result;//baos.toString("UTF-8");
@@ -274,3 +308,20 @@ public class WordRecognitionGame extends AppCompatActivity {
         }
     }
 }
+
+
+//***********FOR DEBUG**************
+//                    mMediaPlayer = new MediaPlayer();
+//                    try
+//                    {
+//                        mMediaPlayer.setDataSource(mPathSave);
+//                        mMediaPlayer.prepare();
+//                    }
+//                    catch (IOException e)
+//                    {
+//                        e.printStackTrace();
+//                        System.out.println("~~~~~~~~~~~~~~~~~~~MESSAGE:" + e.getMessage());
+//                    }
+//
+//                    mMediaPlayer.start();
+//***********END OF DEBUG***********

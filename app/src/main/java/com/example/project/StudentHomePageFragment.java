@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class StudentHomePageFragment extends Fragment {
-
+    private Student mStudent;
     public DataBase db = new DataBase();
 
     public StudentHomePageFragment(){
@@ -23,21 +23,23 @@ public class StudentHomePageFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_student_home_page, container, false);
+        View v = inflater.inflate(R.layout.fragment_teacher_home_page, container, false);
         TextView textViewHello = (TextView)v.findViewById(R.id.textViewHeader);
         TextView textViewScore = (TextView)v.findViewById(R.id.textViewScore);
         TextView textViewLevel = (TextView)v.findViewById(R.id.textViewLevel);
-        //       String this_id = this.getArguments().getString("id");
-        Student currStudent = (Student)DbUtils.GetUserById(db.makeUserList(), "0005");
+        if(getArguments() != null)
+        {
+            mStudent = getArguments().getParcelable("user");
+        }
         setEditTextsPositions(textViewHello, textViewScore, textViewLevel);
-        displayMyInfo(currStudent, textViewHello, textViewScore, textViewLevel);
+        displayMyInfo(mStudent, textViewHello, textViewScore, textViewLevel);
         Button buttonPlayWord = (Button)v.findViewById(R.id.buttonPlayWord);
         Button buttonPlayRecord = (Button)v.findViewById(R.id.buttonPlayRecord);
         setPlayButtons(buttonPlayWord, buttonPlayRecord);
         buttonPlayWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), WordRecognitionGame.class);
+                Intent intent = new Intent(getActivity(), PictureRecognitionLevel.class);
                 startActivity(intent);
                 ((Activity) getActivity()).overridePendingTransition(0, 0);
             }
@@ -46,7 +48,7 @@ public class StudentHomePageFragment extends Fragment {
         buttonPlayRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), RecordingRecognitionGame.class);
+                Intent intent = new Intent(getActivity(), AudioRecognitionLevel.class);
                 startActivity(intent);
                 ((Activity) getActivity()).overridePendingTransition(0, 0);
             }

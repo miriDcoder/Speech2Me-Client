@@ -1,12 +1,13 @@
 package com.example.project;
 
-public class  Student extends User {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Student extends User implements Parcelable {
     private int mLevel;
     private String mAge;
     private int mScore;
     private String mTeacherId;
-
-
 
     public Student(String iEmail, String iPassword, String iFirstName,
                    String iLastName, String iCity, String iId,
@@ -28,6 +29,25 @@ public class  Student extends User {
         this.mScore = 0;
         this.mTeacherId = iTeacherId;
     }
+
+    protected Student(Parcel in) {
+        mLevel = in.readInt();
+        mAge = in.readString();
+        mScore = in.readInt();
+        mTeacherId = in.readString();
+    }
+
+    public static final Creator<Student> CREATOR = new Creator<Student>() {
+        @Override
+        public Student createFromParcel(Parcel in) {
+            return new Student(in);
+        }
+
+        @Override
+        public Student[] newArray(int size) {
+            return new Student[size];
+        }
+    };
 
     public int getmLevel() {
         return mLevel;
@@ -59,5 +79,18 @@ public class  Student extends User {
 
     public void setmTeacherId(String mTeacherId) {
         this.mTeacherId = mTeacherId;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mLevel);
+        dest.writeString(mAge);
+        dest.writeInt(mScore);
+        dest.writeString(mTeacherId);
     }
 }

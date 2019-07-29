@@ -1,6 +1,6 @@
 package com.example.project;
 
-public class RecordingRecognition {
+public class AudioRecognitionQuestion {
     private String mImgPath;
     private int mNumOfTries = 0;
     private int mScore = 0;

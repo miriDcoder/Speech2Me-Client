@@ -19,9 +19,9 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.util.UUID;
 
-public class RecordingRecognitionGame extends AppCompatActivity {
+public class AudioRecognitionLevel extends AppCompatActivity {
 
-    private RecordingRecognition mLevel;
+    private AudioRecognitionQuestion mLevel;
     private boolean mIsRecording = false;
     private String mPathSave = "";
     MediaRecorder mMediaRecorder;
@@ -41,7 +41,7 @@ public class RecordingRecognitionGame extends AppCompatActivity {
         final Button answer = (Button)findViewById(R.id.buttonAnswerRecordingRecognition);
         final Button listen= (Button)findViewById(R.id.buttonListenToRecordingRecognition);
 
-        mLevel = new RecordingRecognition();
+        mLevel = new AudioRecognitionQuestion();
         mLevel.SetmImgPath("https://cdn.pixabay.com/photo/2018/05/24/21/36/summer-3427732_1280.png");
         Picasso.with(this).load(mLevel.getmImgPath()).into(imgWord);
         System.out.println("AFTER PICASSO");
@@ -57,7 +57,7 @@ public class RecordingRecognitionGame extends AppCompatActivity {
         listen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMediaPlayerListen = MediaPlayer.create(RecordingRecognitionGame.this,R.raw.boker_tov);
+                mMediaPlayerListen = MediaPlayer.create(AudioRecognitionLevel.this,R.raw.boker_tov);
                 mMediaPlayerListen.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
