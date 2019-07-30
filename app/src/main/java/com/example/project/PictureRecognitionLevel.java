@@ -2,6 +2,7 @@ package com.example.project;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -32,24 +33,26 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.UUID;
 //MISSING:
-//handle returning answer from requset if answered false/ requset failed
-//return currUser and score to home page
-//handle get currUser from getArguments & parceable
-//save question statistics in ArrayList<PictureRecognitionQuestion>
+//handle get currUser ?
 //send statistics to server (to teacher)
-
+//audio clues: add audios to library and change with switch case/url
+//handle returning answer from requset if answered false/ requset failed
 
 public class PictureRecognitionLevel extends AppCompatActivity {
-    DataBase db = new DataBase();
+//    DataBase db = new DataBase();
     private PictureRegocnitionQuestion mQuestion;
-    private Student mStudent;
+//    private Student mUser;
     public QuestionsData questions = new QuestionsData();
-    //NEEDS TO GET LEVEL FROM STUDENT
-    private int level = 2;
-    private int sizeOfLevel = 5;
-    private int questionNumber = 1;
+    //NEEDS TO GET LEVEL AND USER TYPE FROM CURRSENT USER
+    private int mLevel;
+    private String mType;
+    private String mId;
+    ArrayList<PictureRegocnitionQuestion> questionStatistics = new ArrayList<PictureRegocnitionQuestion>();
+    private int sizeOfLevel = 6;
+    private int questionNumber = 0;
     private boolean mIsRecording = false;
     private String mPathSave = "";
     private MediaRecorder mMediaRecorder;
@@ -73,9 +76,14 @@ public class PictureRecognitionLevel extends AppCompatActivity {
         imgWord = findViewById(R.id.imageViewWord);
         answer = findViewById(R.id.buttonAnswerWordRecognition);
         audioClue = findViewById(R.id.buttonAudioClue);
+
+        Intent intent = getIntent();
+        mLevel = Integer.parseInt(intent.getStringExtra("level"));
+        mType = intent.getStringExtra("type");
+        mId= intent.getStringExtra("id");
         questions.makeQuestionList();
-        answeredQuestions = new int [questions.getSizeOfLevel(level)];
-        initNewQuestion();
+        answeredQuestions = new int [questions.getSizeOfLevel(mLevel)];
+        getNextQuestion();
 
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +121,7 @@ public class PictureRecognitionLevel extends AppCompatActivity {
                     mIsRecording = !mIsRecording;
                     //TODO: sent answer to server and get result in REQUEST_ANSWER
                     if (REQUEST_ANSWER == 200) {
-                        initNewQuestion();
+                        getNextQuestion();
                     }else{
                         mQuestion.IncreasemNumOfTries();
                     }
@@ -134,47 +142,51 @@ public class PictureRecognitionLevel extends AppCompatActivity {
                 });
                 mAudioCluePlayer.start();
                 audioClue.setText("משמיע רמז...");
+                mQuestion.SetAudioClueAsUsed();
             }
         });
     }
 
-    private void initNewQuestion(){
-        do
-        {
-            currQuestion = questions.getRandomQuestion(level);
-        } while(answeredQuestions[currQuestion.GetmId()] == 1);
-        answeredQuestions[currQuestion.GetmId()] = 1;
-        mQuestion = new PictureRegocnitionQuestion(currQuestion);
-        Picasso.with(PictureRecognitionLevel.this).load(mQuestion.getmImgPath()).into(imgWord);
-        answer.setText("ענה");
+    private void getNextQuestion(){
+        questionStatistics.add(mQuestion);
         questionNumber++;
-
+        //continue to next question
+        if (questionNumber < sizeOfLevel) {
+            do {
+                currQuestion = questions.getRandomQuestion(mLevel);
+            } while (answeredQuestions[currQuestion.GetmId()] == 1);
+            answeredQuestions[currQuestion.GetmId()] = 1;
+            mQuestion = new PictureRegocnitionQuestion(currQuestion);
+            Picasso.with(PictureRecognitionLevel.this).load(mQuestion.getmImgPath()).into(imgWord);
+            answer.setText("ענה");
+        }
         //finished level
-        if (questionNumber == sizeOfLevel) {
-            Toast toast = Toast.makeText(PictureRecognitionLevel.this, String.format("כל הכבוד! סיימת את שלב %d!", level), Toast.LENGTH_LONG);
-            for (int i= 0; i< questions.getSizeOfLevel(level);i++){
+        else {
+            String text = String.format("כל הכבוד! סיימת את שלב %d!", mLevel);
+            //SEND questionsStatistics TO SERVER AND DELETE IT FROM MEMORY
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(PictureRecognitionLevel.this, text, duration);
+            toast.show();
+            for (int i= 0; i< questions.getSizeOfLevel(mLevel);i++){
                 answeredQuestions[i] = 0;
             }
-            moveToHomePage("0002");
+            try
+            {
+                Thread.sleep(1000);
+            }
+            catch(InterruptedException ex)
+            {
+                Thread.currentThread().interrupt();
+            }
+            moveToHomePage(mId, mType);
         }
     }
 
-    private void moveToHomePage(String id){
-        User currUser = DbUtils.GetUserById(db.makeUserList(), id);
-//        if (savedInstanceState==null) {
-            if (currUser.getmType()==User.eType.STUDENT){
-//                bundle.putParcelable("user",(Student)currUser);
-                StudentHomePageFragment studentPage = new StudentHomePageFragment();
-//                studentPage.setArguments(bundle);
-                getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, studentPage).commit();
-            }
-            else if (currUser.getmType()==User.eType.TEACHER){
-//                bundle.putParcelable("user", (Teacher)currUser);
-                TeacherHomePageFragment teacherPage = new TeacherHomePageFragment();
-//                teacherPage.setArguments(bundle);
-                getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, teacherPage).commit();
-            }
-
+    private void moveToHomePage(String iCurrUserId, String iUserType)
+    {
+        Intent intent = new Intent(PictureRecognitionLevel.this, HomePage.class);
+        intent.putExtra("id", iCurrUserId);
+        startActivity(intent);
     }
 
     private boolean checkPermissionFromDevice()

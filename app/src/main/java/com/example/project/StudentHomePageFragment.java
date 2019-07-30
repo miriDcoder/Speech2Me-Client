@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 public class StudentHomePageFragment extends Fragment {
     private Student mStudent;
-    public DataBase db = new DataBase();
 
     public StudentHomePageFragment(){
 
@@ -40,6 +39,9 @@ public class StudentHomePageFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), PictureRecognitionLevel.class);
+                intent.putExtra("level", Integer.toString(mStudent.getmLevel()));
+                intent.putExtra("type", mStudent.getmType());
+                intent.putExtra("id", mStudent.getmId());
                 startActivity(intent);
                 ((Activity) getActivity()).overridePendingTransition(0, 0);
             }

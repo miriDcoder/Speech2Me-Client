@@ -48,7 +48,7 @@ public class PictureRegocnitionQuestion {
         return this.mIsAudioClueUsed;
     }
 
-    public void AudioClueUsed()
+    public void SetAudioClueAsUsed()
     {
         this.mIsAudioClueUsed = true;
     }

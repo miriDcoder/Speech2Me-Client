@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class QuestionsData {
     ArrayList<ArrayList<Question>> questionsData = new ArrayList<ArrayList<Question>>();
-    ArrayList<Question> questionsLevel1 = new ArrayList<Question>();
-    ArrayList<Question> questionsLevel2 = new ArrayList<Question>();
+    private ArrayList<Question> questionsLevel1 = new ArrayList<Question>();
+    private ArrayList<Question> questionsLevel2 = new ArrayList<Question>();
     private int mSizeOfLevel1;
     private int mSizeOfLevel2;
 
@@ -30,7 +30,7 @@ public class QuestionsData {
         //Level 2 questions
         questionsLevel2.add(new Question("Motsets", "https://imagizer.imageshack.com/img923/6172/7vmOw4.png", "boker_tov", 2, 0));
         questionsLevel2.add(new Question("Ets", "https://imagizer.imageshack.com/img922/2371/PGyfTj.png", "boker_tov", 2, 1));
-        questionsLevel2.add(new Question("Tapuach", "https://imagizer.imageshack.com/img924/1850/Bx2dNE.png", "boker_tov", 2, 2));
+        questionsLevel2.add(new Question("Tapuach", "https://imagizer.imageshack.com/img924/3873/bI3UFj.png", "boker_tov", 2, 2));
         questionsLevel2.add(new Question("Parpar", "https://imagizer.imageshack.com/img923/657/qVfkgx.png", "boker_tov", 2, 3));
         questionsLevel2.add(new Question("Leitsan", "https://imagizer.imageshack.com/img921/1976/q5pAcM.png", "boker_tov", 2, 4));
         questionsLevel2.add(new Question("Simla", "https://imagizer.imageshack.com/img921/1479/Uv1Rzi.png", "boker_tov", 2, 5));

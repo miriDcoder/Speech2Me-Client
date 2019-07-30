@@ -37,7 +37,6 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
         Bundle bundle = new Bundle();
-        intent = new Intent();
         currUser = DbUtils.GetUserById(db.makeUserList(), id);
         if (savedInstanceState==null) {
             if (currUser.getmType()==User.eType.STUDENT){
@@ -54,14 +53,6 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
             }
             navigationView.setCheckedItem(R.id.nav_home_page);
         }
-
-//        TextView textViewHello = (TextView)findViewById(R.id.textViewHeader);
-//        TextView textViewScore = (TextView)findViewById(R.id.textViewScore);
-//        TextView textViewLevel = (TextView)findViewById(R.id.textViewLevel);
-//        Student currStudent = (Student)DbUtils.GetUserById(db.makeUserList(), id);
-//        setEditTextsPositions(textViewHello, textViewScore, textViewLevel);
-//        displayMyInfo(currStudent, textViewHello, textViewScore, textViewLevel);
-//        Button buttonPlay = (Button)findViewById(R.id.buttonPlay);
     }
 
     @Override
