@@ -162,6 +162,10 @@ public class PictureRecognitionLevel extends AppCompatActivity {
         }
         //finished level
         else {
+            for (PictureRegocnitionQuestion question : questionStatistics){
+                System.out.println(question.getmImgPath());
+
+            }
             String text = String.format("כל הכבוד! סיימת את שלב %d!", mLevel);
             //SEND questionsStatistics TO SERVER AND DELETE IT FROM MEMORY
             int duration = Toast.LENGTH_SHORT;
