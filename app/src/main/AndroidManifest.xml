@@ -13,22 +13,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RecordingRecognitionGame">
+        <activity android:name=".AudioRecognitionLevel">
              <!--<intent-filter>-->
              <!--<action android:name="android.intent.action.MAIN" />-->
              <!--<category android:name="android.intent.category.LAUNCHER" />-->
              <!--</intent-filter>-->
         </activity>
-        <activity android:name=".WordRecognitionGame">
+        <activity android:name=".PictureRecognitionLevel">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
         <activity android:name=".Game"></activity>
-        <activity
-            android:name=".RecordTry"
-            android:exported="true" />
         <activity android:name=".Account" />
         <activity android:name=".SignUp" />
         <activity android:name=".MainActivity">

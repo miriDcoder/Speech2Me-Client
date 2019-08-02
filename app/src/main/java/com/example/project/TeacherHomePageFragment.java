@@ -27,7 +27,7 @@ public class TeacherHomePageFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_teacher_home_page, container, false);
         TextView textViewHello = (TextView)v.findViewById(R.id.textViewHeader);
         final Spinner levelDropDown = (Spinner)v.findViewById(R.id.spinner1);
-        String[] items = new String[]{"1", "2"};
+        String[] items = new String[]{"1", "2", "3"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
         //set the spinners adapter to the previously created one.
         levelDropDown.setAdapter(adapter);
@@ -55,7 +55,6 @@ public class TeacherHomePageFragment extends Fragment {
                 String level = String.valueOf(levelDropDown.getSelectedItem());
                 Intent intent = new Intent(getActivity(), PictureRecognitionLevel.class);
                 intent.putExtra("level", level);
-                intent.putExtra("type", mTeacher.getmType());
                 intent.putExtra("id", mTeacher.getmId());
                 startActivity(intent);
                 ((Activity) getActivity()).overridePendingTransition(0, 0);
@@ -65,7 +64,10 @@ public class TeacherHomePageFragment extends Fragment {
         buttonPlayRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String level = String.valueOf(levelDropDown.getSelectedItem());
                 Intent intent = new Intent(getActivity(), AudioRecognitionLevel.class);
+                intent.putExtra("level", level);
+                intent.putExtra("id", mTeacher.getmId());
                 startActivity(intent);
                 ((Activity) getActivity()).overridePendingTransition(0, 0);
             }
@@ -73,23 +75,6 @@ public class TeacherHomePageFragment extends Fragment {
 
         return v;
     }
-
-
-//    public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
-//
-//        switch (position) {
-//            case 0:
-//                // Whatever you want to happen when the first item gets selected
-//                break;
-//            case 1:
-//                // Whatever you want to happen when the second item gets selected
-//                break;
-//            case 2:
-//                // Whatever you want to happen when the thrid item gets selected
-//                break;
-//
-//        }
-//    }
 
 
     private void displayMyInfo(Teacher iTeacher, TextView iTextViewHeader) {

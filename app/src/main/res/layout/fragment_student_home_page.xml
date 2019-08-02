@@ -10,6 +10,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/imageViewScoreBackground"
+            android:layout_width="324dp"
+            android:layout_height="150dp"
+            android:background="@drawable/rectangle_shape"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
         <TextView
             android:id="@+id/textViewHeader"
             android:layout_width="match_parent"
@@ -39,6 +49,19 @@
             android:textColor="@color/colorText"
             android:textSize="30sp"
             android:typeface="sans" />
+
+
+
+        <ImageView
+            android:id="@+id/imageViewBirdWelcome"
+            android:layout_width="92dp"
+            android:layout_height="92dp"
+            android:background="@drawable/circle_shape"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/bird_welcome" />
 
         <Button
             android:id="@+id/buttonPlayWord"

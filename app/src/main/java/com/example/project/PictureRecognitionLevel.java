@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
@@ -30,9 +31,11 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.UUID;
 //MISSING:
@@ -48,7 +51,6 @@ public class PictureRecognitionLevel extends AppCompatActivity {
     public QuestionsData questions = new QuestionsData();
     //NEEDS TO GET LEVEL AND USER TYPE FROM CURRSENT USER
     private int mLevel;
-    private String mType;
     private String mId;
     ArrayList<PictureRegocnitionQuestion> questionStatistics = new ArrayList<PictureRegocnitionQuestion>();
     private int sizeOfLevel = 6;
@@ -64,7 +66,7 @@ public class PictureRecognitionLevel extends AppCompatActivity {
     private ImageView imgWord;
     private int[] answeredQuestions;
     private Button answer;
-    private Button audioClue;
+    private Button buttonClue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,11 +77,10 @@ public class PictureRecognitionLevel extends AppCompatActivity {
         }
         imgWord = findViewById(R.id.imageViewWord);
         answer = findViewById(R.id.buttonAnswerWordRecognition);
-        audioClue = findViewById(R.id.buttonAudioClue);
+        buttonClue = findViewById(R.id.buttonClue);
 
         Intent intent = getIntent();
         mLevel = Integer.parseInt(intent.getStringExtra("level"));
-        mType = intent.getStringExtra("type");
         mId= intent.getStringExtra("id");
         questions.makeQuestionList();
         answeredQuestions = new int [questions.getSizeOfLevel(mLevel)];
@@ -88,17 +89,22 @@ public class PictureRecognitionLevel extends AppCompatActivity {
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                buttonClue.setEnabled(false);
+                System.out.println("+++++++++++++++++++++++++++in answer");
                 if (!mIsRecording) //start recording
                 {
                     answer.setText("עצור הקלטה");
                     if (checkPermissionFromDevice()) {
                         mPathSave = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
                                 UUID.randomUUID().toString() + "_audio_record.mp3";
+
                         setupMediaRecorder();
+                        System.out.println("+++++++++++++++++++++++++++" + mPathSave);
+
                         try {
                             mMediaRecorder.prepare();
+                            System.out.println("+++++++++++++++++++++++++++here");
                             mMediaRecorder.start();
-                            mIsRecording = !mIsRecording;
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -106,6 +112,7 @@ public class PictureRecognitionLevel extends AppCompatActivity {
                         requestPermission();
                     }
                 } else {
+                    System.out.println("+++++++++++++++++++++++++++answered");
                     answer.setText("אנא המתן");
                     mMediaRecorder.stop();
                     Thread thread = new Thread(new Runnable() {
@@ -118,7 +125,6 @@ public class PictureRecognitionLevel extends AppCompatActivity {
                     mMediaRecorder.release();
                     mMediaRecorder = null;
 
-                    mIsRecording = !mIsRecording;
                     //TODO: sent answer to server and get result in REQUEST_ANSWER
                     if (REQUEST_ANSWER == 200) {
                         getNextQuestion();
@@ -126,23 +132,28 @@ public class PictureRecognitionLevel extends AppCompatActivity {
                         mQuestion.IncreasemNumOfTries();
                     }
                 }
+                buttonClue.setEnabled(true);
+                mIsRecording = !mIsRecording;
+
             }
         });
 
-        audioClue.setOnClickListener(new View.OnClickListener() {
+        buttonClue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                answer.setEnabled(false);
                 mAudioCluePlayer = MediaPlayer.create(PictureRecognitionLevel.this, R.raw.boker_tov);
                 mAudioCluePlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
                         mAudioCluePlayer.stop();
-                        audioClue.setText("רמז");
+                        buttonClue.setText("רמז");
                     }
                 });
                 mAudioCluePlayer.start();
-                audioClue.setText("משמיע רמז...");
+                buttonClue.setText("משמיע רמז...");
                 mQuestion.SetAudioClueAsUsed();
+                answer.setEnabled(true);
             }
         });
     }
@@ -151,6 +162,8 @@ public class PictureRecognitionLevel extends AppCompatActivity {
         questionStatistics.add(mQuestion);
         questionNumber++;
         //continue to next question
+        System.out.println("+++++++++++++++++++++++++++question: "+ questionNumber);
+
         if (questionNumber < sizeOfLevel) {
             do {
                 currQuestion = questions.getRandomQuestion(mLevel);
@@ -159,14 +172,12 @@ public class PictureRecognitionLevel extends AppCompatActivity {
             mQuestion = new PictureRegocnitionQuestion(currQuestion);
             Picasso.with(PictureRecognitionLevel.this).load(mQuestion.getmImgPath()).into(imgWord);
             answer.setText("ענה");
+            System.out.println("+++++++++++++++++++++++++++got question");
         }
         //finished level
         else {
-            for (PictureRegocnitionQuestion question : questionStatistics){
-                System.out.println(question.getmImgPath());
-
-            }
             String text = String.format("כל הכבוד! סיימת את שלב %d!", mLevel);
+            System.out.println("+++++++++++++++++++++++++++trying to finish game");
             //SEND questionsStatistics TO SERVER AND DELETE IT FROM MEMORY
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(PictureRecognitionLevel.this, text, duration);
@@ -182,16 +193,18 @@ public class PictureRecognitionLevel extends AppCompatActivity {
             {
                 Thread.currentThread().interrupt();
             }
-            moveToHomePage(mId, mType);
+            System.out.println("+++++++++++++++++++++++++++moving to home");
+            moveToHomePage(mId);
         }
     }
 
-    private void moveToHomePage(String iCurrUserId, String iUserType)
+    private void moveToHomePage(String iCurrUserId)
     {
         Intent intent = new Intent(PictureRecognitionLevel.this, HomePage.class);
         intent.putExtra("id", iCurrUserId);
         startActivity(intent);
     }
+
 
     private boolean checkPermissionFromDevice()
     {
@@ -212,7 +225,7 @@ public class PictureRecognitionLevel extends AppCompatActivity {
     private void setupMediaRecorder() {
         mMediaRecorder = new MediaRecorder();
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mMediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
         mMediaRecorder.setOutputFile(mPathSave);
     }
@@ -223,17 +236,17 @@ public class PictureRecognitionLevel extends AppCompatActivity {
         InputStream inFile = null;
         try {
             inFile = new FileInputStream(mPathSave);
-            byte[] bytes = inputStreamToByteArray(inFile);
-            bytesToAudio(bytes);
+            byte[] bytes = fileToBytes();//inputStreamToByteArray(inFile);
+            String stringBytes = new String(bytes);
             try {
                 JSONObject jsonBody = new JSONObject();
-                jsonBody.put("original_text", mQuestion.GetmAnswer());
+                jsonBody.put("answer", mQuestion.GetmAnswer());
                 jsonBody.put("email", "ofer.feder@gmail.com");
-                jsonBody.put("audio_file", bytes);
+                jsonBody.put("audio_file", stringBytes);
                 final RequestQueue queue = Volley.newRequestQueue(this);
                 RequestFuture<JSONObject> future = RequestFuture.newFuture();
                 //final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, future, future);
-                System.out.println("+++++++++++++++++++++++" + bytes);
+                System.out.println("+++++++++++++++++++++++" + stringBytes);
 
                 final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
                         new Response.Listener<JSONObject>() {
@@ -258,55 +271,56 @@ public class PictureRecognitionLevel extends AppCompatActivity {
         }
     }
 
-    private void bytesToAudio(byte[] bytes) {
-        File root = new File(Environment.getExternalStorageDirectory(), "Notes");
-        if (!root.exists()) {
-            root.mkdirs();
-        }
-        File file = new File(root, "ToAudio");
+    private byte[] fileToBytes() {
+        byte[] bytes = null;
+        File audioFile = new File(mPathSave);
         try {
-            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXX" + file.getAbsolutePath());
-            FileWriter fw = new FileWriter(file);
-            fw.write(bytes.toString());
-            fw.close();
-            mMediaPlayer = new MediaPlayer();
-                    try
-                    {
-                        System.out.println(">>>>>>>> ABOUT TO PLAY");
-                        mMediaPlayer.setDataSource(file.getAbsolutePath());
-                        mMediaPlayer.prepare();
-                    }
-                    catch (IOException e)
-                    {
-                        e.printStackTrace();
-                        System.out.println("~~~~~~~~~~~~~~~~~~~MESSAGE:" + e.getMessage());
-                    }
+            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+                bytes = Files.readAllBytes(audioFile.toPath());
 
-                    mMediaPlayer.start();
+            } else {
+                //simply use the required feature
+                //as the user has already granted permission to them during installation
+            }
+            ///This part is for debug - checks if the convertion to bytes
+            ///was ok by converting the bytes to file
+            //String str = new String(bytes);
+//            System.out.println("*****************************" + str);
+//            writeToFile(str, PictureRecognitionLevel.this);
+//            File root
+//            = new File(Environment.getExternalStorageDirectory(), "Decodes");
+//            if (!root.exists()) {
+//                root.mkdirs();
+//            }
+//            File gpxfile = new File(root, "audio_decode.mp3");
+//            try (FileOutputStream fos = new FileOutputStream(gpxfile.getAbsolutePath())) {
+//                fos.write(bytes);
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        return bytes;
     }
 
-        public byte[] inputStreamToByteArray(InputStream inStream) throws IOException {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            byte[] buffer = new byte[8192];
-            int bytesRead;
-            while ((bytesRead = inStream.read(buffer)) > 0) {
-                baos.write(buffer, 0, bytesRead);
-//            System.out.println("---------------------" + baos.toString());
-            }
+    private byte[] getBytes(File iAudioFile) throws IOException, FileNotFoundException {
+        byte[] buffer = new byte[1024];
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        FileInputStream fis = new FileInputStream(iAudioFile);
+        int read;
 
-            byte[] result = baos.toByteArray();
+        while((read = fis.read(buffer)) != -1)
+        {
+            os.write(buffer, 0, read);
+        }
 
-            writeToFile(result.toString(), PictureRecognitionLevel.this);
-//        System.out.println("---------------------" + baos.toString());
+        fis.close();
+        os.close();
 
-        return result;//baos.toString("UTF-8");
+        return os.toByteArray();
     }
 
-    private void writeToFile(String data, Context context) {
+     private void writeToFile(String data, Context context) {
         try {
             File root = new File(Environment.getExternalStorageDirectory(), "Notes");
             if (!root.exists()) {

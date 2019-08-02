@@ -1,6 +1,8 @@
 package com.example.project;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -13,73 +15,163 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
+import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.UUID;
+//MISSING:
+//handle get currUser ?
+//send statistics to server (to teacher)
+//audio clues: add audios to library and change with switch case/url
+//handle returning answer from requset if answered false/ requset failed
 
 public class AudioRecognitionLevel extends AppCompatActivity {
-
-    private AudioRecognitionQuestion mLevel;
+    //    DataBase db = new DataBase();
+    private AudioRecognitionQuestion mQuestion;
+    //    private Student mUser;
+    public QuestionsData questions = new QuestionsData();
+    //NEEDS TO GET LEVEL AND USER TYPE FROM CURRSENT USER
+    private int mLevel;
+    private String mId;
+    ArrayList<AudioRecognitionQuestion> questionStatistics = new ArrayList<AudioRecognitionQuestion>();
+    private int sizeOfLevel = 6;
+    private int questionNumber = 0;
     private boolean mIsRecording = false;
     private String mPathSave = "";
-    MediaRecorder mMediaRecorder;
-    MediaPlayer mMediaPlayerAnswer;
-    MediaPlayer mMediaPlayerListen;
+    private MediaPlayer mMediaPlayer;
+    private final int REQUEST_PREMISSION_CODE = 1000;
+    private int REQUEST_ANSWER = 200;
+    private Question currQuestion;
+    private ImageView imageClue;
+    private int[] answeredQuestions;
+    private Button answer;
+    private Button listen;
+    private Button buttonClue;
 
-    final int REQUEST_PREMISSION_CODE = 1000;
+    //
+    private MediaPlayer mMediaPlayerAnswer;
+    private MediaPlayer mMediaPlayerListen;
+    private MediaRecorder mMediaRecorder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recording_recognition_game);
+        setContentView(R.layout.activity_audio_recognition_level);
+
         if(!checkPermissionFromDevice()) {
             requestPermission();
         }
-        ImageView imgWord = (ImageView)findViewById(R.id.imageViewWordRecording);
-        final Button answer = (Button)findViewById(R.id.buttonAnswerRecordingRecognition);
-        final Button listen= (Button)findViewById(R.id.buttonListenToRecordingRecognition);
+        imageClue = findViewById(R.id.imageViewClue);
+        answer = findViewById(R.id.buttonAnswerRecordingRecognition);
+        listen = findViewById(R.id.buttonListenToRecordingRecognition);
 
-        mLevel = new AudioRecognitionQuestion();
-        mLevel.SetmImgPath("https://cdn.pixabay.com/photo/2018/05/24/21/36/summer-3427732_1280.png");
-        Picasso.with(this).load(mLevel.getmImgPath()).into(imgWord);
-        System.out.println("AFTER PICASSO");
-        //mMediaPlayerListen = new MediaPlayer();
-        //mMediaPlayerListen.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        System.out.println("+++++++++++before try");
-//            mMediaPlayerListen =  mMediaPlayerListen.create(RecordingRecognitionGame.this, R.raw.bait_yarok);
-//            mMediaPlayerListen.prepare();
+        buttonClue = findViewById(R.id.buttonClue);
 
+        Intent intent = getIntent();
 
-        //Listen to the question button
+        mLevel = Integer.parseInt(intent.getStringExtra("level"));
+        mId= intent.getStringExtra("id");
+        questions.makeQuestionList();
+
+        answeredQuestions = new int [questions.getSizeOfLevel(mLevel)];
+        getNextQuestion();
+
+        answer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //listen.setEnabled(false);
+                listen.isClickable();
+                System.out.println("========== /is listen enabled(should be no):" + listen.isClickable());
+                    if (!mIsRecording) //start recording
+                    {
+                        answer.setText("עצור הקלטה");
+                        if (checkPermissionFromDevice()) {
+                            mPathSave = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
+                                    UUID.randomUUID().toString() + "_audio_record.mp3";
+                            setupMediaRecorder();
+                            try {
+                                mMediaRecorder.prepare();
+                                mMediaRecorder.start();
+                                mIsRecording = true;
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            requestPermission();
+                        }
+                    } else {
+                        answer.setText("אנא המתן");
+                        mMediaRecorder.stop();
+                        mIsRecording = false;
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+//                         isCorrectAnswer(mMediaRecorder, answer);
+                            }
+                        });
+                        thread.start();
+                        mMediaRecorder.release();
+                        mMediaRecorder = null;
+                        //TODO: sent answer to server and get result in REQUEST_ANSWER
+                        if (REQUEST_ANSWER == 200) {
+                            getNextQuestion();
+                        } else {
+                            mQuestion.IncreasemNumOfTries();
+                        }
+                    }
+                //listen.setEnabled(true);
+                listen.setClickable(true);
+                System.out.println("========== /is listen enabled(should be yes):" + listen.isClickable());
+            }
+        });
 
         listen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMediaPlayerListen = MediaPlayer.create(AudioRecognitionLevel.this,R.raw.boker_tov);
-                mMediaPlayerListen.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-                        mMediaPlayerListen.stop();
-                        listen.setText("הקשב להקלטה");
-                        int score = mLevel.GetmScore();
-                        mLevel.SetmScore(score++);
-                        try
-                        {
-                            Thread.sleep(600);
+                //answer.setEnabled(false);
+                answer.setClickable(false);
+                System.out.println("========== /is answer enabled(should be no):" + answer.isClickable());
+                mMediaPlayerListen = MediaPlayer.create(AudioRecognitionLevel.this, R.raw.boker_tov);
+                    mMediaPlayerListen.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            mMediaPlayerListen.stop();
+                            listen.setText("הקשב להקלטה");
+                            int score = mQuestion.GetmScore();
+                            mQuestion.SetmScore(score++);
+                            try {
+                                Thread.sleep(600);
 
-                            //UPDATE STUDENT'S SCORE AND
+                                //UPDATE STUDENT'S SCORE AND
 
+                            } catch (InterruptedException ex) {
+                                Thread.currentThread().interrupt();
+                            }
                         }
-                        catch(InterruptedException ex)
-                        {
-                            Thread.currentThread().interrupt();
-                        }
-                    }
-                });
-                mMediaPlayerListen.start();
-                listen.setText("משמיע...");
+                    });
+                    mMediaPlayerListen.start();
+                    listen.setText("משמיע...");
+                    //answer.setEnabled(true);
+                    answer.setClickable(true);
+                System.out.println("========== /is answer enabled(should be yes):" + answer.isClickable());
+
             }
         });
 
@@ -87,7 +179,7 @@ public class AudioRecognitionLevel extends AppCompatActivity {
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!mIsRecording) //start recording
+                if (!mIsRecording)
                 {
                     answer.setText("עצור הקלטה");
                     if (checkPermissionFromDevice()) {
@@ -98,71 +190,86 @@ public class AudioRecognitionLevel extends AppCompatActivity {
                             mMediaRecorder.prepare();
                             mMediaRecorder.start();
                             mIsRecording = !mIsRecording;
-                        }
-                        catch (IOException e)
-                        {
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
-                    }
-                    else
-                    {
+                    } else {
                         requestPermission();
                     }
-
-                }
-                else //stop recording
-                {
+                } else {
                     answer.setText("אנא המתן");
                     mMediaRecorder.stop();
-                    mMediaRecorder.release();
-                    mMediaRecorder = null;
-                    //***********FOR DEBUG**************
-                    mMediaPlayerAnswer = new MediaPlayer();
-                    try
-                    {
-                        mMediaPlayerAnswer.setDataSource(mPathSave);
-                        mMediaPlayerAnswer.prepare();
-                    }
-                    catch (IOException e)
-                    {
-                        e.printStackTrace();
-                        System.out.println("~~~~~~~~~~~~~~~~~~~MESSAGE:" + e.getMessage());
-                    }
-                    mMediaPlayerAnswer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    Thread thread = new Thread(new Runnable() {
                         @Override
-                        public void onCompletion(MediaPlayer mp) {
-                            mMediaPlayerAnswer.stop();
-                            answer.setText("מצוין!");
-                            int score = mLevel.GetmScore();
-                            mLevel.SetmScore(score++);
-
-                            try
-                            {
-                                Thread.sleep(600);
-                                //UPDATE STUDENT'S SCORE
-
-                                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                                transaction.replace(R.id.student_fragment_container, new StudentHomePageFragment()).commit();
-                                transaction.addToBackStack(null);
-//                                transaction.commit();
-                            }
-                            catch(InterruptedException ex)
-                            {
-                                Thread.currentThread().interrupt();
-                            }
+                        public void run() {
+//                                    isCorrectAnswer(mMediaRecorder, answer);
                         }
                     });
+                    thread.start();
+                    mMediaRecorder.release();
+                    mMediaRecorder = null;
 
-                    mMediaPlayerAnswer.start();
-                    //***********END OF DEBUG***********
                     mIsRecording = !mIsRecording;
-                    //
-
+                    //TODO: sent answer to server and get result in REQUEST_ANSWER
+                    if (REQUEST_ANSWER == 200) {
+                        getNextQuestion();
+                    }else{
+                        mQuestion.IncreasemNumOfTries();
+                    }
                 }
-
             }
         });
-        //TODO: load the game from the database
+
+        buttonClue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageClue.setVisibility(View.VISIBLE);
+                mQuestion.SetImageClueAsUsed();
+            }
+        });
+    }
+
+    private void getNextQuestion(){
+        questionStatistics.add(mQuestion);
+        questionNumber++;
+        //continue to next question
+        imageClue.setVisibility(View.INVISIBLE);
+        if (questionNumber < sizeOfLevel) {
+            do {
+                currQuestion = questions.getRandomQuestion(mLevel);
+            } while (answeredQuestions[currQuestion.GetmId()] == 1);
+            answeredQuestions[currQuestion.GetmId()] = 1;
+            mQuestion = new AudioRecognitionQuestion(currQuestion);
+            Picasso.with(AudioRecognitionLevel.this).load(mQuestion.GetmImageClue()).into(imageClue);
+            answer.setText("ענה");
+        }
+        //finished level
+        else {
+            String text = String.format("כל הכבוד! סיימת את שלב %d!", mLevel);
+            //SEND questionsStatistics TO SERVER AND DELETE IT FROM MEMORY
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(AudioRecognitionLevel.this, text, duration);
+            toast.show();
+            for (int i= 0; i< questions.getSizeOfLevel(mLevel);i++){
+                answeredQuestions[i] = 0;
+            }
+            try
+            {
+                Thread.sleep(1000);
+            }
+            catch(InterruptedException ex)
+            {
+                Thread.currentThread().interrupt();
+            }
+            moveToHomePage(mId);
+        }
+    }
+
+    private void moveToHomePage(String iCurrUserId)
+    {
+        Intent intent = new Intent(AudioRecognitionLevel.this, HomePage.class);
+        intent.putExtra("id", iCurrUserId);
+        startActivity(intent);
     }
 
     private boolean checkPermissionFromDevice()
@@ -188,4 +295,5 @@ public class AudioRecognitionLevel extends AppCompatActivity {
         mMediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
         mMediaRecorder.setOutputFile(mPathSave);
     }
+
 }
