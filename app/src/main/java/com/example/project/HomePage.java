@@ -39,6 +39,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         Bundle bundle = new Bundle();
         currUser = DbUtils.GetUserById(db.makeUserList(), id);
         if (savedInstanceState==null) {
+            getSupportActionBar().setTitle("בית");
             if (currUser.getmType()==User.eType.STUDENT){
                 bundle.putParcelable("user",(Student)currUser);
                 StudentHomePageFragment studentPage = new StudentHomePageFragment();
@@ -60,22 +61,28 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         switch(menuItem.getItemId()){
             case R.id.nav_home_page:
                if (currUser.getmType()==User.eType.STUDENT){
+                   getSupportActionBar().setTitle("בית");
                    getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new StudentHomePageFragment()).commit();
                }
                if (currUser.getmType()==User.eType.TEACHER){
+                   getSupportActionBar().setTitle("בית");
                    getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new TeacherHomePageFragment()).commit();
                }
                 break;
             case R.id.nav_account:
+                getSupportActionBar().setTitle("פרופיל");
                 getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new AccountFragment()).commit();
                 break;
             case R.id.nav_info:
+                getSupportActionBar().setTitle("אודות");
                 getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new AboutFragment()).commit();
                 break;
             case R.id.nav_settings:
+                getSupportActionBar().setTitle("הגדרות");
                 getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new SettingsFragment()).commit();
                 break;
             case R.id.nav_logout:
+                getSupportActionBar().setTitle("התנתק/י");
                 startActivity(new Intent(HomePage.this, LoginPage.class));
                 break;
 

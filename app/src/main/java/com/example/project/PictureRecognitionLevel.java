@@ -53,12 +53,11 @@ public class PictureRecognitionLevel extends AppCompatActivity {
     private int mLevel;
     private String mId;
     ArrayList<PictureRegocnitionQuestion> questionStatistics = new ArrayList<PictureRegocnitionQuestion>();
-    private int sizeOfLevel = 6;
+    private int sizeOfLevel = 5;
     private int questionNumber = 0;
     private boolean mIsRecording = false;
     private String mPathSave = "";
-    private MediaRecorder mMediaRecorder;
-    private MediaPlayer mMediaPlayer;
+    private MediaRecorder mMediaRecorder = null;
     private MediaPlayer mAudioCluePlayer;
     private final int REQUEST_PREMISSION_CODE = 1000;
     private int REQUEST_ANSWER= 200;
@@ -90,18 +89,15 @@ public class PictureRecognitionLevel extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 buttonClue.setEnabled(false);
-                System.out.println("+++++++++++++++++++++++++++in answer");
                 if (!mIsRecording) //start recording
                 {
                     answer.setText("עצור הקלטה");
                     if (checkPermissionFromDevice()) {
                         mPathSave = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
                                 UUID.randomUUID().toString() + "_audio_record.mp3";
-
-                        setupMediaRecorder();
                         System.out.println("+++++++++++++++++++++++++++" + mPathSave);
-
                         try {
+                            setupMediaRecorder();
                             mMediaRecorder.prepare();
                             System.out.println("+++++++++++++++++++++++++++here");
                             mMediaRecorder.start();
@@ -119,11 +115,19 @@ public class PictureRecognitionLevel extends AppCompatActivity {
                         @Override
                         public void run() {
 //                                    isCorrectAnswer(mMediaRecorder, answer);
+                            File recording = new File(mPathSave);
+                            boolean isDeleted = recording.delete();
+                            if(!isDeleted){
+
+                            }
                         }
                     });
                     thread.start();
                     mMediaRecorder.release();
+                    System.out.println("@@@@@@@@@@@@@@@@@@@@released");
                     mMediaRecorder = null;
+                    System.out.println("@@@@@@@@@@@@@@@@@@@@media recorder is null");
+
 
                     //TODO: sent answer to server and get result in REQUEST_ANSWER
                     if (REQUEST_ANSWER == 200) {
@@ -141,7 +145,7 @@ public class PictureRecognitionLevel extends AppCompatActivity {
         buttonClue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                answer.setEnabled(false);
+                //answer.setEnabled(false);
                 mAudioCluePlayer = MediaPlayer.create(PictureRecognitionLevel.this, R.raw.boker_tov);
                 mAudioCluePlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
@@ -153,7 +157,7 @@ public class PictureRecognitionLevel extends AppCompatActivity {
                 mAudioCluePlayer.start();
                 buttonClue.setText("משמיע רמז...");
                 mQuestion.SetAudioClueAsUsed();
-                answer.setEnabled(true);
+                //answer.setEnabled(true);
             }
         });
     }
@@ -224,6 +228,7 @@ public class PictureRecognitionLevel extends AppCompatActivity {
 
     private void setupMediaRecorder() {
         mMediaRecorder = new MediaRecorder();
+        //mMediaRecorder.setAudioSamplingRate(8000);
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mMediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
@@ -279,8 +284,6 @@ public class PictureRecognitionLevel extends AppCompatActivity {
                 bytes = Files.readAllBytes(audioFile.toPath());
 
             } else {
-                //simply use the required feature
-                //as the user has already granted permission to them during installation
             }
             ///This part is for debug - checks if the convertion to bytes
             ///was ok by converting the bytes to file

@@ -3,23 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/background_clean"
+    >
 
     <FrameLayout
         android:id="@+id/student_home_page_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imageViewScoreBackground"
-            android:layout_width="324dp"
-            android:layout_height="150dp"
-            android:background="@drawable/rectangle_shape"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.493"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
         <TextView
             android:id="@+id/textViewHeader"
             android:layout_width="match_parent"
@@ -28,7 +20,54 @@
             android:textAlignment="center"
             android:textColor="@color/colorText"
             android:textSize="30sp"
-            android:typeface="sans" />
+            android:typeface="sans"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            />
+
+        <ImageView
+            android:id="@+id/imageViewScoreBackground"
+            android:layout_width="324dp"
+            android:layout_height="150dp"
+            android:background="@drawable/rectangle_shape"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewHeader"
+            app:layout_constraintVertical_bias="0.5"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:shadowDx="5"
+            android:shadowDy="5"/>
+
+        <TextView
+            android:id="@+id/textViewYourScore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="YourScore"
+            android:textAlignment="center"
+            android:textColor="@color/colorText"
+            android:textSize="15sp"
+            android:typeface="sans"
+            app:layout_constraintTop_toTopOf="@+id/imageViewScoreBackground"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewBirdWelcome"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            />
 
         <TextView
             android:id="@+id/textViewScore"
@@ -38,7 +77,15 @@
             android:textAlignment="center"
             android:textColor="@color/colorText"
             android:textSize="30sp"
-            android:typeface="sans" />
+            android:typeface="sans"
+            app:layout_constraintTop_toBottomOf="@+id/textViewYourScore"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            />
 
         <TextView
             android:id="@+id/textViewLevel"
@@ -47,20 +94,33 @@
             android:text="Level"
             android:textAlignment="center"
             android:textColor="@color/colorText"
-            android:textSize="30sp"
-            android:typeface="sans" />
+            android:textSize="15sp"
+            android:typeface="sans"
+            app:layout_constraintTop_toBottomOf="@+id/textViewScore"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
 
-
+            />
 
         <ImageView
             android:id="@+id/imageViewBirdWelcome"
             android:layout_width="92dp"
             android:layout_height="92dp"
             android:background="@drawable/circle_shape"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.493"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewScoreBackground"
+            app:layout_constraintTop_toTopOf="@+id/imageViewScoreBackground"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.5"
             app:srcCompat="@drawable/bird_welcome" />
 
         <Button
@@ -75,7 +135,7 @@
             android:shadowRadius="5"
             android:text="משחק זיהוי תמונות"
             android:textColor="#FFFFFF"
-            android:textSize="30sp" />
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/buttonPlayRecord"
@@ -89,7 +149,7 @@
             android:shadowRadius="5"
             android:text="משחק זיהוי קולי"
             android:textColor="#FFFFFF"
-            android:textSize="30sp" />
+            android:textSize="20sp" />
 
     </FrameLayout>
 
