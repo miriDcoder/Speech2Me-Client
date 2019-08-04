@@ -31,6 +31,7 @@ public class StudentHomePageFragment extends Fragment {
 
 
         TextView textViewHello = (TextView)v.findViewById(R.id.textViewHeader);
+        TextView textViewYourScore = (TextView)v.findViewById(R.id.textViewYourScore);
         TextView textViewScore = (TextView)v.findViewById(R.id.textViewScore);
         TextView textViewLevel = (TextView)v.findViewById(R.id.textViewLevel);
         ImageView imageViewBirdWelcome = (ImageView)v.findViewById(R.id.imageViewBirdWelcome);
@@ -42,9 +43,9 @@ public class StudentHomePageFragment extends Fragment {
         {
             mStudent = getArguments().getParcelable("user");
         }
-        setPositions(textViewHello, textViewScore, textViewLevel, imageViewBirdWelcome, imageViewScoreBackground,
+        setPositions(textViewHello, textViewYourScore, textViewScore, textViewLevel, imageViewBirdWelcome, imageViewScoreBackground,
                 buttonPlayWord, buttonPlayRecord);
-        displayMyInfo(mStudent, textViewHello, textViewScore, textViewLevel);
+        displayMyInfo(mStudent, textViewHello, textViewYourScore, textViewScore ,textViewLevel);
 
         setPlayButtons(buttonPlayWord, buttonPlayRecord);
         buttonPlayWord.setOnClickListener(new View.OnClickListener() {
@@ -72,27 +73,30 @@ public class StudentHomePageFragment extends Fragment {
         return v;
     }
 
-    private void displayMyInfo(Student iStudent, TextView iTextViewHeader, TextView iTextViewScore, TextView iTextViewLevel) {
+    private void displayMyInfo(Student iStudent, TextView iTextViewHeader, TextView iTextViewYourScore, TextView iTextViewScore, TextView iTextViewLevel) {
         iTextViewHeader.setText(String.format("שלום, %s!", iStudent.getmFirstName()));
-        iTextViewScore.setText(String.format("ניקוד: %d", iStudent.getmScore()));
-        iTextViewLevel.setText(String.format("שלב: %d", iStudent.getmLevel()));
+        iTextViewYourScore.setText(String.format("הניקוד שלך"));
+        iTextViewScore.setText(String.format("%d", iStudent.getmScore()));
+        iTextViewLevel.setText(String.format("שלב %d מתוך 10", iStudent.getmLevel()));
     }
 
-    private void setPositions(TextView iTextViewHeader, TextView iTextViewScore, TextView iTextViewLevel,ImageView iImageViewBirdWelcome,
+    private void setPositions(TextView iTextViewHeader,TextView iTextViewYourScore, TextView iTextViewScore, TextView iTextViewLevel,ImageView iImageViewBirdWelcome,
                                        ImageView iImageViewScoreBackground, Button iButtonPlayWord, Button iButtonPlayRecord){
         iTextViewHeader.setX(10);
-        iTextViewHeader.setY(350);
-//        iTextViewScore.setX(10);
-//        iTextViewScore.setY(430);
-//        iTextViewLevel.setX(10);
-//        iTextViewLevel.setY(510);
-//        iImageViewBirdWelcome.setX(630);
-//        iImageViewBirdWelcome.setY(400);
-//        iImageViewScoreBackground.setX(40);
-//        iImageViewScoreBackground.setY(340);
-//        iButtonPlayWord.setX(40);
-//        iButtonPlayWord.setY(250);
-//        iButtonPlayRecord.setX(40);
+        iTextViewHeader.setY(50);
+        iTextViewYourScore.setX(10);
+        iTextViewYourScore.setY(340);
+        iTextViewScore.setX(10);
+        iTextViewScore.setY(420);
+        iTextViewLevel.setX(10);
+        iTextViewLevel.setY(600);
+        iImageViewBirdWelcome.setX(630);
+        iImageViewBirdWelcome.setY(350);
+//        iImageViewScoreBackground.setX(10);
+        iImageViewScoreBackground.setY(250);
+        iButtonPlayWord.setX(40);
+        iButtonPlayWord.setY(250);
+        iButtonPlayRecord.setX(40);
 //        iButtonPlayRecord.setY();
 
 

@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -65,7 +66,12 @@ public class PictureRecognitionLevel extends AppCompatActivity {
     private ImageView imgWord;
     private int[] answeredQuestions;
     private Button answer;
-    private Button buttonClue;
+    private TextView buttonClue;
+    private ImageView imageTryAgain;
+    private TextView textTryAgain;
+    private ImageView imageGoodJob;
+    private TextView textGoodJob;
+    private boolean nextQuestion = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +83,11 @@ public class PictureRecognitionLevel extends AppCompatActivity {
         imgWord = findViewById(R.id.imageViewWord);
         answer = findViewById(R.id.buttonAnswerWordRecognition);
         buttonClue = findViewById(R.id.buttonClue);
-
+        textTryAgain= findViewById(R.id.textViewTryAgain);
+        imageTryAgain = findViewById(R.id.imageViewBirdTryAgain);
+        imageGoodJob = findViewById(R.id.imageViewBirdGoodJob);
+        textGoodJob =  findViewById(R.id.textViewGoodJob);
+        buttonClue = findViewById(R.id.buttonClue);
         Intent intent = getIntent();
         mLevel = Integer.parseInt(intent.getStringExtra("level"));
         mId= intent.getStringExtra("id");
@@ -131,8 +141,12 @@ public class PictureRecognitionLevel extends AppCompatActivity {
 
                     //TODO: sent answer to server and get result in REQUEST_ANSWER
                     if (REQUEST_ANSWER == 200) {
+                        setBirdAnswerVisibility(imageGoodJob, textGoodJob);
+//                        setBirdAnswerVisibility(imageTryAgain, textTryAgain);
+
                         getNextQuestion();
-                    }else{
+                    } else {
+                        setBirdAnswerVisibility(imageTryAgain, textTryAgain);
                         mQuestion.IncreasemNumOfTries();
                     }
                 }
@@ -151,13 +165,25 @@ public class PictureRecognitionLevel extends AppCompatActivity {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
                         mAudioCluePlayer.stop();
-                        buttonClue.setText("רמז");
+                        buttonClue.setText(R.string.clue);
                     }
                 });
                 mAudioCluePlayer.start();
                 buttonClue.setText("משמיע רמז...");
                 mQuestion.SetAudioClueAsUsed();
                 //answer.setEnabled(true);
+            }
+        });
+
+        imageGoodJob.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                setNextLevelVisibility(imageGoodJob, textGoodJob);
+            }
+        });
+
+        imageTryAgain.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                setNextLevelVisibility(imageTryAgain, textTryAgain);
             }
         });
     }
@@ -209,6 +235,25 @@ public class PictureRecognitionLevel extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void setBirdAnswerVisibility(ImageView iImage, TextView iText){
+        iImage.setVisibility(View.VISIBLE);
+        iText.setVisibility(View.VISIBLE);
+        answer.setVisibility(View.INVISIBLE);
+        buttonClue.setVisibility(View.INVISIBLE);
+        imgWord.setVisibility(View.INVISIBLE);
+        nextQuestion = true;
+    }
+
+    private void setNextLevelVisibility(ImageView iImage, TextView iText) {
+        if (nextQuestion) {
+            iImage.setVisibility(View.INVISIBLE);
+            iText.setVisibility(View.INVISIBLE);
+            answer.setVisibility(View.VISIBLE);
+            buttonClue.setVisibility(View.VISIBLE);
+            imgWord.setVisibility(View.VISIBLE);
+            nextQuestion = false;
+        }
+    }
 
     private boolean checkPermissionFromDevice()
     {

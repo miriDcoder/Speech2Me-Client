@@ -143,6 +143,7 @@ public class Game extends AppCompatActivity {
             break;
         }
     }
+    //changessssssssssssssssssssssssss//
 
     private boolean checkPermissionFromDevice() {
         int write_external_storage_result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
