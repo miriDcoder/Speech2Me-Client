@@ -2,7 +2,6 @@ package com.example.project;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -34,10 +33,10 @@ public class LoginPage extends AppCompatActivity {
         final Button loginBtn = (Button) findViewById(R.id.loginBtn);
         email = (EditText) findViewById(R.id.emailEditText);
         password = (EditText) findViewById(R.id.passwordEditText);
-        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Montserrat-Regular.ttf");
-        email.setTypeface(custom_font);
-        password.setTypeface(custom_font);
-        loginBtn.setTypeface(custom_font);
+        //Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Montserrat-Regular.ttf");
+//        email.setTypeface(custom_font);
+//        password.setTypeface(custom_font);
+//        loginBtn.setTypeface(custom_font);
 
 
         Button signUpBtn = (Button)findViewById(R.id.signUpBtn);
@@ -115,6 +114,7 @@ public class LoginPage extends AppCompatActivity {
     private void getUserFromDatabase(String iEmail, String iPassword) {
         eUserValidation validation = eUserValidation.invalidUser;
         try {
+            //TODO: encript password?
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("password", iPassword);
             jsonBody.put("email", iEmail);

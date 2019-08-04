@@ -6,6 +6,8 @@
     <string name="good_job"><b>מצויין!</b></string>
     <string name="try_again"><b>...נסה שוב</b></string>
 
-</resources>
-<!--speech2me-->
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources><!--speech2me-->
 

@@ -35,6 +35,7 @@
         android:background="@drawable/shape_button"
         android:text="ענה"
         android:textColor="#FFFFFF"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/buttonClue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -55,20 +56,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/play_fragment_container" />
+        app:layout_constraintTop_toTopOf="@+id/play_fragment_container"
+    />
 
     <ImageView
         android:id="@+id/imageViewTrianglePlay"
-        android:layout_width="100dp"
-        android:layout_height="80dp"
+        android:layout_width="350dp"
+        android:layout_height="200dp"
         android:background="@drawable/shape_triangle_play"
         android:rotation="90"
         android:shadowDx="5"
         android:shadowDy="5"
+        android:layout_marginStart="170dp"
+        android:layout_marginLeft="170dp"
+        android:layout_marginTop="180dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewRectanglePlay"
         app:layout_constraintEnd_toEndOf="@+id/imageViewRectanglePlay"
         app:layout_constraintStart_toStartOf="@+id/imageViewRectanglePlay"
         app:layout_constraintTop_toTopOf="@+id/imageViewRectanglePlay" />
+
+
 
 
     <TextView

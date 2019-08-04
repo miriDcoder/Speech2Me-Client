@@ -37,17 +37,18 @@ public class TeacherHomePageFragment extends Fragment {
         }
         setEditTextsPositions(textViewHello);
         displayMyInfo(mTeacher, textViewHello);
-        Button buttonStatistics = (Button)v.findViewById(R.id.buttonStatistics);
+        //Button buttonStatistics = (Button)v.findViewById(R.id.buttonStatistics);
         Button buttonPlayWord = (Button)v.findViewById(R.id.buttonPlayWord);
         Button buttonPlayRecord = (Button)v.findViewById(R.id.buttonPlayRecord);
+        Button buttonViewData = (Button)v.findViewById(R.id.buttonViewData);
         setPlayButtons(buttonPlayWord, buttonPlayRecord);
 
-        buttonStatistics.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+//        buttonStatistics.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
         buttonPlayWord.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +69,16 @@ public class TeacherHomePageFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), AudioRecognitionLevel.class);
                 intent.putExtra("level", level);
                 intent.putExtra("id", mTeacher.getmId());
+                startActivity(intent);
+                ((Activity) getActivity()).overridePendingTransition(0, 0);
+            }
+        });
+
+        buttonViewData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ViewStudentsDataFragment.class);
+                intent.putExtra("teacher", mTeacher);
                 startActivity(intent);
                 ((Activity) getActivity()).overridePendingTransition(0, 0);
             }
