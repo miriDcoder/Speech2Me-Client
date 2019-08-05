@@ -5,6 +5,11 @@
     <string name="clue"><u>רוצה רמז?</u></string>
     <string name="good_job"><b>מצויין!</b></string>
     <string name="try_again"><b>...נסה שוב</b></string>
+    <string name="audio_game"><b>תרגול חיקוי קולי</b></string>
+    <string name="picture_game"><b>תרגול זיהוי תמונה</b></string>
+    <string name="amount_of_students"><b>מספר התלמידים הרשומים הינו</b></string>
+    <string name="watch_student_statistics"><u>לצפייה בתוצאות התלמידים</u></string>
+    <string name="level">שלב</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -24,7 +24,6 @@ public class ViewStudentsDataFragment extends Fragment {
         {
             mTeacher = getArguments().getParcelable("user");
         }
-
         setStudents();
         //ArrayAdapter<HashMap> adapter = getAdapter();
         //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, (String[]) mStudentIdsToNames.values().toArray());

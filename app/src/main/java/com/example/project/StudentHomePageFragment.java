@@ -98,8 +98,6 @@ public class StudentHomePageFragment extends Fragment {
         iButtonPlayWord.setY(250);
         iButtonPlayRecord.setX(40);
 //        iButtonPlayRecord.setY();
-
-
     }
 
     private void setPlayButtons(Button iWord, Button iVoice)

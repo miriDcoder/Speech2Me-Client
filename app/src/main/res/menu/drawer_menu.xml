@@ -2,44 +2,50 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view"
+    android:layoutDirection="rtl"
     android:layout_gravity="end"
-    android:gravity="end"
-    android:layoutDirection="rtl">
+    android:gravity="end">
 
     <group android:checkableBehavior="single"
+        android:layoutDirection="rtl"
         android:layout_gravity="end"
-        android:gravity="end">>
+        android:gravity="end">
 
         <item
             android:id="@+id/nav_home_page"
             android:icon="@drawable/ic_home"
             android:title="הבית שלי"
-            android:gravity="end"
-            android:layout_gravity="end"/>
+            android:layoutDirection="rtl"
+            android:layout_gravity="right"
+            android:gravity="right"/>
         <item
             android:id="@+id/nav_account"
             android:icon="@drawable/ic_account"
             android:title="פרופיל"
-            android:gravity="end"
-            android:layout_gravity="end"/>
+            android:layoutDirection="rtl"
+            android:layout_gravity="right"
+            android:gravity="right"/>
 
         <item
             android:id="@+id/nav_info"
             android:icon="@drawable/ic_info"
             android:title="אודות"
-            android:gravity="end"
-            android:layout_gravity="end"/>
+            android:layoutDirection="rtl"
+            android:layout_gravity="right"
+            android:gravity="right"/>
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
             android:title="הגדרות"
-            android:gravity="end"
-            android:layout_gravity="end"/>
+            android:layoutDirection="rtl"
+            android:layout_gravity="end"
+            android:gravity="end"/>
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_logout"
             android:title="התנתק/י"
-            android:gravity="end"
-            android:layout_gravity="end"/>
+            android:layoutDirection="rtl"
+            android:layout_gravity="end"
+            android:gravity="end"/>
     </group>
 </menu>

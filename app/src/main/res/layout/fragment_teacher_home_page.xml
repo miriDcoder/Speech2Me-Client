@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+           <TextView
             android:id="@+id/textViewHeader"
             android:layout_width="match_parent"
             android:layout_height="55dp"
@@ -21,97 +21,179 @@
             android:textAlignment="center"
             android:textColor="@color/colorText"
             android:textSize="30sp"
-            android:typeface="sans" />
-
-        <TextView
-            android:id="@+id/textViewScore"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Score"
-            android:textAlignment="center"
-            android:textColor="@color/colorText"
-            android:textSize="30sp"
-            android:typeface="sans" />
-
-        <TextView
-            android:id="@+id/textViewLevel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Level"
-            android:textAlignment="center"
-            android:textColor="@color/colorText"
-            android:textSize="30sp"
-            android:typeface="sans" />
-
-        <Button
-            android:id="@+id/buttonStatistics"
-            android:layout_width="200dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:background="@drawable/shape_button"
-            android:shadowColor="#A8A8A8"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="5"
-            android:text="צפייה בסטטיסטיקה"
-            android:textColor="#FFFFFF"
-            android:textSize="30sp"/>
-
-        <Button
-            android:id="@+id/buttonPlayWord"
-            android:layout_width="200dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:background="@drawable/shape_button"
-            android:shadowColor="#A8A8A8"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="5"
-            android:text="משחק זיהוי תמונות"
-            android:textColor="#FFFFFF"
-            android:textSize="30sp" />
-
-        <Button
-            android:id="@+id/buttonPlayRecord"
-            android:layout_width="200dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:background="@drawable/shape_button"
-            android:shadowColor="#A8A8A8"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="5"
-            android:text="משחק זיהוי קולי"
-            android:textColor="#FFFFFF"
-            android:textSize="30sp"/>
-
-        <Button
-            android:id="@+id/buttonViewData"
-            android:layout_width="200dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:background="@drawable/shape_button"
-            android:shadowColor="#A8A8A8"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="5"
-            android:text="צפייה בנתונים"
-            android:textColor="#FFFFFF"
-            android:textSize="25sp"
-            app:layout_constraintTop_toBottomOf="@+id/buttonPlayRecord"
+            android:typeface="sans"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="220dp"/>
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            />
+
+        <ImageView
+            android:id="@+id/imageViewScoreBackground"
+            android:layout_width="324dp"
+            android:layout_height="150dp"
+            android:background="@drawable/shape_rectangle_score"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewHeader"
+            app:layout_constraintVertical_bias="0.5"
+            android:layout_marginStart="45dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="45dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="8dp"
+            android:shadowDx="5"
+            android:shadowDy="5"/>
+
+        <TextView
+            android:id="@+id/textViewYourAmountOfStudents"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="start"
+            android:text="@string/amount_of_students"
+            android:textAlignment="textStart"
+            android:textColor="@color/colorText"
+            android:textDirection="rtl"
+            android:textSize="15sp"
+            android:typeface="sans"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewBirdWelcome"
+            app:layout_constraintTop_toTopOf="@+id/imageViewScoreBackground" />
+
+        <TextView
+            android:id="@+id/textViewAmountOfStudents"
+            android:layout_width="141dp"
+            android:layout_height="wrap_content"
+            android:text="Score"
+            android:textFontWeight="500"
+            android:fontFamily="@font/heebo_regular"
+            android:textAlignment="textStart"
+            android:gravity="start"
+            android:textDirection="rtl"
+            android:textColor="@color/colorText"
+            android:textSize="50sp"
+            app:layout_constraintTop_toBottomOf="@+id/textViewYourAmountOfStudents"
+            app:layout_constraintStart_toStartOf="@+id/textViewYourAmountOfStudents"
+            android:layout_marginStart="100dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="8dp"
+            />
+
+        <TextView
+            android:id="@+id/textViewWatchStatistics"
+            android:layout_width="237dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="start"
+            android:text="@string/watch_student_statistics"
+            android:textAlignment="textStart"
+            android:textColor="@color/colorText"
+            android:textDirection="rtl"
+            android:textSize="20sp"
+            android:typeface="sans"/>
+            <!--app:layout_constraintEnd_toStartOf="@+id/imageViewBirdWelcome"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/textViewAmountOfStudents" />-->
+
+        <ImageView
+            android:id="@+id/imageViewBirdWelcome"
+            android:layout_width="105dp"
+            android:layout_height="105dp"
+            android:background="@drawable/shape_circle_bird"
+            app:layout_constraintStart_toStartOf="@+id/imageViewScoreBackground"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewScoreBackground"
+            app:layout_constraintTop_toTopOf="@+id/imageViewScoreBackground"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewScoreBackground"
+            android:layout_marginStart="75dp"
+            android:layout_marginLeft="75dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            app:srcCompat="@drawable/bird_welcome" />
 
         <Spinner
-            android:id="@+id/spinner1"
-            android:layout_width="100dp"
+            android:id="@+id/spinner"
+            android:layout_width="133dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="400px"
+            android:layout_marginTop="500px"
             android:background="@android:drawable/btn_dropdown"
             android:spinnerMode="dropdown"
-            android:layout_marginTop="500px"
-            android:layout_marginLeft="400px"
-            />
+            android:radius="5dp"
+            android:text="@string/level"
+            app:layout_constraintEnd_toStartOf="@+id/radioGame"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewScoreBackground" />
+
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/radioGame"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="right"
+            android:gravity=""
+            android:inputType="text"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewScoreBackground">
+
+            <RadioButton
+                android:id="@+id/radioPictureGame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layoutDirection="rtl"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:textAlignment="center"
+                android:text="@string/picture_game" />
+
+            <RadioButton
+                android:id="@+id/radioAudioGame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layoutDirection="rtl"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:textAlignment="center"
+                android:text="@string/audio_game" />
+
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/buttonPlay"
+            android:layout_width="121dp"
+            android:layout_height="60dp"
+            android:layout_alignStart="@+id/teacher_home_page_frame"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginTop="220dp"
+            android:background="@drawable/shape_button"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:text="שחק/י"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGame" />
 
     </FrameLayout>
 
