@@ -7,8 +7,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class ViewStudentsDataFragment extends Fragment {
@@ -24,20 +29,47 @@ public class ViewStudentsDataFragment extends Fragment {
         {
             mTeacher = getArguments().getParcelable("user");
         }
-        setStudents();
-        //ArrayAdapter<HashMap> adapter = getAdapter();
-        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, (String[]) mStudentIdsToNames.values().toArray());
+        List<String> studentNames = setStudents();
+        final Spinner spinnerChooseStudent = (Spinner)v.findViewById(R.id.spinnerChooseStudent);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, studentNames);
+        spinnerChooseStudent.setAdapter(adapter);
 
+        spinnerChooseStudent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         return v;
     }
 
-    private void setStudents()
+    private List<String> setStudents()
     {
+        String id = " ";
+        String studentName = " ";
         mStudentIdsToNames = new HashMap<>();
+        List<String> studentNames = new ArrayList();
         ///TODO: get real student;
-        mStudentIdsToNames.put("1", "משה כהן");
-        mStudentIdsToNames.put("2", "ליאת אחירון");
-        mStudentIdsToNames.put("3", "מיה קולוצ'י");
-        mStudentIdsToNames.put("4", "ג'סטין טימברלייק");
+        for(int i=0; i<=mTeacher.getmNumOfStudents(); i++)
+        {
+            if(i == 0)
+            {
+                studentNames.add("בחר תלמיד");
+            }
+            else
+            {
+                id = String.valueOf(i);
+                studentName = "Student" + id;
+                mStudentIdsToNames.put(id, "Student" + id);
+                studentNames.add(studentName);
+            }
+        }
+
+        return studentNames;
     }
 }

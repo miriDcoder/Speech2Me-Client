@@ -4,9 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background_clean"
-    >
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/view_students_data_frame"
@@ -14,13 +12,65 @@
         android:layout_height="match_parent">
         <Spinner
             android:id="@+id/spinnerChooseStudent"
-            android:layout_width="100dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:background="@android:drawable/btn_dropdown"
             android:spinnerMode="dropdown"
-            android:layout_marginTop="500px"
-            android:layout_marginLeft="400px"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="60dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="20dp" />
+
+        <ScrollView
+            android:layout_width="390dp"
+            android:layout_height="500dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="100dp"
+            android:background="@color/colorBackgroundSemiTransparent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+                <TextView
+                    android:id="@+id/textViewStudentGoalHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="start"
+                    android:text="@string/student_goal_header"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorText"
+                    android:textDirection="rtl"
+                    android:textSize="30sp"
+                    android:fontFamily="@font/heebo_bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/textViewStudentGoalInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="start"
+                    android:fontFamily="@font/heebo_regular"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorText"
+                    android:textDirection="rtl"
+                    android:textSize="30sp"/>
+            </LinearLayout>
+
+
+        </ScrollView>
 
     </FrameLayout>
 

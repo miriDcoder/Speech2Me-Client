@@ -4,6 +4,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="clue"><u>רוצה רמז?</u></string>
     <string name="good_job"><b>מצויין!</b></string>
+    <string name="student_goal_header"><b>מטרה:</b></string>
     <string name="try_again"><b>...נסה שוב</b></string>
     <string name="audio_game"><b>תרגול חיקוי קולי</b></string>
     <string name="picture_game"><b>תרגול זיהוי תמונה</b></string>
