@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -25,6 +27,14 @@ public class ViewStudentsDataFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_view_students_data, container, false);
+        final ScrollView scrollViewDetails = (ScrollView)v.findViewById(R.id.scrollViewDetails);
+        scrollViewDetails.setVisibility(View.INVISIBLE);
+        final RelativeLayout relativeLayoutDetails = (RelativeLayout)v.findViewById(R.id.relativeLayoutDetails);
+        final Spinner spinnerLevel = (Spinner)v.findViewById(R.id.spinnerChooseLevel);
+        final Spinner spinnerWord = (Spinner)v.findViewById(R.id.spinnerChooseWord);
+        relativeLayoutDetails.setVisibility(View.INVISIBLE);
+        setAllStudentDetailsVisibility(View.INVISIBLE, relativeLayoutDetails);
+
         if(getArguments() != null)
         {
             mTeacher = getArguments().getParcelable("user");
@@ -33,8 +43,30 @@ public class ViewStudentsDataFragment extends Fragment {
         final Spinner spinnerChooseStudent = (Spinner)v.findViewById(R.id.spinnerChooseStudent);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, studentNames);
         spinnerChooseStudent.setAdapter(adapter);
+        spinnerChooseStudent.setSelection(0);
 
         spinnerChooseStudent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("############# IN ON ITEM SELECTED");
+                System.out.println("#############" + spinnerChooseStudent.getSelectedItem());
+                if(spinnerChooseStudent.getSelectedItemPosition() != 0)
+                {
+                    scrollViewDetails.setVisibility(View.VISIBLE);
+                    relativeLayoutDetails.setVisibility(View.VISIBLE);
+                    setAllStudentDetailsVisibility(View.VISIBLE, relativeLayoutDetails);
+                    setSpinnerLevel(spinnerLevel);
+                    setSpinnerWord(spinnerWord);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinnerLevel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -45,6 +77,19 @@ public class ViewStudentsDataFragment extends Fragment {
 
             }
         });
+
+        spinnerWord.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         return v;
     }
 
@@ -66,10 +111,35 @@ public class ViewStudentsDataFragment extends Fragment {
                 id = String.valueOf(i);
                 studentName = "Student" + id;
                 mStudentIdsToNames.put(id, "Student" + id);
-                studentNames.add(studentName);
+                studentNames.add("שי לוי");
             }
         }
 
         return studentNames;
+    }
+
+    private void setAllStudentDetailsVisibility(int iVisibility, RelativeLayout oRelativeLayout)
+    {
+        int detailsInfoCound = oRelativeLayout.getChildCount();
+        for(int i=0; i<detailsInfoCound; i++)
+        {
+            oRelativeLayout.getChildAt(i).setVisibility(iVisibility);
+        }
+    }
+
+    private void setSpinnerLevel(Spinner iSpinnerLevel)
+    {
+        String[] levels = {"1", "2"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, levels);
+        iSpinnerLevel.setAdapter(adapter);
+        iSpinnerLevel.setSelection(0);
+    }
+
+    private void setSpinnerWord(Spinner iSpinnerWord)
+    {
+        String[] levels = {"אבטיח", "בית"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, levels);
+        iSpinnerWord.setAdapter(adapter);
+        iSpinnerWord.setSelection(0);
     }
 }

@@ -5,6 +5,13 @@
     <string name="clue"><u>רוצה רמז?</u></string>
     <string name="good_job"><b>מצויין!</b></string>
     <string name="student_goal_header"><b>מטרה:</b></string>
+    <string name="student_curr_level_header"><b>שלב נוכחי:</b></string>
+    <string name="student_extra_details_level_header"><b>פרטים על שלב:</b></string>
+    <string name="student_extra_details_word_header"><b>פרטים על המילה:</b></string>
+    <string name="student_extra_num_tries_header"><b>מספר ניסיונות:</b></string>
+    <string name="student_clue_used_header"><b>שימוש ברמז</b></string>
+    <string name="student_level_completed_header"><b>שלב הושלם</b></string>
+    <string name="student_notes_header"><b>הערות (המטופל לא יראה אותן):</b></string>
     <string name="try_again"><b>נסה/י שוב...</b></string>
     <string name="answer"><b>ענה/י</b></string>
     <string name="audio_game"><b>תרגול חיקוי קולי</b></string>
@@ -12,6 +19,7 @@
     <string name="amount_of_students"><b>מספר התלמידים הרשומים הינו</b></string>
     <string name="watch_student_statistics"><u>לצפייה בתוצאות התלמידים</u></string>
     <string name="level">שלב</string>
+    <string name="save_student_notes">שמור הערה</string>
     <string name="copyrights">© 2019 Speech2Me, All rights reserved</string>
     <string name="aboutText">
                 Speech2Me הינה פלטפורמה לתרגול וחיזוק מיומנויות לילדים בעלי לקויות בתקשורת אישית.

@@ -24,54 +24,294 @@
             android:layout_marginTop="20dp" />
 
         <ScrollView
+            android:id="@+id/scrollViewDetails"
             android:layout_width="390dp"
-            android:layout_height="500dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="100dp"
-            android:background="@color/colorBackgroundSemiTransparent">
+            android:background="@color/colorBackgroundSemiTransparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/relativeLayoutDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/textViewStudentGoalHeader"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:fontFamily="@font/heebo_bold"
                     android:gravity="start"
                     android:text="@string/student_goal_header"
                     android:textAlignment="textStart"
                     android:textColor="@color/colorText"
                     android:textDirection="rtl"
                     android:textSize="30sp"
-                    android:fontFamily="@font/heebo_bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textViewStudentGoalInfo"
-                    android:layout_width="match_parent"
+                    android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:gravity="start"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/heebo_regular"
+                    android:gravity="start"
+                    android:text="זיהוי מילה"
                     android:textAlignment="textStart"
                     android:textColor="@color/colorText"
                     android:textDirection="rtl"
-                    android:textSize="30sp"/>
-            </LinearLayout>
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
+                <TextView
+                    android:id="@+id/textViewStudentCurrLevelHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:fontFamily="@font/heebo_bold"
+                    android:gravity="start"
+                    android:text="@string/student_curr_level_header"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorText"
+                    android:textDirection="rtl"
+                    android:textSize="30sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewStudentGoalHeader" />
+
+                <TextView
+                    android:id="@+id/textViewStudentCurrLevelInfo"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="40dp"
+                    android:fontFamily="@font/heebo_regular"
+                    android:gravity="start"
+                    android:text="3"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorText"
+                    android:textDirection="rtl"
+                    android:textSize="25sp"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewStudentCurrLevelHeader"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewStudentGoalInfo" />
+
+                <TextView
+                    android:id="@+id/textViewStudentExtraInfoHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:fontFamily="@font/heebo_bold"
+                    android:gravity="start"
+                    android:text="@string/student_extra_details_level_header"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorText"
+                    android:textDirection="rtl"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewStudentCurrLevelHeader" />
+
+                <Spinner
+                    android:id="@+id/spinnerChooseLevel"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="100dp"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:spinnerMode="dropdown"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewStudentCurrLevelHeader"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewStudentGoalInfo" />
+
+                <TextView
+                    android:id="@+id/textViewStudentExtraInfoWordHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="170dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:fontFamily="@font/heebo_bold"
+                    android:gravity="start"
+                    android:text="@string/student_extra_details_word_header"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorText"
+                    android:textDirection="rtl"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewStudentExtraInfoHeader" />
+
+                <Spinner
+                    android:id="@+id/spinnerChooseWord"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="170dp"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:spinnerMode="dropdown"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewStudentExtraInfoWordHeader"
+                    app:layout_constraintTop_toBottomOf="@+id/spinnerChooseLevel" />
+
+                <TextView
+                    android:id="@+id/textViewStudentNumOfTriesHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="230dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:fontFamily="@font/heebo_regular"
+                    android:gravity="start"
+                    android:text="@string/student_extra_num_tries_header"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorText"
+                    android:textDirection="rtl"
+                    android:textSize="30sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewStudentExtraInfoWordHeader" />
+
+                <TextView
+                    android:id="@+id/textViewStudentNumOfTriesInfo"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="230dp"
+                    android:fontFamily="@font/heebo_regular"
+                    android:gravity="start"
+                    android:text="2"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorText"
+                    android:textDirection="rtl"
+                    android:textSize="30sp"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewStudentNumOfTriesHeader"
+                    app:layout_constraintTop_toBottomOf="@+id/spinnerChooseWord" />
+
+                <CheckBox
+                    android:id="@+id/checkboxIsClueUsed"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="230dp"
+                    android:layout_marginLeft="230dp"
+                    android:layout_marginTop="275dp"
+                    android:checked="true"
+                    android:clickable="false"
+                    android:enabled="false"
+                    android:fontFamily="@font/heebo_regular"
+                    android:gravity="end"
+                    android:layoutDirection="rtl"
+                    android:text="@string/student_clue_used_header"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/colorText"
+                    android:textDirection="rtl"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewStudentNumOfTriesHeader" />
+
+                <CheckBox
+                    android:id="@+id/checkboxIsLevelCompleted"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="230dp"
+                    android:layout_marginLeft="230dp"
+                    android:layout_marginTop="300dp"
+                    android:checked="true"
+                    android:clickable="false"
+                    android:enabled="false"
+                    android:fontFamily="@font/heebo_regular"
+                    android:gravity="end"
+                    android:layoutDirection="rtl"
+                    android:text="@string/student_level_completed_header"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/colorText"
+                    android:textDirection="rtl"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/checkboxIsClueUsed" />
+
+                <TextView
+                    android:id="@+id/textViewSNotes"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="340dp"
+                    android:fontFamily="@font/heebo_regular"
+                    android:gravity="start"
+                    android:text="@string/student_notes_header"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorText"
+                    android:textDirection="rtl"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/spinnerChooseWord" />
+
+                <EditText
+                    android:id="@+id/editTextNotes"
+                    android:layout_width="400dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="370dp"
+                    android:background="@color/colorBackgroundSemiTransparent"
+                    android:enabled="true"
+                    android:inputType="textMultiLine"
+                    android:lineSpacingExtra="8sp"
+                    android:lines="3"
+                    android:text="לעבוד על המילה בית במפגש הבא"
+                    android:textSize="18sp"
+                    android:textAlignment="textStart"
+                    android:gravity="start"
+                    android:textDirection="rtl"
+                    android:lineHeight="25sp"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewSNotes" />
+
+                <Button
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/save_student_notes"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="470dp"
+                    android:fontFamily="@font/heebo_regular"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:textColor="#FFFFFF"
+                    app:layout_constraintTop_toBottomOf="@+id/editTextNotes"
+                    android:background="@drawable/shape_button" />
+
+            </RelativeLayout>
 
         </ScrollView>
-
     </FrameLayout>
 
 </RelativeLayout>
