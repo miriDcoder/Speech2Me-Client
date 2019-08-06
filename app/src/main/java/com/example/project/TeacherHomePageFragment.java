@@ -34,10 +34,10 @@ public class TeacherHomePageFragment extends Fragment {
         TextView textViewAmountOfStudents= (TextView)v.findViewById(R.id.textViewAmountOfStudents);
         TextView textViewWatchStatistics = (TextView)v.findViewById(R.id.textViewWatchStatistics);
         TextView textViewYourAmountOfStudents = (TextView)v.findViewById(R.id.textViewYourAmountOfStudents);
-        ImageView imageViewBirdWelcome = (ImageView)v.findViewById(R.id.imageViewBirdWelcome);
-        ImageView imageViewScoreBackground = (ImageView)v.findViewById(R.id.imageViewScoreBackground);
+        ImageView imageViewGameBackground = (ImageView)v.findViewById(R.id.imageViewGameBackground);
+        ImageView imageViewProgressBackground = (ImageView)v.findViewById(R.id.imageViewProgressBackground);
         RadioGroup radioGame = (RadioGroup)v.findViewById(R.id.radioGame);
-        Button buttonPlay = (Button)v.findViewById(R.id.buttonPlay);
+        TextView buttonPlay = (TextView) v.findViewById(R.id.buttonPlay);
         final Spinner spinnerLevel = (Spinner)v.findViewById(R.id.spinner);
         String[] items = new String[]{"שלב", "1", "2", "3"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
@@ -47,8 +47,8 @@ public class TeacherHomePageFragment extends Fragment {
         {
             mTeacher = getArguments().getParcelable("user");
         }
-        setPositions(textViewHello, textViewYourAmountOfStudents, textViewAmountOfStudents, textViewWatchStatistics, imageViewBirdWelcome, imageViewScoreBackground,
-                radioGame, spinnerLevel, buttonPlay);
+//        setPositions(textViewHello, textViewYourAmountOfStudents, textViewAmountOfStudents, textViewWatchStatistics,
+//                imageViewProgressBackground, radioGame, spinnerLevel, buttonPlay);
         displayMyInfo(mTeacher, textViewHello, textViewAmountOfStudents);
 
         buttonPlay.setOnClickListener(new View.OnClickListener() {
@@ -127,8 +127,8 @@ public class TeacherHomePageFragment extends Fragment {
         }
     }
 
-    private void setPositions(TextView iTextViewHeader, TextView iTextViewYourAmountOfStudents, TextView iTextViewAmountOfStudents, TextView iTextViewWatchStatistics, ImageView iImageViewBirdWelcome,
-                              ImageView iImageViewScoreBackground, RadioGroup iRadioGame, Spinner iSpinnerLevel, Button iButtonPlay){
+    private void setPositions(TextView iTextViewHeader, TextView iTextViewYourAmountOfStudents, TextView iTextViewAmountOfStudents, TextView iTextViewWatchStatistics,
+                              ImageView iImageViewProgressBackground, RadioGroup iRadioGame, Spinner iSpinnerLevel, TextView iTextViewPlay){
         iTextViewHeader.setX(10);
         iTextViewHeader.setY(50);
         iTextViewYourAmountOfStudents.setX(10);
@@ -137,9 +137,7 @@ public class TeacherHomePageFragment extends Fragment {
         iTextViewAmountOfStudents.setY(420);
         iTextViewWatchStatistics.setX(-200);
         iTextViewWatchStatistics.setY(600);
-        iImageViewBirdWelcome.setX(630);
-        iImageViewBirdWelcome.setY(350);
-        iImageViewScoreBackground.setY(250);
+        iImageViewProgressBackground.setY(250);
         iRadioGame.setX(-40);
         iRadioGame.setY(1000);
         iSpinnerLevel.setX(-200);

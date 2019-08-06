@@ -43,11 +43,11 @@ public class StudentHomePageFragment extends Fragment {
         {
             mStudent = getArguments().getParcelable("user");
         }
-        setPositions(textViewHello, textViewYourScore, textViewScore, textViewLevel, imageViewBirdWelcome, imageViewScoreBackground,
-                buttonPlayWord, buttonPlayRecord);
+//        setPositions(textViewHello, textViewYourScore, textViewScore, textViewLevel, imageViewBirdWelcome, imageViewScoreBackground,
+//                buttonPlayWord, buttonPlayRecord);
         displayMyInfo(mStudent, textViewHello, textViewYourScore, textViewScore ,textViewLevel);
 
-        setPlayButtons(buttonPlayWord, buttonPlayRecord);
+//        setPlayButtons(buttonPlayWord, buttonPlayRecord);
         buttonPlayWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -160,7 +160,7 @@ public class PictureRecognitionLevel extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //answer.setEnabled(false);
-                mAudioCluePlayer = MediaPlayer.create(PictureRecognitionLevel.this, R.raw.boker_tov);
+                mAudioCluePlayer = MediaPlayer.create(PictureRecognitionLevel.this, currQuestion.GetmAudioRecording());
                 mAudioCluePlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mp) {

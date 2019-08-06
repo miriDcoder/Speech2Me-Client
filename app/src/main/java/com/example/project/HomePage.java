@@ -36,22 +36,9 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         toggle.syncState();
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
-        Bundle bundle = new Bundle();
         currUser = DbUtils.GetUserById(db.makeUserList(), id);
         if (savedInstanceState==null) {
-            getSupportActionBar().setTitle("בית");
-            if (currUser.getmType()==User.eType.STUDENT){
-                bundle.putParcelable("user",(Student)currUser);
-                StudentHomePageFragment studentPage = new StudentHomePageFragment();
-                studentPage.setArguments(bundle);
-                getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, studentPage).commit();
-            }
-            else if (currUser.getmType()==User.eType.TEACHER){
-                bundle.putParcelable("user", (Teacher)currUser);
-                TeacherHomePageFragment teacherPage = new TeacherHomePageFragment();
-                teacherPage.setArguments(bundle);
-                getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, teacherPage).commit();
-            }
+            moveToHomePage();
             navigationView.setCheckedItem(R.id.nav_home_page);
         }
     }
@@ -60,14 +47,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch(menuItem.getItemId()){
             case R.id.nav_home_page:
-               if (currUser.getmType()==User.eType.STUDENT){
-                   getSupportActionBar().setTitle("בית");
-                   getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new StudentHomePageFragment()).commit();
-               }
-               if (currUser.getmType()==User.eType.TEACHER){
-                   getSupportActionBar().setTitle("בית");
-                   getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new TeacherHomePageFragment()).commit();
-               }
+                moveToHomePage();
                 break;
             case R.id.nav_account:
                 getSupportActionBar().setTitle("פרופיל");
@@ -76,10 +56,6 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
             case R.id.nav_info:
                 getSupportActionBar().setTitle("אודות");
                 getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new AboutFragment()).commit();
-                break;
-            case R.id.nav_settings:
-                getSupportActionBar().setTitle("הגדרות");
-                getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new SettingsFragment()).commit();
                 break;
             case R.id.nav_logout:
                 getSupportActionBar().setTitle("התנתק/י");
@@ -90,6 +66,23 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void moveToHomePage(){
+        Bundle bundle = new Bundle();
+        getSupportActionBar().setTitle("בית");
+        if (currUser.getmType()==User.eType.STUDENT){
+            bundle.putParcelable("user",(Student)currUser);
+            StudentHomePageFragment studentPage = new StudentHomePageFragment();
+            studentPage.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, studentPage).commit();
+        }
+        else if (currUser.getmType()==User.eType.TEACHER){
+            bundle.putParcelable("user", (Teacher)currUser);
+            TeacherHomePageFragment teacherPage = new TeacherHomePageFragment();
+            teacherPage.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, teacherPage).commit();
+        }
     }
 
     public void onBackPressed(){

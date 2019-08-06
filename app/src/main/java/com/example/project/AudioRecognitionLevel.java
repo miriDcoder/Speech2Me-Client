@@ -64,8 +64,9 @@ public class AudioRecognitionLevel extends AppCompatActivity {
     private ImageView imageClue;
     private int[] answeredQuestions;
     private Button answer;
-    private ImageView listen;
-    private TextView buttonClue;
+    private ImageView play;
+    private ImageView pause;
+    private TextView textClue;
     private ImageView imageTryAgain;
     private TextView textTryAgain;
     private ImageView imageGoodJob;
@@ -88,13 +89,13 @@ public class AudioRecognitionLevel extends AppCompatActivity {
         }
         imageClue = findViewById(R.id.imageViewClue);
         answer = findViewById(R.id.buttonAnswerRecordingRecognition);
-        listen = findViewById(R.id.imageViewTrianglePlay);
+        play = findViewById(R.id.imageViewPlay);
+        pause = findViewById(R.id.imageViewPause);
         imageTryAgain = findViewById(R.id.imageViewBirdTryAgain);
         textTryAgain= findViewById(R.id.textViewTryAgain);
         imageGoodJob = findViewById(R.id.imageViewBirdGoodJob);
         textGoodJob =  findViewById(R.id.textViewGoodJob);
-        buttonClue = findViewById(R.id.buttonClue);
-        playCircle = findViewById(R.id.imageViewRectanglePlay);
+        textClue = findViewById(R.id.buttonClue);
 
         Intent intent = getIntent();
 
@@ -108,9 +109,9 @@ public class AudioRecognitionLevel extends AppCompatActivity {
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //listen.setEnabled(false);
-                listen.isClickable();
-                System.out.println("========== /is listen enabled(should be no):" + listen.isClickable());
+                //play.setEnabled(false);
+                play.isClickable();
+                System.out.println("========== /is listen enabled(should be no):" + play.isClickable());
                     if (!mIsRecording) //start recording
                     {
                         answer.setText("עצור הקלטה");
@@ -144,47 +145,52 @@ public class AudioRecognitionLevel extends AppCompatActivity {
                         //TODO: sent answer to server and get result in REQUEST_ANSWER
                         if (REQUEST_ANSWER == 200) {
                             setBirdAnswerVisibility(imageGoodJob, textGoodJob);
+//                            setBirdAnswerVisibility(imageTryAgain, textTryAgain);
                             getNextQuestion();
+
                         } else {
                             setBirdAnswerVisibility(imageTryAgain, textTryAgain);
                             mQuestion.IncreasemNumOfTries();
                         }
                     }
-                //listen.setEnabled(true);
-                listen.setClickable(true);
-                System.out.println("========== /is listen enabled(should be yes):" + listen.isClickable());
+                //play.setEnabled(true);
+                play.setClickable(true);
+                System.out.println("========== /is play enabled(should be yes):" + play.isClickable());
             }
         });
 
-        listen.setOnClickListener(new View.OnClickListener() {
+        play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //answer.setEnabled(false);
                 answer.setClickable(false);
                 System.out.println("========== /is answer enabled(should be no):" + answer.isClickable());
-                mMediaPlayerListen = MediaPlayer.create(AudioRecognitionLevel.this, R.raw.boker_tov);
+                mMediaPlayerListen = MediaPlayer.create(AudioRecognitionLevel.this, currQuestion.GetmAudioRecording());
                     mMediaPlayerListen.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
                             mMediaPlayerListen.stop();
-                            listen.setVisibility(View.VISIBLE);
+                            pause.setVisibility(View.INVISIBLE);
+                            play.setVisibility(View.VISIBLE);
                             int score = mQuestion.GetmScore();
                             mQuestion.SetmScore(score++);
                         }
                     });
                     mMediaPlayerListen.start();
-                    listen.setVisibility(View.INVISIBLE);
-            //answer.setEnabled(true);
+                    play.setVisibility(View.INVISIBLE);
+                    pause.setVisibility(View.VISIBLE);
+                //answer.setEnabled(true);
                     answer.setClickable(true);
                 System.out.println("========== /is answer enabled(should be yes):" + answer.isClickable());
 
             }
         });
 
-        buttonClue.setOnClickListener(new View.OnClickListener() {
+        textClue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 imageClue.setVisibility(View.VISIBLE);
+                textClue.setVisibility(View.INVISIBLE);
                 mQuestion.SetImageClueAsUsed();
             }
         });
@@ -249,10 +255,8 @@ public class AudioRecognitionLevel extends AppCompatActivity {
         iImage.setVisibility(View.VISIBLE);
         iText.setVisibility(View.VISIBLE);
         answer.setVisibility(View.INVISIBLE);
-        buttonClue.setVisibility(View.INVISIBLE);
-        listen.setVisibility(View.INVISIBLE);
-        playCircle.setVisibility(View.INVISIBLE);
-
+        textClue.setVisibility(View.INVISIBLE);
+        play.setVisibility(View.INVISIBLE);
         nextQuestion = true;
     }
 
@@ -261,9 +265,8 @@ public class AudioRecognitionLevel extends AppCompatActivity {
             iImage.setVisibility(View.INVISIBLE);
             iText.setVisibility(View.INVISIBLE);
             answer.setVisibility(View.VISIBLE);
-            buttonClue.setVisibility(View.VISIBLE);
-            listen.setVisibility(View.VISIBLE);
-            playCircle.setVisibility(View.VISIBLE);
+            textClue.setVisibility(View.VISIBLE);
+            play.setVisibility(View.VISIBLE);
             nextQuestion = false;
         }
     }

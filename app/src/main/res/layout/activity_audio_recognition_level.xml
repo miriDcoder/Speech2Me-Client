@@ -7,42 +7,43 @@
     tools:context=".AudioRecognitionLevel"
     android:exported="true">
 
-
     <ImageView
         android:id="@+id/imageViewClue"
-        android:layout_width="135dp"
-        android:layout_height="117dp"
+        android:layout_width="111dp"
+        android:layout_height="92dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="44dp"
+        android:layout_marginBottom="8dp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/buttonAnswerRecordingRecognition"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewTryAgain"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAnswerRecordingRecognition"
+        app:layout_constraintVertical_bias="0.18"
         app:srcCompat="?attr/colorBackgroundFloating" />
 
     <Button
         android:id="@+id/buttonAnswerRecordingRecognition"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="129dp"
+        android:layout_height="45dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="56dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="64dp"
         android:background="@drawable/shape_button"
-        android:text="ענה"
+        android:text="@string/answer"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonClue"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewPlay" />
 
     <ImageView
-        android:id="@+id/imageViewRectanglePlay"
+        android:id="@+id/imageViewPlay"
         android:layout_width="176dp"
         android:layout_height="176dp"
         android:layout_marginStart="20dp"
@@ -50,7 +51,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/shape_circle_play"
+        android:background="@drawable/play_button"
         android:shadowDx="5"
         android:shadowDy="5"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,25 +61,23 @@
     />
 
     <ImageView
-        android:id="@+id/imageViewTrianglePlay"
-        android:layout_width="350dp"
-        android:layout_height="200dp"
-        android:background="@drawable/shape_triangle_play"
-        android:rotation="90"
+        android:id="@+id/imageViewPause"
+        android:layout_width="176dp"
+        android:layout_height="176dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/pause_button"
         android:shadowDx="5"
         android:shadowDy="5"
-        android:layout_marginStart="170dp"
-        android:layout_marginLeft="170dp"
-        android:layout_marginTop="180dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginRight="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewRectanglePlay"
-        app:layout_constraintEnd_toEndOf="@+id/imageViewRectanglePlay"
-        app:layout_constraintStart_toStartOf="@+id/imageViewRectanglePlay"
-        app:layout_constraintTop_toTopOf="@+id/imageViewRectanglePlay" />
-
-
-
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/play_fragment_container"
+        />
 
     <TextView
         android:id="@+id/buttonClue"
@@ -134,12 +133,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/play_fragment_container"
         app:layout_constraintVertical_bias="0.106"
-        app:srcCompat="@drawable/bird_good_job" />
+        app:srcCompat="@drawable/bird_good_job2" />
 
     <TextView
         android:id="@+id/textViewTryAgain"
-        android:layout_width="100dp"
-        android:layout_height="44dp"
+        android:layout_width="184dp"
+        android:layout_height="38dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
@@ -173,7 +172,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/play_fragment_container"
         app:layout_constraintVertical_bias="0.148"
-        app:srcCompat="@drawable/bird_try_again" />
+        app:srcCompat="@drawable/bird_try_again4" />
 
     <FrameLayout
         android:id="@+id/play_fragment_container"

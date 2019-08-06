@@ -1,13 +1,15 @@
 package com.example.project;
 
+import android.net.Uri;
+
 public class Question {
     private final String mAnswer;
     private final String mImageUrl;
-    private final String mAudioRecording;
+    private final int mAudioRecording;
     private final int mLevel;
     private final int mId;
 
-    public Question(String iAnswer, String iImageUrl, String iAudioRecording, int iLevel, int iId){
+    public Question(String iAnswer, String iImageUrl, int iAudioRecording, int iLevel, int iId){
         this.mAnswer = iAnswer;
         this.mImageUrl = iImageUrl;
         this.mAudioRecording = iAudioRecording;
@@ -23,7 +25,7 @@ public class Question {
         return this.mAnswer;
     }
 
-    public String GetmAudioRecording()
+    public int GetmAudioRecording()
     {
         return this.mAudioRecording;
     }

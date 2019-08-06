@@ -2,7 +2,7 @@ package com.example.project;
 
 public class PictureRegocnitionQuestion {
     private String mImgPath;
-    private String mAudioClue;
+    private int mAudioClue;
     private int mNumOfTries = 0;
     private int mScore = 0;
     private boolean mIsAudioClueUsed = false;
@@ -18,7 +18,7 @@ public class PictureRegocnitionQuestion {
         return this.mImgPath;
     }
 
-    public String GetmAudioClue()
+    public int GetmAudioClue()
     {
         return this.mAudioClue;
     }

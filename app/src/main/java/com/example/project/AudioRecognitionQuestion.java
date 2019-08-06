@@ -2,7 +2,7 @@ package com.example.project;
 
 public class AudioRecognitionQuestion {
 
-    private String mAudioPath;
+    private int mAudioPath;
     private String mImageClue;
     private int mNumOfTries = 0;
     private int mScore = 0;
@@ -14,7 +14,7 @@ public class AudioRecognitionQuestion {
         this.mImageClue = question.getmImageUrl();
         this.mAnswer = question.GetmAnswer();
     }
-    public String getmAudioPath(){
+    public int getmAudioPath(){
         return this.mAudioPath;
     }
 

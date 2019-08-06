@@ -1,23 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_clean"
-    >
+    tools:context=".AudioRecognitionLevel"
+    android:exported="true">
+
+    <TextView
+        android:id="@+id/textViewAboutHeadline"
+        android:layout_width="141dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="אודות"
+        android:textAlignment="center"
+        android:textColor="@color/colorText"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewAbout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewAbout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="137dp"
-        android:text="About Page"
+        android:layout_width="316dp"
+        android:layout_height="260dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="156dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/aboutText"
         android:textAlignment="center"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="30sp"
-        android:typeface="sans" />
+        android:textColor="@color/colorText"
+        android:textDirection="rtl"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewConditions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="?attr/colorBackgroundFloating" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/textViewConditions"
+        android:layout_width="86dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="32dp"
+        android:text="@string/conditions"
+        android:textAlignment="center"
+        android:textColor="@color/colorText"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/textCopyRights"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.03"
+        app:layout_constraintStart_toEndOf="@+id/textViewContact" />
+
+    <TextView
+        android:id="@+id/textViewContact"
+        android:layout_width="82dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginLeft="96dp"
+        android:layout_marginBottom="64dp"
+        android:text="@string/contact"
+        android:textAlignment="center"
+        android:textColor="@color/colorText"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textCopyRights"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textCopyRights"
+        android:layout_width="1500dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="48dp"
+        android:text="@string/copyrights"
+        android:textAlignment="center"
+        android:textColor="@color/colorText"
+        android:textSize="8sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
