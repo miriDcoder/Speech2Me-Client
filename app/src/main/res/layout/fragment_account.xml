@@ -12,6 +12,24 @@
     android:background="@drawable/background_clean"
     >
 
+    <ImageView
+        android:id="@+id/imageViewScoreBackground"
+        android:layout_width="324dp"
+        android:layout_height="700dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="45dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/shape_rectangle_score"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHeader" />
+
     <TextView
         android:id="@+id/textViewFirstName"
         android:layout_width="wrap_content"

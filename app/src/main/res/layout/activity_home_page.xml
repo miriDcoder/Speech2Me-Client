@@ -21,8 +21,9 @@
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            android:background="#FF27BFC7"/>
-        >
+            android:background="#FF27BFC7"
+            />
+
         <FrameLayout
             android:id="@+id/student_fragment_container"
             android:layout_width="match_parent"
@@ -32,10 +33,14 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_menu" />
+        app:menu="@menu/drawer_menu"
+        android:layoutDirection="rtl"
+        android:layout_gravity="end"
+        />
+    <!--android:gravity="end"
+    and change home page class to END and change menu move menu to the left-->
 
 </android.support.v4.widget.DrawerLayout>

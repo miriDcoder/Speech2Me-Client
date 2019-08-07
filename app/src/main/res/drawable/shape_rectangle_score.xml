@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <solid android:color="#FFC9FCFF"
+    <solid android:color="@color/colorBackgroundOpacity"
     android:shadowColor="#28000000"
-    android:shadowRadius="5"/>
+    android:shadowRadius="5"
+        />
     <corners android:radius="10dp"/>
     <size android:height="150dp"
         android:width="324dp" />

@@ -71,11 +71,8 @@ public class AudioRecognitionLevel extends AppCompatActivity {
     private TextView textTryAgain;
     private ImageView imageGoodJob;
     private TextView textGoodJob;
-    private ImageView playCircle;
     private boolean nextQuestion = false;
 
-    //
-    private MediaPlayer mMediaPlayerAnswer;
     private MediaPlayer mMediaPlayerListen;
     private MediaRecorder mMediaRecorder;
 
@@ -219,6 +216,9 @@ public class AudioRecognitionLevel extends AppCompatActivity {
             } while (answeredQuestions[currQuestion.GetmId()] == 1);
             answeredQuestions[currQuestion.GetmId()] = 1;
             mQuestion = new AudioRecognitionQuestion(currQuestion);
+            System.out.println("^^^^^^^^^^^^"+mQuestion.getmAudioPath());
+            System.out.println("*****************"+mQuestion.GetmImageClue());
+
             Picasso.with(AudioRecognitionLevel.this).load(mQuestion.GetmImageClue()).into(imageClue);
             answer.setText("ענה");
         }

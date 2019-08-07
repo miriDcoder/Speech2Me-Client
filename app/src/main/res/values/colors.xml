@@ -7,5 +7,6 @@
     <color name="colorLightBlue">#FF27BFC7</color>
     <color name="colorBackgroundSemiTransparent">#80FFFFFF</color>
     <color name="colorOrange">#fffaa424</color>
+    <color name="colorBackgroundOpacity">#D0C9FCFF</color>
 
 </resources>
