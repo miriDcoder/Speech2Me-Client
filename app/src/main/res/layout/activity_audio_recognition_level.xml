@@ -7,6 +7,45 @@
     tools:context=".AudioRecognitionLevel"
     android:exported="true">
 
+    <Button
+        android:id="@+id/buttonHomePage"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/shape_button"
+        android:text="| |"
+        android:textColor="#FFFFFF"
+        android:textSize="10sp"
+        android:radius="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.011" />
+
+    <Button
+        android:id="@+id/buttonNextQuestion"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/shape_button"
+        android:text=">"
+        android:textColor="#FFFFFF"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonHomePage"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.011" />
+
     <ImageView
         android:id="@+id/imageViewClue"
         android:layout_width="111dp"
@@ -174,11 +213,31 @@
         app:layout_constraintVertical_bias="0.148"
         app:srcCompat="@drawable/bird_try_again4" />
 
+    <TextView
+        android:id="@+id/textViewPressToContinue"
+        android:layout_width="184dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="לחץ/י להמשך"
+        android:textAlignment="center"
+        android:textColor="@color/colorText"
+        android:textSize="15sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/play_fragment_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTryAgain"
+        app:layout_constraintVertical_bias="0.2" />
+
     <FrameLayout
         android:id="@+id/play_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="-44dp" />
+        tools:layout_editor_absoluteY="-16dp" />
 
 </android.support.constraint.ConstraintLayout>

@@ -73,6 +73,10 @@ public class Student extends User implements Parcelable {
         this.mScore = mScore;
     }
 
+    public void increasemScore() {
+        this.mScore++;
+    }
+
     public String getmTeacherId() {
         return mTeacherId;
     }

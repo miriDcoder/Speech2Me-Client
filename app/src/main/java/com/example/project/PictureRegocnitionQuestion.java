@@ -1,60 +1,23 @@
 package com.example.project;
 
-public class PictureRegocnitionQuestion {
+import android.graphics.Picture;
+
+public class PictureRegocnitionQuestion extends Question{
     private String mImgPath;
     private int mAudioClue;
-    private int mNumOfTries = 0;
-    private int mScore = 0;
-    private boolean mIsAudioClueUsed = false;
-    private String mAnswer;
 
     public PictureRegocnitionQuestion(Question question){
+        super(question.GetmAnswer(), question.getmImageUrl(), question.GetmAudioRecording(), question.GetmLevel(),question.GetmId());
         this.mImgPath = question.getmImageUrl();
         this.mAudioClue = question.GetmAudioRecording();
-        this.mAnswer = question.GetmAnswer();
-
     }
+
     public String getmImgPath(){
         return this.mImgPath;
     }
 
-    public int GetmAudioClue()
-    {
+    public int getmAudioClue(){
         return this.mAudioClue;
     }
 
-    public int GetmNumOfTries()
-    {
-        return this.mNumOfTries;
-    }
-
-    public void IncreasemNumOfTries()
-    {
-        this.mNumOfTries++;
-    }
-
-    public int GetmScore()
-    {
-        return this.mScore;
-    }
-
-    public void SetmScore(int iScore)
-    {
-        this.mScore = iScore;
-    }
-
-    public boolean IsAudioClueUsed()
-    {
-        return this.mIsAudioClueUsed;
-    }
-
-    public void SetAudioClueAsUsed()
-    {
-        this.mIsAudioClueUsed = true;
-    }
-
-    public String GetmAnswer()
-    {
-        return this.mAnswer;
-    }
 }

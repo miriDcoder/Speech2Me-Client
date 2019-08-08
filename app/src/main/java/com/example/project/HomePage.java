@@ -36,7 +36,15 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         toggle.syncState();
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
+        String newScore = intent.getStringExtra("newScore");
         currUser = DbUtils.GetUserById(db.makeUserList(), id);
+
+        //when going to home page from game
+        if (newScore != null){
+            int score = Integer.parseInt(newScore);
+            Student student = (Student)currUser;
+            student.setmScore(score);
+        }
         if (savedInstanceState==null) {
             moveToHomePage();
             navigationView.setCheckedItem(R.id.nav_home_page);

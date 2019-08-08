@@ -1,6 +1,8 @@
 package com.example.project;
 
 import android.Manifest;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -28,34 +31,33 @@ import java.util.UUID;
 //handle returning answer from requset if answered false/ requset failed
 
 public class AudioRecognitionLevel extends AppCompatActivity {
-    //    DataBase db = new DataBase();
-    private AudioRecognitionQuestion mQuestion;
-    //    private Student mUser;
+    DataBase db = new DataBase();
+    private Question mQuestion;
     public QuestionsData questions = new QuestionsData();
-    //NEEDS TO GET LEVEL AND USER TYPE FROM CURRSENT USER
-    private int mLevel;
-    private String mId;
-    ArrayList<AudioRecognitionQuestion> questionStatistics = new ArrayList<AudioRecognitionQuestion>();
+    private ArrayList<AudioRecognitionQuestion> questionStatistics = new ArrayList<AudioRecognitionQuestion>();
     private int sizeOfLevel = 6;
     private int questionNumber = 0;
-    private boolean mIsRecording = false;
-    private String mPathSave = "";
-    private MediaPlayer mMediaPlayer;
-    private final int REQUEST_PREMISSION_CODE = 1000;
     private int REQUEST_ANSWER = 200;
+    private int mLevel;
+    private final int REQUEST_PREMISSION_CODE = 1000;
+    private int[] answeredQuestions;
+    private String mId;
+    private String mPathSave = "";
+    private boolean mIsRecording = false;
+    private boolean nextQuestion = false;
     private Question currQuestion;
     private ImageView imageClue;
-    private int[] answeredQuestions;
     private Button answer;
+    private Button homePage;
+    private Button goToNextQuestion;
     private ImageView play;
     private ImageView pause;
-    private TextView textClue;
     private ImageView imageTryAgain;
-    private TextView textTryAgain;
     private ImageView imageGoodJob;
+    private TextView textClue;
+    private TextView textTryAgain;
     private TextView textGoodJob;
-    private boolean nextQuestion = false;
-
+    private TextView textPressToContinue;
     private MediaPlayer mMediaPlayerListen;
     private MediaRecorder mMediaRecorder;
 
@@ -76,7 +78,9 @@ public class AudioRecognitionLevel extends AppCompatActivity {
         imageGoodJob = findViewById(R.id.imageViewBirdGoodJob);
         textGoodJob =  findViewById(R.id.textViewGoodJob);
         textClue = findViewById(R.id.buttonClue);
-
+        homePage = findViewById(R.id.buttonHomePage);
+        goToNextQuestion = findViewById(R.id.buttonNextQuestion);
+        textPressToContinue = findViewById(R.id.textViewPressToContinue);
         Intent intent = getIntent();
 
         mLevel = Integer.parseInt(intent.getStringExtra("level"));
@@ -127,8 +131,8 @@ public class AudioRecognitionLevel extends AppCompatActivity {
                         if (REQUEST_ANSWER == 200) {
                             setBirdAnswerVisibility(imageGoodJob, textGoodJob);
 //                            setBirdAnswerVisibility(imageTryAgain, textTryAgain);
+                            mQuestion.IncreasemScore();
                             getNextQuestion();
-
                         } else {
                             setBirdAnswerVisibility(imageTryAgain, textTryAgain);
                             mQuestion.IncreasemNumOfTries();
@@ -172,7 +176,7 @@ public class AudioRecognitionLevel extends AppCompatActivity {
             public void onClick(View v) {
                 imageClue.setVisibility(View.VISIBLE);
                 textClue.setVisibility(View.INVISIBLE);
-                mQuestion.SetImageClueAsUsed();
+                mQuestion.SetClueAsUsed();
             }
         });
 
@@ -187,10 +191,58 @@ public class AudioRecognitionLevel extends AppCompatActivity {
                 setNextLevelVisibility(imageTryAgain, textTryAgain);
             }
         });
+
+        homePage.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                AlertDialog.Builder builder = new AlertDialog.Builder(AudioRecognitionLevel.this);
+                builder.setMessage("האם לצאת מהמשחק?");
+
+                // add the buttons
+                builder.setPositiveButton("לא", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("כן", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        moveToHomePage(mId);
+                    }
+                });
+
+                // create and show the alert dialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
+        goToNextQuestion.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                AlertDialog.Builder builder = new AlertDialog.Builder(AudioRecognitionLevel.this);
+                builder.setMessage("האם לעבור לשאלה הבאה?");
+
+                // add the buttons
+                builder.setPositiveButton("לנסות שוב", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("כן", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        getNextQuestion();
+                        textClue.setVisibility(View.VISIBLE);
+                    }
+                });
+
+                // create and show the alert dialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }
+        });
     }
 
     private void getNextQuestion(){
-        questionStatistics.add(mQuestion);
+        questionStatistics.add((AudioRecognitionQuestion)mQuestion);
         questionNumber++;
         //continue to next question
         imageClue.setVisibility(View.INVISIBLE);
@@ -200,10 +252,9 @@ public class AudioRecognitionLevel extends AppCompatActivity {
             } while (answeredQuestions[currQuestion.GetmId()] == 1);
             answeredQuestions[currQuestion.GetmId()] = 1;
             mQuestion = new AudioRecognitionQuestion(currQuestion);
-            System.out.println("^^^^^^^^^^^^"+mQuestion.getmAudioPath());
-            System.out.println("*****************"+mQuestion.GetmImageClue());
-
-            Picasso.with(AudioRecognitionLevel.this).load(mQuestion.GetmImageClue()).into(imageClue);
+            System.out.println("^^^^^^^^^^^^"+((AudioRecognitionQuestion) mQuestion).GetmImageClue());
+            String imageCluePath = ((AudioRecognitionQuestion) mQuestion).GetmImageClue();
+            Picasso.with(AudioRecognitionLevel.this).load(imageCluePath).into(imageClue);
             answer.setText("ענה");
         }
         //finished level
@@ -232,6 +283,7 @@ public class AudioRecognitionLevel extends AppCompatActivity {
     {
         Intent intent = new Intent(AudioRecognitionLevel.this, HomePage.class);
         intent.putExtra("id", iCurrUserId);
+        intent.putExtra("newScore", mQuestion.GetmScore());
         startActivity(intent);
     }
 
@@ -241,6 +293,7 @@ public class AudioRecognitionLevel extends AppCompatActivity {
         answer.setVisibility(View.INVISIBLE);
         textClue.setVisibility(View.INVISIBLE);
         play.setVisibility(View.INVISIBLE);
+        textPressToContinue.setVisibility(View.VISIBLE);
         nextQuestion = true;
     }
 
@@ -251,6 +304,7 @@ public class AudioRecognitionLevel extends AppCompatActivity {
             answer.setVisibility(View.VISIBLE);
             textClue.setVisibility(View.VISIBLE);
             play.setVisibility(View.VISIBLE);
+            textPressToContinue.setVisibility(View.INVISIBLE);
             nextQuestion = false;
         }
     }

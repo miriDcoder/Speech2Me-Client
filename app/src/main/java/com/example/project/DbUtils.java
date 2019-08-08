@@ -56,6 +56,22 @@ public class DbUtils {
         return userFound;
     }
 
+    public static void setScore(ArrayList<User> iUsers, String iId, int iScore){
+        {
+            User userFound = null;
+
+            for(User user : iUsers)
+            {
+                if(iId.equals(user.getmId()))
+                {
+                    Student currStudent = (Student)user;
+                    currStudent.setmScore(iScore);
+                }
+            }
+        }
+    }
+
+
     public static void InsertNewStudentToDataBase(User iUser, Context iContext)
     {
         try {

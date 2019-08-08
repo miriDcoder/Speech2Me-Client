@@ -2,6 +2,7 @@ package com.example.project;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -47,32 +49,35 @@ import java.util.UUID;
 
 public class PictureRecognitionLevel extends AppCompatActivity {
 //    DataBase db = new DataBase();
-    private PictureRegocnitionQuestion mQuestion;
-//    private Student mUser;
     public QuestionsData questions = new QuestionsData();
-    //NEEDS TO GET LEVEL AND USER TYPE FROM CURRSENT USER
-    private int mLevel;
-    private String mId;
-    ArrayList<PictureRegocnitionQuestion> questionStatistics = new ArrayList<PictureRegocnitionQuestion>();
-    private int sizeOfLevel = 5;
+    private Question mQuestion;
+    private ArrayList<PictureRegocnitionQuestion> questionStatistics = new ArrayList<PictureRegocnitionQuestion>();
+    private int sizeOfLevel = 6;
     private int questionNumber = 0;
-    private boolean mIsRecording = false;
-    private String mPathSave = "";
-    private MediaRecorder mMediaRecorder = null;
-    private MediaPlayer mAudioCluePlayer;
+    private int REQUEST_ANSWER = 200;
+    private int mLevel;
     private final int REQUEST_PREMISSION_CODE = 1000;
-    private int REQUEST_ANSWER= 200;
+    private int[] answeredQuestions;
+    private String mId;
+    private String mPathSave = "";
+    private boolean mIsRecording = false;
+    private boolean nextQuestion = false;
     private Question currQuestion;
     private ImageView imgWord;
-    private int[] answeredQuestions;
     private Button answer;
-    private TextView buttonClue;
+    private Button homePage;
+    private Button goToNextQuestion;
     private ImageView imageTryAgain;
-    private TextView textTryAgain;
     private ImageView imageGoodJob;
+    private TextView textClue;
+    private TextView textTryAgain;
     private TextView textGoodJob;
-    private boolean nextQuestion = false;
+    private TextView textPressToContinue;
+    private MediaRecorder mMediaRecorder;
+    private MediaPlayer mAudioCluePlayer;
 
+    //    private Student mUser;
+    //NEEDS TO GET LEVEL AND USER TYPE FROM CURRSENT USER
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,12 +87,14 @@ public class PictureRecognitionLevel extends AppCompatActivity {
         }
         imgWord = findViewById(R.id.imageViewWord);
         answer = findViewById(R.id.buttonAnswerWordRecognition);
-        buttonClue = findViewById(R.id.buttonClue);
+        textClue = findViewById(R.id.buttonClue);
         textTryAgain= findViewById(R.id.textViewTryAgain);
         imageTryAgain = findViewById(R.id.imageViewBirdTryAgain);
         imageGoodJob = findViewById(R.id.imageViewBirdGoodJob);
         textGoodJob =  findViewById(R.id.textViewGoodJob);
-        buttonClue = findViewById(R.id.buttonClue);
+        homePage = findViewById(R.id.buttonHomePage);
+        goToNextQuestion = findViewById(R.id.buttonNextQuestion);
+        textPressToContinue = findViewById(R.id.textViewPressToContinue);
         Intent intent = getIntent();
         mLevel = Integer.parseInt(intent.getStringExtra("level"));
         mId= intent.getStringExtra("id");
@@ -98,7 +105,7 @@ public class PictureRecognitionLevel extends AppCompatActivity {
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                buttonClue.setEnabled(false);
+                textClue.setEnabled(false);
                 if (!mIsRecording) //start recording
                 {
                     answer.setText("עצור הקלטה");
@@ -142,22 +149,22 @@ public class PictureRecognitionLevel extends AppCompatActivity {
 
                     //TODO: sent answer to server and get result in REQUEST_ANSWER
                     if (REQUEST_ANSWER == 200) {
-                        setBirdAnswerVisibility(imageGoodJob, textGoodJob);
-//                        setBirdAnswerVisibility(imageTryAgain, textTryAgain);
-
+//                        setBirdAnswerVisibility(imageGoodJob, textGoodJob);
+                        setBirdAnswerVisibility(imageTryAgain, textTryAgain);
+                        mQuestion.IncreasemScore();
                         getNextQuestion();
                     } else {
                         setBirdAnswerVisibility(imageTryAgain, textTryAgain);
                         mQuestion.IncreasemNumOfTries();
                     }
                 }
-                buttonClue.setEnabled(true);
+                textClue.setEnabled(true);
                 mIsRecording = !mIsRecording;
 
             }
         });
 
-        buttonClue.setOnClickListener(new View.OnClickListener() {
+        textClue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //answer.setEnabled(false);
@@ -166,12 +173,12 @@ public class PictureRecognitionLevel extends AppCompatActivity {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
                         mAudioCluePlayer.stop();
-                        buttonClue.setText(R.string.clue);
+                        textClue.setText(R.string.clue);
                     }
                 });
                 mAudioCluePlayer.start();
-                buttonClue.setText("משמיע רמז...");
-                mQuestion.SetAudioClueAsUsed();
+                textClue.setText("משמיע רמז...");
+                mQuestion.SetClueAsUsed();
                 //answer.setEnabled(true);
             }
         });
@@ -187,10 +194,58 @@ public class PictureRecognitionLevel extends AppCompatActivity {
                 setNextLevelVisibility(imageTryAgain, textTryAgain);
             }
         });
+
+        homePage.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                AlertDialog.Builder builder = new AlertDialog.Builder(PictureRecognitionLevel.this);
+                builder.setMessage("האם לצאת מהמשחק?");
+
+                // add the buttons
+                builder.setPositiveButton("לא", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("כן", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        moveToHomePage(mId);
+                    }
+                });
+
+                // create and show the alert dialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
+        goToNextQuestion.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                AlertDialog.Builder builder = new AlertDialog.Builder(PictureRecognitionLevel.this);
+                builder.setMessage("האם לעבור לשאלה הבאה?");
+
+                // add the buttons
+                builder.setPositiveButton("לנסות שוב", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("כן", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        getNextQuestion();
+                        textClue.setVisibility(View.VISIBLE);
+                    }
+                });
+
+                // create and show the alert dialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }
+        });
     }
 
     private void getNextQuestion(){
-        questionStatistics.add(mQuestion);
+        questionStatistics.add((PictureRegocnitionQuestion)mQuestion);
         questionNumber++;
         //continue to next question
         System.out.println("+++++++++++++++++++++++++++question: "+ questionNumber);
@@ -201,7 +256,8 @@ public class PictureRecognitionLevel extends AppCompatActivity {
             } while (answeredQuestions[currQuestion.GetmId()] == 1);
             answeredQuestions[currQuestion.GetmId()] = 1;
             mQuestion = new PictureRegocnitionQuestion(currQuestion);
-            Picasso.with(PictureRecognitionLevel.this).load(mQuestion.getmImgPath()).into(imgWord);
+            String imagePath = ((PictureRegocnitionQuestion) mQuestion).getmImgPath();
+            Picasso.with(PictureRecognitionLevel.this).load(imagePath).into(imgWord);
             answer.setText("ענה");
             System.out.println("+++++++++++++++++++++++++++got question");
         }
@@ -233,15 +289,18 @@ public class PictureRecognitionLevel extends AppCompatActivity {
     {
         Intent intent = new Intent(PictureRecognitionLevel.this, HomePage.class);
         intent.putExtra("id", iCurrUserId);
+        intent.putExtra("newScore", mQuestion.GetmScore());
         startActivity(intent);
     }
 
     private void setBirdAnswerVisibility(ImageView iImage, TextView iText){
         iImage.setVisibility(View.VISIBLE);
         iText.setVisibility(View.VISIBLE);
+        textPressToContinue.setVisibility(View.VISIBLE);
         answer.setVisibility(View.INVISIBLE);
-        buttonClue.setVisibility(View.INVISIBLE);
+        textClue.setVisibility(View.INVISIBLE);
         imgWord.setVisibility(View.INVISIBLE);
+        goToNextQuestion.setVisibility(View.INVISIBLE);
         nextQuestion = true;
     }
 
@@ -249,9 +308,11 @@ public class PictureRecognitionLevel extends AppCompatActivity {
         if (nextQuestion) {
             iImage.setVisibility(View.INVISIBLE);
             iText.setVisibility(View.INVISIBLE);
+            textPressToContinue.setVisibility(View.INVISIBLE);
             answer.setVisibility(View.VISIBLE);
-            buttonClue.setVisibility(View.VISIBLE);
+            textClue.setVisibility(View.VISIBLE);
             imgWord.setVisibility(View.VISIBLE);
+            goToNextQuestion.setVisibility(View.VISIBLE);
             nextQuestion = false;
         }
     }
