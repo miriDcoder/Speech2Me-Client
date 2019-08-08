@@ -133,6 +133,7 @@ public class PictureRecognitionLevel extends AppCompatActivity {
                         }
                     });
                     thread.start();
+                    mMediaRecorder.reset();
                     mMediaRecorder.release();
                     System.out.println("@@@@@@@@@@@@@@@@@@@@released");
                     mMediaRecorder = null;

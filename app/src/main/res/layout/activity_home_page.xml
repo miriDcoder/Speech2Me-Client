@@ -38,7 +38,7 @@
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_menu"
         android:layoutDirection="rtl"
-        android:layout_gravity="end"
+        android:layout_gravity="start"
         />
     <!--android:gravity="end"
     and change home page class to END and change menu move menu to the left-->

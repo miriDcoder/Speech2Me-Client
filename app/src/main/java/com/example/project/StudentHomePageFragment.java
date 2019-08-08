@@ -2,19 +2,15 @@ package com.example.project;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 public class StudentHomePageFragment extends Fragment {
@@ -76,7 +72,8 @@ public class StudentHomePageFragment extends Fragment {
     private void displayMyInfo(Student iStudent, TextView iTextViewHeader, TextView iTextViewYourScore, TextView iTextViewScore, TextView iTextViewLevel) {
         iTextViewHeader.setText(String.format("שלום, %s!", iStudent.getmFirstName()));
         iTextViewYourScore.setText(String.format("הניקוד שלך"));
-        iTextViewScore.setText(String.format("%d", iStudent.getmScore()));
+        //iTextViewScore.setText(String.format("%d", iStudent.getmScore()));
+        iTextViewScore.setText(String.format("%d", 10));
         iTextViewLevel.setText(String.format("שלב %d מתוך 10", iStudent.getmLevel()));
     }
 

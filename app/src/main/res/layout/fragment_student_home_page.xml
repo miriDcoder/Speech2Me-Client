@@ -124,7 +124,7 @@
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonPlay" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonPlay"/>
 
     <Button
         android:id="@+id/buttonPlay"
@@ -169,6 +169,6 @@
         app:layout_constraintEnd_toStartOf="@+id/buttonPlayWord"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonPlay" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonPlay"/>
 
 </android.support.constraint.ConstraintLayout>
