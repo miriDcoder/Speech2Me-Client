@@ -41,43 +41,13 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.UUID;
-//MISSING:
-//handle get currUser ?
-//send statistics to server (to teacher)
-//audio clues: add audios to library and change with switch case/url
-//handle returning answer from requset if answered false/ requset failed
 
-public class PictureRecognitionLevel extends AppCompatActivity {
-//    DataBase db = new DataBase();
-    public QuestionsData questions = new QuestionsData();
-    private Question mQuestion;
-    private ArrayList<PictureRegocnitionQuestion> questionStatistics = new ArrayList<PictureRegocnitionQuestion>();
-    private int sizeOfLevel = 6;
-    private int questionNumber = 0;
-    private int REQUEST_ANSWER = 200;
-    private int mLevel;
-    private final int REQUEST_PREMISSION_CODE = 1000;
-    private int[] answeredQuestions;
-    private String mId;
-    private String mPathSave = "";
-    private boolean mIsRecording = false;
-    private boolean nextQuestion = false;
-    private Question currQuestion;
+public class PictureRecognitionLevel extends GameLevel{
     private ImageView imgWord;
-    private Button answer;
-    private Button homePage;
-    private Button goToNextQuestion;
-    private ImageView imageTryAgain;
-    private ImageView imageGoodJob;
-    private TextView textClue;
-    private TextView textTryAgain;
-    private TextView textGoodJob;
-    private TextView textPressToContinue;
-    private MediaRecorder mMediaRecorder;
     private MediaPlayer mAudioCluePlayer;
+    private ArrayList<PictureRegocnitionQuestion> questionStatistics = new ArrayList<PictureRegocnitionQuestion>();
 
-    //    private Student mUser;
-    //NEEDS TO GET LEVEL AND USER TYPE FROM CURRSENT USER
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +70,7 @@ public class PictureRecognitionLevel extends AppCompatActivity {
         mId= intent.getStringExtra("id");
         questions.makeQuestionList();
         answeredQuestions = new int [questions.getSizeOfLevel(mLevel)];
-        getNextQuestion();
+        getNextQuestion(imgWord);
 
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,11 +120,14 @@ public class PictureRecognitionLevel extends AppCompatActivity {
                     //TODO: sent answer to server and get result in REQUEST_ANSWER
                     if (REQUEST_ANSWER == 200) {
 //                        setBirdAnswerVisibility(imageGoodJob, textGoodJob);
-                        setBirdAnswerVisibility(imageTryAgain, textTryAgain);
+                        setBirdAnswerVisibility(imageTryAgain, textTryAgain, imgWord);
+                        questionStatistics.add((PictureRegocnitionQuestion) mQuestion);
+                        questionNumber++;
+
                         mQuestion.IncreasemScore();
-                        getNextQuestion();
+                        getNextQuestion(imgWord);
                     } else {
-                        setBirdAnswerVisibility(imageTryAgain, textTryAgain);
+                        setBirdAnswerVisibility(imageTryAgain, textTryAgain, imgWord);
                         mQuestion.IncreasemNumOfTries();
                     }
                 }
@@ -185,13 +158,13 @@ public class PictureRecognitionLevel extends AppCompatActivity {
 
         imageGoodJob.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                setNextLevelVisibility(imageGoodJob, textGoodJob);
+                setNextLevelVisibility(imageGoodJob, textGoodJob, imgWord);
             }
         });
 
         imageTryAgain.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                setNextLevelVisibility(imageTryAgain, textTryAgain);
+                setNextLevelVisibility(imageTryAgain, textTryAgain, imgWord);
             }
         });
 
@@ -231,7 +204,7 @@ public class PictureRecognitionLevel extends AppCompatActivity {
                 });
                 builder.setNegativeButton("כן", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        getNextQuestion();
+                        getNextQuestion(imgWord);
                         textClue.setVisibility(View.VISIBLE);
                     }
                 });
@@ -242,104 +215,6 @@ public class PictureRecognitionLevel extends AppCompatActivity {
 
             }
         });
-    }
-
-    private void getNextQuestion(){
-        questionStatistics.add((PictureRegocnitionQuestion)mQuestion);
-        questionNumber++;
-        //continue to next question
-        System.out.println("+++++++++++++++++++++++++++question: "+ questionNumber);
-
-        if (questionNumber < sizeOfLevel) {
-            do {
-                currQuestion = questions.getRandomQuestion(mLevel);
-            } while (answeredQuestions[currQuestion.GetmId()] == 1);
-            answeredQuestions[currQuestion.GetmId()] = 1;
-            mQuestion = new PictureRegocnitionQuestion(currQuestion);
-            String imagePath = ((PictureRegocnitionQuestion) mQuestion).getmImgPath();
-            Picasso.with(PictureRecognitionLevel.this).load(imagePath).into(imgWord);
-            answer.setText("ענה");
-            System.out.println("+++++++++++++++++++++++++++got question");
-        }
-        //finished level
-        else {
-            String text = String.format("כל הכבוד! סיימת את שלב %d!", mLevel);
-            System.out.println("+++++++++++++++++++++++++++trying to finish game");
-            //SEND questionsStatistics TO SERVER AND DELETE IT FROM MEMORY
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(PictureRecognitionLevel.this, text, duration);
-            toast.show();
-            for (int i= 0; i< questions.getSizeOfLevel(mLevel);i++){
-                answeredQuestions[i] = 0;
-            }
-            try
-            {
-                Thread.sleep(1000);
-            }
-            catch(InterruptedException ex)
-            {
-                Thread.currentThread().interrupt();
-            }
-            System.out.println("+++++++++++++++++++++++++++moving to home");
-            moveToHomePage(mId);
-        }
-    }
-
-    private void moveToHomePage(String iCurrUserId)
-    {
-        Intent intent = new Intent(PictureRecognitionLevel.this, HomePage.class);
-        intent.putExtra("id", iCurrUserId);
-        intent.putExtra("newScore", mQuestion.GetmScore());
-        startActivity(intent);
-    }
-
-    private void setBirdAnswerVisibility(ImageView iImage, TextView iText){
-        iImage.setVisibility(View.VISIBLE);
-        iText.setVisibility(View.VISIBLE);
-        textPressToContinue.setVisibility(View.VISIBLE);
-        answer.setVisibility(View.INVISIBLE);
-        textClue.setVisibility(View.INVISIBLE);
-        imgWord.setVisibility(View.INVISIBLE);
-        goToNextQuestion.setVisibility(View.INVISIBLE);
-        nextQuestion = true;
-    }
-
-    private void setNextLevelVisibility(ImageView iImage, TextView iText) {
-        if (nextQuestion) {
-            iImage.setVisibility(View.INVISIBLE);
-            iText.setVisibility(View.INVISIBLE);
-            textPressToContinue.setVisibility(View.INVISIBLE);
-            answer.setVisibility(View.VISIBLE);
-            textClue.setVisibility(View.VISIBLE);
-            imgWord.setVisibility(View.VISIBLE);
-            goToNextQuestion.setVisibility(View.VISIBLE);
-            nextQuestion = false;
-        }
-    }
-
-    private boolean checkPermissionFromDevice()
-    {
-        int write_external_storage_result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int record_audio_result = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
-        return write_external_storage_result == PackageManager.PERMISSION_GRANTED &&
-                record_audio_result == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private void requestPermission()
-    {
-        ActivityCompat.requestPermissions(this, new String[]{
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.RECORD_AUDIO
-        }, REQUEST_PREMISSION_CODE);
-    }
-
-    private void setupMediaRecorder() {
-        mMediaRecorder = new MediaRecorder();
-        //mMediaRecorder.setAudioSamplingRate(8000);
-        mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mMediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-        mMediaRecorder.setOutputFile(mPathSave);
     }
 
     private void isCorrectAnswer(MediaRecorder iRecorder, final Button iButton)  {

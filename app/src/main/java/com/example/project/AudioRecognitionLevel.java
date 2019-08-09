@@ -30,36 +30,38 @@ import java.util.UUID;
 //audio clues: add audios to library and change with switch case/url
 //handle returning answer from requset if answered false/ requset failed
 
-public class AudioRecognitionLevel extends AppCompatActivity {
+public class AudioRecognitionLevel extends GameLevel {
     DataBase db = new DataBase();
-    private Question mQuestion;
-    public QuestionsData questions = new QuestionsData();
-    private ArrayList<AudioRecognitionQuestion> questionStatistics = new ArrayList<AudioRecognitionQuestion>();
-    private int sizeOfLevel = 6;
-    private int questionNumber = 0;
-    private int REQUEST_ANSWER = 200;
-    private int mLevel;
-    private final int REQUEST_PREMISSION_CODE = 1000;
-    private int[] answeredQuestions;
-    private String mId;
-    private String mPathSave = "";
-    private boolean mIsRecording = false;
-    private boolean nextQuestion = false;
-    private Question currQuestion;
     private ImageView imageClue;
-    private Button answer;
-    private Button homePage;
-    private Button goToNextQuestion;
     private ImageView play;
     private ImageView pause;
-    private ImageView imageTryAgain;
-    private ImageView imageGoodJob;
-    private TextView textClue;
-    private TextView textTryAgain;
-    private TextView textGoodJob;
-    private TextView textPressToContinue;
     private MediaPlayer mMediaPlayerListen;
-    private MediaRecorder mMediaRecorder;
+    private ArrayList<AudioRecognitionQuestion> questionStatistics = new ArrayList<AudioRecognitionQuestion>();
+
+//    private Question mQuestion;
+//    public QuestionsData questions = new QuestionsData();
+//    private int sizeOfLevel = 6;
+//    private int questionNumber = 0;
+//    private int REQUEST_ANSWER = 200;
+//    private int mLevel;
+//    private final int REQUEST_PREMISSION_CODE = 1000;
+//    private int[] answeredQuestions;
+//    private String mId;
+//    private String mPathSave = "";
+//    private boolean mIsRecording = false;
+//    private boolean nextQuestion = false;
+//    private Question currQuestion;
+//    private Button answer;
+//    private Button homePage;
+//    private Button goToNextQuestion;
+//    private ImageView imageTryAgain;
+//    private ImageView imageGoodJob;
+//    private TextView textClue;
+//    private TextView textTryAgain;
+//    private TextView textGoodJob;
+//    private TextView textPressToContinue;
+//    private MediaPlayer mMediaPlayerListen;
+//    private MediaRecorder mMediaRecorder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,11 +86,11 @@ public class AudioRecognitionLevel extends AppCompatActivity {
         Intent intent = getIntent();
 
         mLevel = Integer.parseInt(intent.getStringExtra("level"));
-        mId= intent.getStringExtra("id");
+        mId = intent.getStringExtra("id");
         questions.makeQuestionList();
 
         answeredQuestions = new int [questions.getSizeOfLevel(mLevel)];
-        getNextQuestion();
+        getNextQuestion(imageClue);
 
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,12 +131,14 @@ public class AudioRecognitionLevel extends AppCompatActivity {
                         mMediaRecorder = null;
                         //TODO: sent answer to server and get result in REQUEST_ANSWER
                         if (REQUEST_ANSWER == 200) {
-                            setBirdAnswerVisibility(imageGoodJob, textGoodJob);
+                            setBirdAnswerVisibility(imageGoodJob, textGoodJob, play);
 //                            setBirdAnswerVisibility(imageTryAgain, textTryAgain);
+                            questionStatistics.add((AudioRecognitionQuestion)mQuestion);
+                            questionNumber++;
                             mQuestion.IncreasemScore();
-                            getNextQuestion();
+                            getNextQuestion(imageClue);
                         } else {
-                            setBirdAnswerVisibility(imageTryAgain, textTryAgain);
+                            setBirdAnswerVisibility(imageTryAgain, textTryAgain, play);
                             mQuestion.IncreasemNumOfTries();
                         }
                     }
@@ -150,7 +154,8 @@ public class AudioRecognitionLevel extends AppCompatActivity {
                 //answer.setEnabled(false);
                 answer.setClickable(false);
                 System.out.println("========== /is answer enabled(should be no):" + answer.isClickable());
-                mMediaPlayerListen = MediaPlayer.create(AudioRecognitionLevel.this, currQuestion.GetmAudioRecording());
+                int audioPath = ((AudioRecognitionQuestion) mQuestion).getmAudioPath();
+                mMediaPlayerListen = MediaPlayer.create(AudioRecognitionLevel.this, audioPath);
                     mMediaPlayerListen.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
@@ -182,13 +187,13 @@ public class AudioRecognitionLevel extends AppCompatActivity {
 
         imageGoodJob.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                setNextLevelVisibility(imageGoodJob, textGoodJob);
+                setNextLevelVisibility(imageGoodJob, textGoodJob, play);
             }
         });
 
         imageTryAgain.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                setNextLevelVisibility(imageTryAgain, textTryAgain);
+                setNextLevelVisibility(imageTryAgain, textTryAgain, play);
             }
         });
 
@@ -228,7 +233,7 @@ public class AudioRecognitionLevel extends AppCompatActivity {
                 });
                 builder.setNegativeButton("כן", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        getNextQuestion();
+                        getNextQuestion(imageClue);
                         textClue.setVisibility(View.VISIBLE);
                     }
                 });
@@ -239,98 +244,6 @@ public class AudioRecognitionLevel extends AppCompatActivity {
 
             }
         });
-    }
-
-    private void getNextQuestion(){
-        questionStatistics.add((AudioRecognitionQuestion)mQuestion);
-        questionNumber++;
-        //continue to next question
-        imageClue.setVisibility(View.INVISIBLE);
-        if (questionNumber < sizeOfLevel) {
-            do {
-                currQuestion = questions.getRandomQuestion(mLevel);
-            } while (answeredQuestions[currQuestion.GetmId()] == 1);
-            answeredQuestions[currQuestion.GetmId()] = 1;
-            mQuestion = new AudioRecognitionQuestion(currQuestion);
-            System.out.println("^^^^^^^^^^^^"+((AudioRecognitionQuestion) mQuestion).GetmImageClue());
-            String imageCluePath = ((AudioRecognitionQuestion) mQuestion).GetmImageClue();
-            Picasso.with(AudioRecognitionLevel.this).load(imageCluePath).into(imageClue);
-            answer.setText("ענה");
-        }
-        //finished level
-        else {
-            String text = String.format("כל הכבוד! סיימת את שלב %d!", mLevel);
-            //SEND questionsStatistics TO SERVER AND DELETE IT FROM MEMORY
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(AudioRecognitionLevel.this, text, duration);
-            toast.show();
-            for (int i= 0; i< questions.getSizeOfLevel(mLevel);i++){
-                answeredQuestions[i] = 0;
-            }
-            try
-            {
-                Thread.sleep(1000);
-            }
-            catch(InterruptedException ex)
-            {
-                Thread.currentThread().interrupt();
-            }
-            moveToHomePage(mId);
-        }
-    }
-
-    private void moveToHomePage(String iCurrUserId)
-    {
-        Intent intent = new Intent(AudioRecognitionLevel.this, HomePage.class);
-        intent.putExtra("id", iCurrUserId);
-        intent.putExtra("newScore", mQuestion.GetmScore());
-        startActivity(intent);
-    }
-
-    private void setBirdAnswerVisibility(ImageView iImage, TextView iText){
-        iImage.setVisibility(View.VISIBLE);
-        iText.setVisibility(View.VISIBLE);
-        answer.setVisibility(View.INVISIBLE);
-        textClue.setVisibility(View.INVISIBLE);
-        play.setVisibility(View.INVISIBLE);
-        textPressToContinue.setVisibility(View.VISIBLE);
-        nextQuestion = true;
-    }
-
-    private void setNextLevelVisibility(ImageView iImage, TextView iText) {
-        if (nextQuestion) {
-            iImage.setVisibility(View.INVISIBLE);
-            iText.setVisibility(View.INVISIBLE);
-            answer.setVisibility(View.VISIBLE);
-            textClue.setVisibility(View.VISIBLE);
-            play.setVisibility(View.VISIBLE);
-            textPressToContinue.setVisibility(View.INVISIBLE);
-            nextQuestion = false;
-        }
-    }
-
-    private boolean checkPermissionFromDevice()
-    {
-        int write_external_storage_result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int record_audio_result = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
-        return write_external_storage_result == PackageManager.PERMISSION_GRANTED &&
-                record_audio_result == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private void requestPermission()
-    {
-        ActivityCompat.requestPermissions(this, new String[]{
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.RECORD_AUDIO
-        }, REQUEST_PREMISSION_CODE);
-    }
-
-    private void setupMediaRecorder() {
-        mMediaRecorder = new MediaRecorder();
-        mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        mMediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-        mMediaRecorder.setOutputFile(mPathSave);
     }
 
 }
