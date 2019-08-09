@@ -31,37 +31,11 @@ import java.util.UUID;
 //handle returning answer from requset if answered false/ requset failed
 
 public class AudioRecognitionLevel extends GameLevel {
-    DataBase db = new DataBase();
     private ImageView imageClue;
     private ImageView play;
     private ImageView pause;
     private MediaPlayer mMediaPlayerListen;
     private ArrayList<AudioRecognitionQuestion> questionStatistics = new ArrayList<AudioRecognitionQuestion>();
-
-//    private Question mQuestion;
-//    public QuestionsData questions = new QuestionsData();
-//    private int sizeOfLevel = 6;
-//    private int questionNumber = 0;
-//    private int REQUEST_ANSWER = 200;
-//    private int mLevel;
-//    private final int REQUEST_PREMISSION_CODE = 1000;
-//    private int[] answeredQuestions;
-//    private String mId;
-//    private String mPathSave = "";
-//    private boolean mIsRecording = false;
-//    private boolean nextQuestion = false;
-//    private Question currQuestion;
-//    private Button answer;
-//    private Button homePage;
-//    private Button goToNextQuestion;
-//    private ImageView imageTryAgain;
-//    private ImageView imageGoodJob;
-//    private TextView textClue;
-//    private TextView textTryAgain;
-//    private TextView textGoodJob;
-//    private TextView textPressToContinue;
-//    private MediaPlayer mMediaPlayerListen;
-//    private MediaRecorder mMediaRecorder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
