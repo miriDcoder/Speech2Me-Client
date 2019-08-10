@@ -32,6 +32,7 @@ public class StudentHomePageFragment extends Fragment {
         TextView textViewLevel = (TextView)v.findViewById(R.id.textViewLevel);
         ImageView imageViewBirdWelcome = (ImageView)v.findViewById(R.id.imageViewBirdWelcome);
         ImageView imageViewScoreBackground = (ImageView)v.findViewById(R.id.imageViewScoreBackground);
+        Button buttonPlay = (Button)v.findViewById(R.id.buttonPlay);
         Button buttonPlayWord = (Button)v.findViewById(R.id.buttonPlayWord);
         Button buttonPlayRecord = (Button)v.findViewById(R.id.buttonPlayRecord);
 
@@ -44,6 +45,34 @@ public class StudentHomePageFragment extends Fragment {
         displayMyInfo(mStudent, textViewHello, textViewYourScore, textViewScore ,textViewLevel);
 
 //        setPlayButtons(buttonPlayWord, buttonPlayRecord);
+        buttonPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = null;
+                switch(mStudent.getmGameType())
+                {
+                    case 1:
+                        intent = new Intent(getActivity(), AudioRecognitionLevel.class);
+                        intent.putExtra("level", Integer.toString(mStudent.getmLevel()));
+                        intent.putExtra("id", mStudent.getmId());
+                        startActivity(intent);
+                        ((Activity) getActivity()).overridePendingTransition(0, 0);
+                        break;
+                    case 2:
+                        intent = new Intent(getActivity(), PictureRecognitionLevel.class);
+                        intent.putExtra("level", Integer.toString(mStudent.getmLevel()));
+                        intent.putExtra("id", mStudent.getmId());
+                        startActivity(intent);
+                        ((Activity) getActivity()).overridePendingTransition(0, 0);
+                        break;
+                }
+//                intent.putExtra("level", Integer.toString(mStudent.getmLevel()));
+//                intent.putExtra("id", mStudent.getmId());
+//                startActivity(intent);
+//                ((Activity) getActivity()).overridePendingTransition(0, 0);
+            }
+        });
+
         buttonPlayWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

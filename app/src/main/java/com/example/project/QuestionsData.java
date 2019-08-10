@@ -33,7 +33,6 @@ public class QuestionsData {
         mSizeOfLevel1 = questionsLevel1.size();
 
         //Level 2 questions
-        questionsLevel2.add(new Question("מוצץ", "https://imagizer.imageshack.com/img923/6172/7vmOw4.png", R.raw.motsets, 2, 0));
         questionsLevel2.add(new Question("עץ", "https://imagizer.imageshack.com/img922/2371/PGyfTj.png", R.raw.ets, 2, 1));
         questionsLevel2.add(new Question("תפוח", "https://imagizer.imageshack.com/img924/3873/bI3UFj.png", R.raw.tapuah, 2, 2));
         questionsLevel2.add(new Question("פרפר", "https://imagizer.imageshack.com/img923/657/qVfkgx.png", R.raw.parpar, 2, 3));
@@ -63,6 +62,7 @@ public class QuestionsData {
         questionsLevel3.add(new Question("מחבת", "https://imagizer.imageshack.com/img923/9826/41E9wr.png", R.raw.mahvat, 3, 6));
         questionsLevel3.add(new Question("מברשת שיניים", "https://imagizer.imageshack.com/img924/2352/4As6x2.png", R.raw.mivreshet_shinaim, 3, 7));
         questionsLevel3.add(new Question("אבטיח", "https://imagizer.imageshack.com/img921/923/h4x8ZO.png", R.raw.avatiach, 3, 8));
+        questionsLevel3.add(new Question("מוצץ", "https://imagizer.imageshack.com/img923/6172/7vmOw4.png", R.raw.motsets, 3, 9));
 
         mSizeOfLevel3 = questionsLevel3.size();
 

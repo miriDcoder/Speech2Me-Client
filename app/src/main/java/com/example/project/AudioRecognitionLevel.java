@@ -59,11 +59,10 @@ public class AudioRecognitionLevel extends GameLevel {
         goToNextQuestion = findViewById(R.id.buttonNextQuestion);
         textPressToContinue = findViewById(R.id.textViewPressToContinue);
         Intent intent = getIntent();
-
         mLevel = Integer.parseInt(intent.getStringExtra("level"));
         mId = intent.getStringExtra("id");
         questions.makeQuestionList();
-
+        sizeOfLevel = questions.getSizeOfLevel(mLevel);
         answeredQuestions = new int [questions.getSizeOfLevel(mLevel)];
         getNextQuestion(imageClue, true);
 
@@ -110,6 +109,7 @@ public class AudioRecognitionLevel extends GameLevel {
                         imageClue.setVisibility(View.INVISIBLE);
                         questionStatistics.add((AudioRecognitionQuestion)mQuestion);
                         questionNumber++;
+                        succeededQuestions++;
                         mQuestion.IncreasemScore();
                         getNextQuestion(imageClue, true);
                     } else {
@@ -137,8 +137,8 @@ public class AudioRecognitionLevel extends GameLevel {
                         mMediaPlayerListen.stop();
                         pause.setVisibility(View.INVISIBLE);
                         play.setVisibility(View.VISIBLE);
-                        int score = mQuestion.GetmScore();
-                        mQuestion.SetmScore(score++);
+                        int score = ((Question)mQuestion).GetmScore();
+                        mQuestion.IncreasemScore();
                     }
                 });
                 mMediaPlayerListen.start();
@@ -208,6 +208,7 @@ public class AudioRecognitionLevel extends GameLevel {
                 });
                 builder.setNegativeButton("כן", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        questionNumber++;
                         getNextQuestion(imageClue, true);
                         textClue.setVisibility(View.VISIBLE);
                     }

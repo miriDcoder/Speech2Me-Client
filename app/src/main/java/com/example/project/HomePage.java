@@ -40,11 +40,11 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         currUser = DbUtils.GetUserById(db.makeUserList(), id);
 
         //when going to home page from game
-        if (newScore != null){
-            int score = Integer.parseInt(newScore);
-            Student student = (Student)currUser;
-            student.setmScore(score);
-        }
+//        if (newScore != null){
+//            int score = Integer.parseInt(newScore);
+//            Student student = (Student)currUser;
+//            student.setmScore(score);
+//        }
         if (savedInstanceState==null) {
             moveToHomePage();
             navigationView.setCheckedItem(R.id.nav_home_page);
@@ -98,7 +98,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
             drawer.closeDrawer(GravityCompat.START);
         }
         else {
-            super.onBackPressed();
+            moveToHomePage();
         }
     }
 }

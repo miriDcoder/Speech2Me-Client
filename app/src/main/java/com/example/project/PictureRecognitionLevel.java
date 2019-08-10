@@ -70,6 +70,7 @@ public class PictureRecognitionLevel extends GameLevel{
         mId= intent.getStringExtra("id");
         questions.makeQuestionList();
         answeredQuestions = new int [questions.getSizeOfLevel(mLevel)];
+        sizeOfLevel = questions.getSizeOfLevel(mLevel);
         getNextQuestion(imgWord, false);
 
         answer.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +124,7 @@ public class PictureRecognitionLevel extends GameLevel{
                         setBirdAnswerVisibility(imageTryAgain, textTryAgain, imgWord);
                         questionStatistics.add((PictureRegocnitionQuestion) mQuestion);
                         questionNumber++;
+                        succeededQuestions++;
                         mQuestion.IncreasemScore();
                         getNextQuestion(imgWord, false);
                     } else {    //Answer is incorrect, try again
@@ -203,11 +205,11 @@ public class PictureRecognitionLevel extends GameLevel{
                 });
                 builder.setNegativeButton("כן", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        questionNumber++;
                         getNextQuestion(imgWord, false);
                         textClue.setVisibility(View.VISIBLE);
                     }
                 });
-
                 // create and show the alert dialog
                 AlertDialog dialog = builder.create();
                 dialog.show();

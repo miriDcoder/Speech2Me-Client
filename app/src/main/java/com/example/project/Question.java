@@ -67,6 +67,7 @@ public class Question {
     {
         return this.mScore;
     }
+
     public boolean IsClueUsed()
     {
         return this.mIsClueUsed;

@@ -10,12 +10,12 @@ public class DataBase {
         users.add(new Teacher("shula@gmail.com", "1234", "שולה", "כץ", "Rehovot", "1001"));
         users.add(new Teacher("dana@gmail.com", "1234", "דנה", "Levi", "Tel Aviv", "1002"));
 
-        users.add(new Student("dan@gmail.com", "1234", "דן", "Gan", "Rehovot", "0001", 1, "12", 0, "1001"));
-        users.add(new Student("ofer@gmail.com", "1234", "עופר", "Feder", "Rehovot", "0002", 1, "12", 0, "1001"));
-        users.add(new Student("miri@gmail.com", "1234", "מירי", "לוי", "Rehovot", "0003", 2, "11", 0, "1001"));
-        users.add(new Student("daniel@gmail.com", "1234", "דניאל", "Levinson", "Tel Aviv", "0004", 1, "14", 0, "1002"));
-        users.add(new Student("roni@gmail.com", "1234", "רוני", "Shaham", "Tel Aviv", "0005", 1, "15", 0, "1002"));
-        users.add(new Student("gal@gmail.com", "1234","גל", "Cohen", "Tel Aviv", "0006", 1, "22", 0, "1002"));
+        users.add(new Student("dan@gmail.com", "1234", "דן", "Gan", "Rehovot", "0001", 1, "12", 0, "1001", 1));
+        users.add(new Student("ofer@gmail.com", "1234", "עופר", "Feder", "Rehovot", "0002", 1, "12", 0, "1001", 1));
+        users.add(new Student("miri@gmail.com", "1234", "מירי", "לוי", "Rehovot", "0003", 2, "11", 0, "1001", 1));
+        users.add(new Student("daniel@gmail.com", "1234", "דניאל", "Levinson", "Tel Aviv", "0004", 1, "14", 0, "1002", 2));
+        users.add(new Student("roni@gmail.com", "1234", "רוני", "Shaham", "Tel Aviv", "0005", 1, "15", 0, "1002", 2));
+        users.add(new Student("gal@gmail.com", "1234","גל", "Cohen", "Tel Aviv", "0006", 1, "22", 0, "1002", 2));
         ((Teacher) users.get(0)).getmStudents().add((Student) users.get(2));
         ((Teacher) users.get(0)).getmStudents().add((Student) users.get(3));
         ((Teacher) users.get(0)).getmStudents().add((Student) users.get(4));

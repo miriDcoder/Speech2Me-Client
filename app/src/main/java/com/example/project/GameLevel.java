@@ -18,10 +18,11 @@ import com.squareup.picasso.Picasso;
 public abstract class GameLevel extends AppCompatActivity {
     public QuestionsData questions = new QuestionsData();
     protected Question mQuestion;
-    protected int sizeOfLevel = 6;
+    protected int sizeOfLevel;
     protected int questionNumber = 0;
     protected int REQUEST_ANSWER = 200;
     protected int mLevel;
+    protected int succeededQuestions = 0;
     protected final int REQUEST_PREMISSION_CODE = 1000;
     protected int[] answeredQuestions;
     protected String mId;
@@ -39,14 +40,14 @@ public abstract class GameLevel extends AppCompatActivity {
     protected TextView textGoodJob;
     protected TextView textPressToContinue;
     protected MediaRecorder mMediaRecorder;
-
-
+    protected final int audioGame = 1;
+    protected final int pictureGame = 2;
 
     protected void moveToHomePage(String iCurrUserId)
     {
         Intent intent = new Intent(this, HomePage.class);
         intent.putExtra("id", iCurrUserId);
-        intent.putExtra("newScore", mQuestion.GetmScore());
+//        intent.putExtra("newScore", mQuestion.GetmScore());
         startActivity(intent);
     }
 
@@ -103,6 +104,7 @@ public abstract class GameLevel extends AppCompatActivity {
 
         //continue to next question
         String imagePath;
+        System.out.println("************"+sizeOfLevel);
         if (questionNumber < sizeOfLevel) {
             do {
                 currQuestion = questions.getRandomQuestion(mLevel);
@@ -123,6 +125,12 @@ public abstract class GameLevel extends AppCompatActivity {
         else {
             String text = String.format("כל הכבוד! סיימת את שלב %d!", mLevel);
             //SEND questionsStatistics TO SERVER AND DELETE IT FROM MEMORY
+            //UPDATE score
+            // SEND to server "mQuestion.GetmScore()"
+
+            if (succeededQuestions == sizeOfLevel){
+                // SEND to server "true" on increae level
+            }
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(this, text, duration);
             toast.show();

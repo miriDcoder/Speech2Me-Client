@@ -8,16 +8,18 @@ public class Student extends User implements Parcelable {
     private String mAge;
     private int mScore;
     private String mTeacherId;
+    private int mGameType;
 
     public Student(String iEmail, String iPassword, String iFirstName,
                    String iLastName, String iCity, String iId,
                    int iLevel, String iAge, int iScore,
-                   String iTeacherId){
+                   String iTeacherId, int iGameType){
         super(iEmail, iPassword, iFirstName, iLastName, iCity, iId);
         this.mLevel = iLevel;
         this.mAge = iAge;
         this.mScore = iScore;
         this.mTeacherId = iTeacherId;
+        this.mGameType = iGameType;
         setmType(eType.STUDENT);
     }
 
@@ -51,6 +53,10 @@ public class Student extends User implements Parcelable {
 
     public int getmLevel() {
         return mLevel;
+    }
+
+    public int getmGameType() {
+        return mGameType;
     }
 
     public void setmLevel(int mLevel) {
