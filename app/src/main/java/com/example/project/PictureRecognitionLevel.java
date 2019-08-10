@@ -1,35 +1,17 @@
 package com.example.project;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.RequestFuture;
-import com.android.volley.toolbox.Volley;
-import com.squareup.picasso.Picasso;
-
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -226,34 +208,38 @@ public class PictureRecognitionLevel extends GameLevel{
             inFile = new FileInputStream(mPathSave);
             byte[] bytes = fileToBytes();//inputStreamToByteArray(inFile);
             String stringBytes = new String(bytes);
-            try {
-                JSONObject jsonBody = new JSONObject();
-                jsonBody.put("answer", mQuestion.GetmAnswer());
-                jsonBody.put("email", "ofer.feder@gmail.com");
-                jsonBody.put("audio_file", stringBytes);
-                final RequestQueue queue = Volley.newRequestQueue(this);
-                RequestFuture<JSONObject> future = RequestFuture.newFuture();
-                //final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, future, future);
-                System.out.println("+++++++++++++++++++++++" + stringBytes);
-
-                final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                System.out.print("****************************" + response);
-                                iButton.setText(response.toString());
-                            }
-                        },  new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        System.out.print("ERROR!");
-                    }
-                });
-                queue.add(jsonRequest);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            System.out.println("!!!!!!OFER!!!!!");
+            System.out.println(stringBytes);
+            System.out.println("!!!!!!DONE!!!!!");
+            writeToFile(stringBytes, PictureRecognitionLevel.this);
+//            try {
+//                JSONObject jsonBody = new JSONObject();
+//                jsonBody.put("answer", mQuestion.GetmAnswer());
+//                jsonBody.put("email", "ofer.feder@gmail.com");
+//                jsonBody.put("audio_file", stringBytes);
+//                final RequestQueue queue = Volley.newRequestQueue(this);
+//                RequestFuture<JSONObject> future = RequestFuture.newFuture();
+//                //final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, future, future);
+//                System.out.println("+++++++++++++++++++++++" + stringBytes);
+//
+//                final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
+//                        new Response.Listener<JSONObject>() {
+//                            @Override
+//                            public void onResponse(JSONObject response) {
+//                                System.out.print("****************************" + response);
+//                                iButton.setText(response.toString());
+//                            }
+//                        },  new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        System.out.print("ERROR!");
+//                    }
+//                });
+//                queue.add(jsonRequest);
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -24,8 +24,6 @@ public class StudentHomePageFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_student_home_page, container, false);
-
-
         TextView textViewHello = (TextView)v.findViewById(R.id.textViewHeader);
         TextView textViewYourScore = (TextView)v.findViewById(R.id.textViewYourScore);
         TextView textViewScore = (TextView)v.findViewById(R.id.textViewScore);
