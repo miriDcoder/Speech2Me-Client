@@ -4,18 +4,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background_clean"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_clean"
     >
 
     <ImageView
-        android:id="@+id/imageViewScoreBackground"
+        android:id="@+id/imageViewAccountBackground"
         android:layout_width="368dp"
-        android:layout_height="700dp"
+        android:layout_height="500dp"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="32dp"
@@ -24,6 +24,7 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewHeader" />
 
     <TextView
@@ -241,6 +242,8 @@
         android:layout_marginLeft="8dp"
         android:layout_marginBottom="256dp"
         android:enabled="false"
+        android:background="@drawable/shape_button"
+        android:textColor="#FFFF"
         android:text="שמור שינויים"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -258,6 +261,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:text="עריכת פרטים"
+        android:background="@drawable/shape_button"
+        android:textColor="#FFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

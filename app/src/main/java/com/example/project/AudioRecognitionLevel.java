@@ -10,6 +10,7 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.INotificationSideChannel;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -64,7 +65,7 @@ public class AudioRecognitionLevel extends GameLevel {
         questions.makeQuestionList();
 
         answeredQuestions = new int [questions.getSizeOfLevel(mLevel)];
-        getNextQuestion(imageClue);
+        getNextQuestion(imageClue, true);
 
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,50 +73,50 @@ public class AudioRecognitionLevel extends GameLevel {
                 //play.setEnabled(false);
                 play.isClickable();
                 System.out.println("========== /is listen enabled(should be no):" + play.isClickable());
-                    if (!mIsRecording) //start recording
-                    {
-                        answer.setText("עצור הקלטה");
-                        if (checkPermissionFromDevice()) {
-                            mPathSave = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
-                                    UUID.randomUUID().toString() + "_audio_record.mp3";
-                            setupMediaRecorder();
-                            try {
-                                mMediaRecorder.prepare();
-                                mMediaRecorder.start();
-                                mIsRecording = true;
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            requestPermission();
+                if (!mIsRecording) //start recording
+                {
+                    answer.setText("עצור הקלטה");
+                    if (checkPermissionFromDevice()) {
+                        mPathSave = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
+                                UUID.randomUUID().toString() + "_audio_record.mp3";
+                        setupMediaRecorder();
+                        try {
+                            mMediaRecorder.prepare();
+                            mMediaRecorder.start();
+                            mIsRecording = true;
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
                     } else {
-                        answer.setText("אנא המתן");
-                        mMediaRecorder.stop();
-                        mIsRecording = false;
-                        Thread thread = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-//                         isCorrectAnswer(mMediaRecorder, answer);
-                            }
-                        });
-                        thread.start();
-                        mMediaRecorder.reset();
-                        mMediaRecorder.release();
-                        mMediaRecorder = null;
-                        //TODO: sent answer to server and get result in REQUEST_ANSWER
-                        if (REQUEST_ANSWER == 200) {
-                            setBirdAnswerVisibility(imageGoodJob, textGoodJob, play);
-//                            setBirdAnswerVisibility(imageTryAgain, textTryAgain);
-                            questionStatistics.add((AudioRecognitionQuestion)mQuestion);
-                            questionNumber++;
-                            mQuestion.IncreasemScore();
-                            getNextQuestion(imageClue);
-                        } else {
-                            setBirdAnswerVisibility(imageTryAgain, textTryAgain, play);
-                            mQuestion.IncreasemNumOfTries();
-                        }
+                        requestPermission();
                     }
+                } else {
+                    answer.setText("אנא המתן");
+                    mMediaRecorder.stop();
+                    mIsRecording = false;
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+//                         isCorrectAnswer(mMediaRecorder, answer);
+                        }
+                    });
+                    thread.start();
+                    mMediaRecorder.reset();
+                    mMediaRecorder.release();
+                    mMediaRecorder = null;
+                    //TODO: sent answer to server and get result in REQUEST_ANSWER
+                    if (REQUEST_ANSWER == 200) {
+                        setBirdAnswerVisibility(imageGoodJob, textGoodJob, play);
+                        imageClue.setVisibility(View.INVISIBLE);
+                        questionStatistics.add((AudioRecognitionQuestion)mQuestion);
+                        questionNumber++;
+                        mQuestion.IncreasemScore();
+                        getNextQuestion(imageClue, true);
+                    } else {
+                        setBirdAnswerVisibility(imageTryAgain, textTryAgain, play);
+                        mQuestion.IncreasemNumOfTries();
+                    }
+                }
                 //play.setEnabled(true);
                 play.setClickable(true);
                 System.out.println("========== /is play enabled(should be yes):" + play.isClickable());
@@ -130,21 +131,21 @@ public class AudioRecognitionLevel extends GameLevel {
                 System.out.println("========== /is answer enabled(should be no):" + answer.isClickable());
                 int audioPath = ((AudioRecognitionQuestion) mQuestion).getmAudioPath();
                 mMediaPlayerListen = MediaPlayer.create(AudioRecognitionLevel.this, audioPath);
-                    mMediaPlayerListen.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mp) {
-                            mMediaPlayerListen.stop();
-                            pause.setVisibility(View.INVISIBLE);
-                            play.setVisibility(View.VISIBLE);
-                            int score = mQuestion.GetmScore();
-                            mQuestion.SetmScore(score++);
-                        }
-                    });
-                    mMediaPlayerListen.start();
-                    play.setVisibility(View.INVISIBLE);
-                    pause.setVisibility(View.VISIBLE);
+                mMediaPlayerListen.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        mMediaPlayerListen.stop();
+                        pause.setVisibility(View.INVISIBLE);
+                        play.setVisibility(View.VISIBLE);
+                        int score = mQuestion.GetmScore();
+                        mQuestion.SetmScore(score++);
+                    }
+                });
+                mMediaPlayerListen.start();
+                play.setVisibility(View.INVISIBLE);
+                pause.setVisibility(View.VISIBLE);
                 //answer.setEnabled(true);
-                    answer.setClickable(true);
+                answer.setClickable(true);
                 System.out.println("========== /is answer enabled(should be yes):" + answer.isClickable());
 
             }
@@ -207,7 +208,7 @@ public class AudioRecognitionLevel extends GameLevel {
                 });
                 builder.setNegativeButton("כן", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        getNextQuestion(imageClue);
+                        getNextQuestion(imageClue, true);
                         textClue.setVisibility(View.VISIBLE);
                     }
                 });

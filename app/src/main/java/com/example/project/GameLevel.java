@@ -3,7 +3,6 @@ package com.example.project;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.Image;
 import android.media.MediaRecorder;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -15,8 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 
 public abstract class GameLevel extends AppCompatActivity {
     public QuestionsData questions = new QuestionsData();
@@ -53,9 +50,9 @@ public abstract class GameLevel extends AppCompatActivity {
         startActivity(intent);
     }
 
-    protected void setBirdAnswerVisibility(ImageView iImage, TextView iText, ImageView iImagePlay){
-        iImage.setVisibility(View.VISIBLE);
-        iText.setVisibility(View.VISIBLE);
+    protected void setBirdAnswerVisibility(ImageView iImageBird, TextView iTextBird, ImageView iImagePlay){
+        iImageBird.setVisibility(View.VISIBLE);
+        iTextBird.setVisibility(View.VISIBLE);
         textPressToContinue.setVisibility(View.VISIBLE);
         answer.setVisibility(View.INVISIBLE);
         textClue.setVisibility(View.INVISIBLE);
@@ -102,19 +99,24 @@ public abstract class GameLevel extends AppCompatActivity {
         mMediaRecorder.setOutputFile(mPathSave);
     }
 
-    protected void getNextQuestion(ImageView iImage){
+    protected void getNextQuestion(ImageView iImage, boolean isAudio){
 
         //continue to next question
-        iImage.setVisibility(View.INVISIBLE);
+        String imagePath;
         if (questionNumber < sizeOfLevel) {
             do {
                 currQuestion = questions.getRandomQuestion(mLevel);
             } while (answeredQuestions[currQuestion.GetmId()] == 1);
             answeredQuestions[currQuestion.GetmId()] = 1;
-            mQuestion = new AudioRecognitionQuestion(currQuestion);
-            System.out.println("^^^^^^^^^^^^"+((AudioRecognitionQuestion) mQuestion).GetmImageClue());
-            String imageCluePath = ((AudioRecognitionQuestion) mQuestion).GetmImageClue();
-            Picasso.with(this).load(imageCluePath).into(iImage);
+            if (isAudio){
+                mQuestion = new AudioRecognitionQuestion(currQuestion);
+                imagePath = ((AudioRecognitionQuestion) mQuestion).GetmImageClue();
+            }
+            else{
+                mQuestion = new PictureRegocnitionQuestion(currQuestion);
+                imagePath = ((PictureRegocnitionQuestion) mQuestion).getmImgPath();
+            }
+            Picasso.with(this).load(imagePath).into(iImage);
             answer.setText("ענה");
         }
         //finished level

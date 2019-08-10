@@ -5,7 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AudioRecognitionLevel"
+    android:background="@drawable/background_clean"
     android:exported="true">
+
+    <ImageView
+        android:id="@+id/imageViewAboutBackground"
+        android:layout_width="368dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/shape_rectangle_score"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewAboutHeadline"

@@ -70,7 +70,7 @@ public class PictureRecognitionLevel extends GameLevel{
         mId= intent.getStringExtra("id");
         questions.makeQuestionList();
         answeredQuestions = new int [questions.getSizeOfLevel(mLevel)];
-        getNextQuestion(imgWord);
+        getNextQuestion(imgWord, false);
 
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,15 +118,14 @@ public class PictureRecognitionLevel extends GameLevel{
 
 
                     //TODO: sent answer to server and get result in REQUEST_ANSWER
-                    if (REQUEST_ANSWER == 200) {
+                    if (REQUEST_ANSWER == 200) {    //Answer is correct, next question
 //                        setBirdAnswerVisibility(imageGoodJob, textGoodJob);
                         setBirdAnswerVisibility(imageTryAgain, textTryAgain, imgWord);
                         questionStatistics.add((PictureRegocnitionQuestion) mQuestion);
                         questionNumber++;
-
                         mQuestion.IncreasemScore();
-                        getNextQuestion(imgWord);
-                    } else {
+                        getNextQuestion(imgWord, false);
+                    } else {    //Answer is incorrect, try again
                         setBirdAnswerVisibility(imageTryAgain, textTryAgain, imgWord);
                         mQuestion.IncreasemNumOfTries();
                     }
@@ -204,7 +203,7 @@ public class PictureRecognitionLevel extends GameLevel{
                 });
                 builder.setNegativeButton("כן", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        getNextQuestion(imgWord);
+                        getNextQuestion(imgWord, false);
                         textClue.setVisibility(View.VISIBLE);
                     }
                 });
@@ -305,7 +304,7 @@ public class PictureRecognitionLevel extends GameLevel{
         return os.toByteArray();
     }
 
-     private void writeToFile(String data, Context context) {
+    private void writeToFile(String data, Context context) {
         try {
             File root = new File(Environment.getExternalStorageDirectory(), "Notes");
             if (!root.exists()) {
