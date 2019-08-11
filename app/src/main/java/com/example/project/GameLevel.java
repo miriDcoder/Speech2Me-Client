@@ -1,6 +1,7 @@
 package com.example.project;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
@@ -40,6 +41,7 @@ public abstract class GameLevel extends AppCompatActivity {
     protected TextView textGoodJob;
     protected TextView textPressToContinue;
     protected MediaRecorder mMediaRecorder;
+    protected boolean mIsAudioResourcesFree;
     protected final int audioGame = 1;
     protected final int pictureGame = 2;
 
@@ -104,7 +106,6 @@ public abstract class GameLevel extends AppCompatActivity {
 
         //continue to next question
         String imagePath;
-        System.out.println("************"+sizeOfLevel);
         if (questionNumber < sizeOfLevel) {
             do {
                 currQuestion = questions.getRandomQuestion(mLevel);
@@ -124,6 +125,7 @@ public abstract class GameLevel extends AppCompatActivity {
         //finished level
         else {
             String text = String.format("כל הכבוד! סיימת את שלב %d!", mLevel);
+            messageToUser(text);
             //SEND questionsStatistics TO SERVER AND DELETE IT FROM MEMORY
             //UPDATE score
             // SEND to server "mQuestion.GetmScore()"
@@ -131,9 +133,6 @@ public abstract class GameLevel extends AppCompatActivity {
             if (succeededQuestions == sizeOfLevel){
                 // SEND to server "true" on increae level
             }
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(this, text, duration);
-            toast.show();
             for (int i= 0; i< questions.getSizeOfLevel(mLevel);i++){
                 answeredQuestions[i] = 0;
             }
@@ -145,7 +144,16 @@ public abstract class GameLevel extends AppCompatActivity {
             {
                 Thread.currentThread().interrupt();
             }
+
             moveToHomePage(mId);
         }
+    }
+
+    protected void messageToUser(CharSequence text)
+    {
+        Context context = getBaseContext();
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 }

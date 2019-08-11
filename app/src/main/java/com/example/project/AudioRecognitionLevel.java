@@ -1,6 +1,5 @@
 package com.example.project;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -10,7 +9,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,7 +24,6 @@ public class AudioRecognitionLevel extends GameLevel {
     private ImageView play;
     private ImageView pause;
     private MediaPlayer mMediaPlayerListen = null;
-    private boolean mIsAudioResourcesFree;
     private ArrayList<AudioRecognitionQuestion> questionStatistics = new ArrayList<AudioRecognitionQuestion>();
 
     @Override
@@ -67,7 +64,6 @@ public class AudioRecognitionLevel extends GameLevel {
                 else if(!mMediaPlayerListen.isPlaying())
                 {
                     System.out.println("...........RECORDING. MEDIA PLAYER: " + mMediaPlayerListen.isPlaying());
-                    mIsAudioResourcesFree = false;
                     if (!mIsRecording) //start recording
                     {
                         answer.setText("עצור הקלטה");
@@ -78,7 +74,6 @@ public class AudioRecognitionLevel extends GameLevel {
                             try {
                                 mMediaRecorder.prepare();
                                 mMediaRecorder.start();
-                                mIsRecording = true;
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -88,7 +83,6 @@ public class AudioRecognitionLevel extends GameLevel {
                     } else {
                         answer.setText("אנא המתן");
                         mMediaRecorder.stop();
-                        mIsRecording = false;
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -113,8 +107,7 @@ public class AudioRecognitionLevel extends GameLevel {
                             mQuestion.IncreasemNumOfTries();
                         }
                     }
-                    mIsAudioResourcesFree = true;
-                    System.out.println("...........DONE RECORDING. AUDIO RES: " + mIsAudioResourcesFree);
+                    mIsRecording = !mIsRecording;
                 }
             }
         });
@@ -124,8 +117,6 @@ public class AudioRecognitionLevel extends GameLevel {
             public void onClick(View v) {
                 if(!mIsRecording)
                 {
-                    mIsAudioResourcesFree = false;
-                    System.out.println("...........PLAYING. AUDIO RES: " + mIsAudioResourcesFree);
                     int audioPath = ((AudioRecognitionQuestion) mQuestion).getmAudioPath();
                     mMediaPlayerListen = MediaPlayer.create(AudioRecognitionLevel.this, audioPath);
                     mMediaPlayerListen.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -141,8 +132,6 @@ public class AudioRecognitionLevel extends GameLevel {
                     mMediaPlayerListen.start();
                     play.setVisibility(View.INVISIBLE);
                     pause.setVisibility(View.VISIBLE);
-                    mIsAudioResourcesFree = true;
-                    System.out.println("...........DONE PLAYING. AUDIO RES: " + mIsAudioResourcesFree);
                 }
             }
         });
@@ -196,7 +185,6 @@ public class AudioRecognitionLevel extends GameLevel {
                 AlertDialog.Builder builder = new AlertDialog.Builder(AudioRecognitionLevel.this);
                 builder.setMessage("האם לעבור לשאלה הבאה?");
 
-                // add the buttons
                 builder.setPositiveButton("לנסות שוב", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -205,8 +193,9 @@ public class AudioRecognitionLevel extends GameLevel {
                 builder.setNegativeButton("כן", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         questionNumber++;
-                        getNextQuestion(imageClue, true);
                         textClue.setVisibility(View.VISIBLE);
+                        imageClue.setVisibility(View.INVISIBLE);
+                        getNextQuestion(imageClue, true);
                     }
                 });
 
@@ -216,13 +205,5 @@ public class AudioRecognitionLevel extends GameLevel {
 
             }
         });
-    }
-
-    private void messageToUser(CharSequence text)
-    {
-        Context context = getBaseContext();
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
     }
 }

@@ -33,6 +33,7 @@ public class QuestionsData {
         mSizeOfLevel1 = questionsLevel1.size();
 
         //Level 2 questions
+        questionsLevel2.add(new Question("שמש", "https://imagizer.imageshack.com/img923/5425/3pufVT.png", R.raw.shemesh, 2, 0));
         questionsLevel2.add(new Question("עץ", "https://imagizer.imageshack.com/img922/2371/PGyfTj.png", R.raw.ets, 2, 1));
         questionsLevel2.add(new Question("תפוח", "https://imagizer.imageshack.com/img924/3873/bI3UFj.png", R.raw.tapuah, 2, 2));
         questionsLevel2.add(new Question("פרפר", "https://imagizer.imageshack.com/img923/657/qVfkgx.png", R.raw.parpar, 2, 3));
@@ -46,7 +47,6 @@ public class QuestionsData {
         questionsLevel2.add(new Question("פרח", "https://imagizer.imageshack.com/img924/6007/EzaUxS.png", R.raw.perah, 2, 11));
         questionsLevel2.add(new Question("אריה", "https://imagizer.imageshack.com/img924/7302/SDuNXV.png", R.raw.arye, 2, 12));
         questionsLevel2.add(new Question("רכבת", "https://imagizer.imageshack.com/img921/6337/epxIOF.png", R.raw.rakevet, 2, 13));
-        questionsLevel2.add(new Question("שמש", "https://imagizer.imageshack.com/img923/5425/3pufVT.png", R.raw.shemesh, 2, 14));
 
 
 
