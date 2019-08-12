@@ -114,13 +114,15 @@ public abstract class GameLevel extends AppCompatActivity {
             if (isAudio){
                 mQuestion = new AudioRecognitionQuestion(currQuestion);
                 imagePath = ((AudioRecognitionQuestion) mQuestion).GetmImageClue();
+                answer.setText(R.string.answer_audio);
             }
             else{
                 mQuestion = new PictureRegocnitionQuestion(currQuestion);
                 imagePath = ((PictureRegocnitionQuestion) mQuestion).getmImgPath();
+                answer.setText(R.string.answer_picture);
             }
             Picasso.with(this).load(imagePath).into(iImage);
-            answer.setText("ענה");
+            //answer.setText(R.string.answer);
         }
         //finished level
         else {
