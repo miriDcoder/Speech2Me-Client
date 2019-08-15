@@ -7,9 +7,7 @@ public abstract class User {
     private String mLastName;
     private String mCity;
     private String mId;
-    private eType mType;
-
-    enum eType{TEACHER, STUDENT}
+    private String mType;
 
     public User()
     {
@@ -25,6 +23,15 @@ public abstract class User {
         this.mLastName = iLastName;
         this.mCity = iCity;
         this.mId = iId;
+    }
+
+    public User(String iFirstName, String iLastName, String iId,
+                String iType)
+    {
+        this.mFirstName = iFirstName;
+        this.mLastName = iLastName;
+        this.mId = iId;
+        this.mType = iType;
     }
 
     public String getmCity() {
@@ -75,11 +82,11 @@ public abstract class User {
         this.mPassword = mPassword;
     }
 
-    public eType getmType(){
+    public String getmType(){
         return mType;
     }
 
-    public void setmType(eType mType){
-        this.mType=mType;
+    public void setmType(String mType){
+        this.mType = mType;
     }
 }

@@ -9,7 +9,7 @@ public class Teacher extends User implements Parcelable {
 
     private ArrayList<Student> mStudents;
     private int mNumOfStudents;
-    private eType mType = eType.TEACHER;
+    private String mType = "teacher";
 
     public Teacher(String iEmail, String iPassword, String iFirstName,
                    String iLastName, String iCity, String iId)
@@ -17,7 +17,7 @@ public class Teacher extends User implements Parcelable {
         super(iEmail, iPassword, iFirstName, iLastName, iCity, iId);
         this.mStudents = new ArrayList<Student>();
         this.mNumOfStudents = 0;
-        setmType(eType.TEACHER);
+        setmType("teacher");
     }
 
     public Teacher(String iEmail, String iPassword, String iFirstName,
@@ -26,6 +26,14 @@ public class Teacher extends User implements Parcelable {
         super(iEmail, iPassword, iFirstName, iLastName, "", "");
         this.mStudents = new ArrayList<Student>();
         this.mNumOfStudents = 0;
+    }
+
+    public Teacher(String iFirstName, String iLastName, String iId,
+                   String iNumOfStudents, boolean stam)
+    {
+        super(iFirstName, iLastName, iId, "teacher");
+        this.mNumOfStudents = Integer.parseInt(iNumOfStudents);
+        System.out.println("IN TEACHER CTOR");
     }
 
     protected Teacher(Parcel in) {

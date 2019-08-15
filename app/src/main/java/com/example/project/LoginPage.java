@@ -20,12 +20,10 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.concurrent.TimeUnit;
-
 public class LoginPage extends AppCompatActivity {
     EditText email, password;
     DataBase db = new DataBase();
-    JSONObject mResponse = null;
+    //JSONObject mResponse = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,21 +93,21 @@ public class LoginPage extends AppCompatActivity {
         });
     }
 
-    private boolean waitForResponse(){
-        for(int wait=0; wait<10;wait++){
-            try{
-                TimeUnit.SECONDS.sleep(1);
-            }
-            catch (InterruptedException e){
-                e.printStackTrace();
-                break;
-            }
-            if(mResponse!=null){
-                return true;
-            }
-        }
-        return false;
-    }
+//    private boolean waitForResponse(){
+//        for(int wait=0; wait<10;wait++){
+//            try{
+//                TimeUnit.SECONDS.sleep(1);
+//            }
+//            catch (InterruptedException e){
+//                e.printStackTrace();
+//                break;
+//            }
+//            if(mResponse!=null){
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     private void getUserFromDatabase(String iEmail, String iPassword) {
         eUserValidation validation = eUserValidation.invalidUser;
@@ -156,14 +154,14 @@ public class LoginPage extends AppCompatActivity {
 
             queue.add(jsonRequest);
             //waitForResponse();
-            if(mResponse != null)
-            {
-                validation = eUserValidation.invalidUser;
-            }
-            else
-            {
-                validation = eUserValidation.validUser;
-            }
+//            if(mResponse != null)
+//            {
+//                validation = eUserValidation.invalidUser;
+//            }
+//            else
+//            {
+//                validation = eUserValidation.validUser;
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -174,6 +172,7 @@ public class LoginPage extends AppCompatActivity {
     {
         Intent intent = new Intent(LoginPage.this, HomePage.class);
         intent.putExtra("id", iCurrUserId);
+        intent.putExtra("user_type", iUserType);
         startActivity(intent);
     }
 

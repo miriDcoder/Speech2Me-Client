@@ -35,6 +35,8 @@
     <string name="contact"><u>צור קשר</u></string>
     <string name="conditions"><u>תנאי שימוש</u></string>
     <string name="play"><u>למשחק</u></string>
+    <string name="teacher_type"><u>teacher</u></string>
+    <string name="student_type"><u>student</u></string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -9,6 +9,7 @@ public class Student extends User implements Parcelable {
     private int mScore;
     private String mTeacherId;
     private int mGameType;
+    private String mGoal;
 
     public Student(String iEmail, String iPassword, String iFirstName,
                    String iLastName, String iCity, String iId,
@@ -20,16 +21,27 @@ public class Student extends User implements Parcelable {
         this.mScore = iScore;
         this.mTeacherId = iTeacherId;
         this.mGameType = iGameType;
-        setmType(eType.STUDENT);
+        setmType("student");
     }
 
     public Student (String iEmail, String iPassword, String iFirstName,
-                    String iLastName, String iTeacherId)
+                    String iLastName, String iTeacherId, String iGoal)
     {
         super(iEmail, iPassword, iFirstName, iLastName, "", "");
         this.mLevel = 0;
         this.mScore = 0;
         this.mTeacherId = iTeacherId;
+        this.mGoal = iGoal;
+    }
+
+    public Student (String iFirstName, String iLastName, String iId,
+                    String iUserType, String iLevel, String iGoal,
+                    String iScore)
+    {
+        super(iFirstName, iLastName, iId, iUserType);
+        this.mLevel = Integer.parseInt(iLevel);
+        this.mGoal = iGoal;
+        this.mScore = Integer.parseInt(iScore);
     }
 
     protected Student(Parcel in) {

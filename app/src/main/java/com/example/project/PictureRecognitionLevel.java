@@ -13,6 +13,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,15 +30,17 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.UUID;
 
 public class PictureRecognitionLevel extends GameLevel{
     private ImageView imgWord;
     private MediaPlayer mAudioCluePlayer;
     private ArrayList<PictureRegocnitionQuestion> questionStatistics = new ArrayList<PictureRegocnitionQuestion>();
-
+    private static final Charset UTF_8 = Charset.forName("UTF-8");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +77,7 @@ public class PictureRecognitionLevel extends GameLevel{
                         answer.setText("עצור הקלטה");
                         if (checkPermissionFromDevice()) {
                             mPathSave = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
-                                    UUID.randomUUID().toString() + "_audio_record.mp3";
+                                    UUID.randomUUID().toString() + "_audio_record.3gp";
                             try {
                                 setupMediaRecorder();
                                 mMediaRecorder.prepare();
@@ -82,7 +94,7 @@ public class PictureRecognitionLevel extends GameLevel{
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
-//                                    isCorrectAnswer(mMediaRecorder, answer);
+                                    isCorrectAnswer(mMediaRecorder, answer);
                                 File recording = new File(mPathSave);
                                 boolean isDeleted = recording.delete();
                                 if (!isDeleted) {
@@ -203,39 +215,46 @@ public class PictureRecognitionLevel extends GameLevel{
         try {
             inFile = new FileInputStream(mPathSave);
             byte[] bytes = fileToBytes();//inputStreamToByteArray(inFile);
-            String stringBytes = new String(bytes);
+            //new String(bytes, "UTF-8");
+            String stringBytes = null;
+            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+                stringBytes = Base64.getMimeEncoder().encodeToString(bytes);
+
+            } else {
+                System.out.println("low API");
+            }
             System.out.println("!!!!!!OFER!!!!!");
             System.out.println(stringBytes);
             System.out.println("!!!!!!DONE!!!!!");
             writeToFile(stringBytes, PictureRecognitionLevel.this);
-//            try {
-//                JSONObject jsonBody = new JSONObject();
-//                jsonBody.put("answer", mQuestion.GetmAnswer());
-//                jsonBody.put("email", "ofer.feder@gmail.com");
-//                jsonBody.put("audio_file", stringBytes);
-//                final RequestQueue queue = Volley.newRequestQueue(this);
-//                RequestFuture<JSONObject> future = RequestFuture.newFuture();
-//                //final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, future, future);
-//                System.out.println("+++++++++++++++++++++++" + stringBytes);
-//
-//                final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
-//                        new Response.Listener<JSONObject>() {
-//                            @Override
-//                            public void onResponse(JSONObject response) {
-//                                System.out.print("****************************" + response);
-//                                iButton.setText(response.toString());
-//                            }
-//                        },  new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        System.out.print("ERROR!");
-//                    }
-//                });
-//                queue.add(jsonRequest);
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
+            try {
+                JSONObject jsonBody = new JSONObject();
+                jsonBody.put("original_text", mQuestion.GetmAnswer());
+                jsonBody.put("email", "ofer.feder@gmail.com");
+                jsonBody.put("audio_file", stringBytes);
+                final RequestQueue queue = Volley.newRequestQueue(this);
+                RequestFuture<JSONObject> future = RequestFuture.newFuture();
+                //final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, future, future);
+                System.out.println("+++++++++++++++++++++++" + stringBytes);
+
+                final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                System.out.print("****************************" + response);
+                                iButton.setText(response.toString());
+                            }
+                        },  new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.print("ERROR!");
+                    }
+                });
+                queue.add(jsonRequest);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -246,6 +265,7 @@ public class PictureRecognitionLevel extends GameLevel{
         File audioFile = new File(mPathSave);
         try {
             if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+
                 bytes = Files.readAllBytes(audioFile.toPath());
 
             } else {

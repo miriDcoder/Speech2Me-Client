@@ -40,13 +40,16 @@ public class SignUp extends AppCompatActivity {
         final EditText editTextPassword = (EditText)findViewById(R.id.editTextPassword);
         final Switch switchIsStudent = (Switch) findViewById(R.id.switchSignupAsStudent);
         final EditText editTextTeacherId = (EditText)findViewById(R.id.editTextTeacherId);
+        final EditText editTextGoalCode = (EditText)findViewById(R.id.editTextGoalCode);
 
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(validateUserDetails(editTextFirstName, editTextLastName, editTextEmail,
-                                    editTextPassword, switchIsStudent.isChecked(), editTextTeacherId)){
+                                    editTextPassword, switchIsStudent.isChecked(), editTextTeacherId,
+                                    editTextGoalCode)){
+                    System.out.println("!!!!!!!!!!! HERE 1");
                     String firstName = editTextFirstName.getText().toString();
                     String lastName = editTextLastName.getText().toString();
                     String email = editTextEmail.getText().toString();
@@ -56,24 +59,31 @@ public class SignUp extends AppCompatActivity {
                     User currUser;
                     //Intent intent;
                     String type = null;
+                    String goal = null;
                     if(switchIsStudent.isChecked())
                     {
+                        goal = editTextGoalCode.getText().toString();
+                        teacherId = editTextTeacherId.getText().toString();
                         //TODO: insert to students db
                         //TODO: insert to teacher to students db
                         currUser = new Student(email, password, firstName,
-                                                        lastName, teacherId);
+                                                        lastName, teacherId, goal);
                         type = "student";
                     }
                     else
                     {
                         //TODO: insert to teacher db
+                        teacherId = null;
+                        System.out.println("In teacher case");
                         currUser = new Teacher(email, password, firstName, lastName);
                         type = "teacher";
+                        goal = "0";
                     }
-                    InsertNewUserToDatabase(currUser, type);
+                    InsertNewUserToDatabase(currUser, type, goal, teacherId);
                 }
                 else
                 {
+                    System.out.println("!!!!!!!!! HERE 2");
                     Context context = getApplicationContext();
                     CharSequence text = "Some details were invalid";
                     int duration = Toast.LENGTH_SHORT;
@@ -101,11 +111,34 @@ public class SignUp extends AppCompatActivity {
 
 
     private boolean validateUserDetails(EditText iFirstName, EditText iLastName, EditText iEmail,
-                                        EditText iPassword, boolean iIsStudent, EditText iTeacherID){
+                                        EditText iPassword, boolean iIsStudent, EditText iTeacherID,
+                                        EditText iGoal){
         return validateName(iFirstName) &&
                                     validateName(iLastName) &&
                                     validateMail(iEmail) &&
-                                    validatePassword(iPassword);
+                                    validatePassword(iPassword) &&
+                                    validateGoal(iGoal, iIsStudent);
+    }
+
+    private boolean validateGoal(EditText iGoal, boolean iIsStudent) {
+        boolean isValid = false;
+        if(iGoal.getText().toString() != "" && iGoal.getText().toString() != " "){
+            try{
+                int num = Integer.parseInt(iGoal.getText().toString());
+                isValid = true;
+            }
+            catch (Exception ex)
+            {
+                isValid = false;
+            }
+        }
+
+        if(!iIsStudent)
+        {
+            isValid = true;
+        }
+
+        return isValid;
     }
 
     private boolean validateName(EditText iName){
@@ -162,9 +195,11 @@ public class SignUp extends AppCompatActivity {
         return isValid;
     }
 
-    private void InsertNewUserToDatabase(User iUser, String iType)
+    private void InsertNewUserToDatabase(User iUser, String iType, String iGoal, String iTeacherId)
     {
         try {
+            System.out.println("In insert New User, type: " + iType);
+            System.out.println("In insert New User, goal: " + iGoal);
             //JSONObject request = new JSONObject(new Gson().toJson(iUser, User.class));
             //System.out.print(request);
             JSONObject jsonBody = new JSONObject();
@@ -173,10 +208,8 @@ public class SignUp extends AppCompatActivity {
             jsonBody.put("password", iUser.getmPassword());
             jsonBody.put("email", iUser.getmEmail());
             jsonBody.put("user_type", iType);
-            if(iType.equals("student"))
-            {
-                jsonBody.put("user_type", iUser.getmType());
-            }
+            jsonBody.put("teacher_id", iTeacherId);
+            jsonBody.put("goal", iGoal);
             RequestQueue queue = Volley.newRequestQueue(this);
             String url ="https://speech-rec-server.herokuapp.com/user_signup/";
 // Request a string response from the provided URL.
@@ -189,6 +222,7 @@ public class SignUp extends AppCompatActivity {
                             responseSignup.setText(response.toString());
                             Intent intent = null;
                             try {
+                                System.out.println(response.getString("id"));
                                 intent = new Intent(SignUp.this, LoginPage.class);
                                 intent.putExtra("id", response.getString("id"));
                                 startActivity(intent);

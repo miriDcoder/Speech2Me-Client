@@ -100,7 +100,7 @@ public class StudentHomePageFragment extends Fragment {
         iTextViewHeader.setText(String.format("שלום, %s!", iStudent.getmFirstName()));
         iTextViewYourScore.setText(String.format("הניקוד שלך"));
         //iTextViewScore.setText(String.format("%d", iStudent.getmScore()));
-        iTextViewScore.setText(String.format("%d", 10));
+        iTextViewScore.setText(String.format("%d", mStudent.getmScore()));
         iTextViewLevel.setText(String.format("שלב %d מתוך 10", iStudent.getmLevel()));
     }
 
