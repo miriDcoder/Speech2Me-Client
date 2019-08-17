@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 public class StudentHomePageFragment extends Fragment {
     private Student mStudent;
+    private final String AudioRecognitionGoal = "1";
+    private final String PictureRecognitionGoal = "2";
 
     public StudentHomePageFragment(){
 
@@ -47,16 +49,16 @@ public class StudentHomePageFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = null;
-                switch(mStudent.getmGameType())
+                switch(mStudent.getmGoal())
                 {
-                    case 1:
+                    case "1":
                         intent = new Intent(getActivity(), AudioRecognitionLevel.class);
                         intent.putExtra("level", Integer.toString(mStudent.getmLevel()));
                         intent.putExtra("id", mStudent.getmId());
                         startActivity(intent);
                         ((Activity) getActivity()).overridePendingTransition(0, 0);
                         break;
-                    case 2:
+                    case "2":
                         intent = new Intent(getActivity(), PictureRecognitionLevel.class);
                         intent.putExtra("level", Integer.toString(mStudent.getmLevel()));
                         intent.putExtra("id", mStudent.getmId());

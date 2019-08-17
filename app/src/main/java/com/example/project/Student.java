@@ -115,4 +115,6 @@ public class Student extends User implements Parcelable {
         dest.writeInt(mScore);
         dest.writeString(mTeacherId);
     }
+
+    public String getmGoal(){return this.mGoal;}
 }
