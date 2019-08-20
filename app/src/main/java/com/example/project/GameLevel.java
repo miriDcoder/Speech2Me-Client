@@ -95,10 +95,11 @@ public abstract class GameLevel extends AppCompatActivity {
 
     protected void setupMediaRecorder() {
         mMediaRecorder = new MediaRecorder();
-        mMediaRecorder.setAudioSamplingRate(16000);
+        //mMediaRecorder.setAudioSamplingRate(16000);
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_WB);
-        mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_WB);
+        //mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_WB);
+        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         mMediaRecorder.setOutputFile(mPathSave);
     }
 

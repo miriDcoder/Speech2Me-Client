@@ -77,7 +77,7 @@ public class PictureRecognitionLevel extends GameLevel{
                         answer.setText("עצור הקלטה");
                         if (checkPermissionFromDevice()) {
                             mPathSave = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
-                                    UUID.randomUUID().toString() + "_audio_record.3gp";
+                                    UUID.randomUUID().toString() + "audio_record.mp3";
                             try {
                                 setupMediaRecorder();
                                 mMediaRecorder.prepare();
@@ -94,12 +94,12 @@ public class PictureRecognitionLevel extends GameLevel{
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                    isCorrectAnswer(mMediaRecorder, answer);
-                                File recording = new File(mPathSave);
-                                boolean isDeleted = recording.delete();
-                                if (!isDeleted) {
-
-                                }
+                                isCorrectAnswer(mMediaRecorder, answer);
+//                                File recording = new File(mPathSave);
+//                                boolean isDeleted = recording.delete();
+//                                if (!isDeleted) {
+//                                    System.out.println("Couldn't delete file");
+//                                }
                             }
                         });
                         thread.start();
@@ -209,7 +209,7 @@ public class PictureRecognitionLevel extends GameLevel{
     }
 
     private void isCorrectAnswer(MediaRecorder iRecorder, final Button iButton)  {
-        String url = "https://speech-rec-server.herokuapp.com/check_talking/";
+        String url = "http://54.80.212.25:8000/check_talking/";
         File file = new File(mPathSave);
         InputStream inFile = null;
         try {
@@ -235,22 +235,23 @@ public class PictureRecognitionLevel extends GameLevel{
                 final RequestQueue queue = Volley.newRequestQueue(this);
                 RequestFuture<JSONObject> future = RequestFuture.newFuture();
                 //final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, future, future);
-                System.out.println("+++++++++++++++++++++++" + stringBytes);
+                System.out.println("+++++++++++++++++++++++" + jsonBody);
 
                 final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                System.out.print("****************************" + response);
+                                System.out.println("****************************" + response);
                                 iButton.setText(response.toString());
                             }
                         },  new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        System.out.print("ERROR!");
+                        System.out.println("ERROR!" + error.getMessage());
                     }
                 });
                 queue.add(jsonRequest);
+                System.out.println("###############SENT");
 
             } catch (Exception e) {
                 e.printStackTrace();
