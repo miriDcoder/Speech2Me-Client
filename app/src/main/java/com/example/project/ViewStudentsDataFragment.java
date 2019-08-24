@@ -29,21 +29,33 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
+//TODO: rearrange set spinners functions
 public class ViewStudentsDataFragment extends Fragment {
     private Teacher mTeacher;
     private HashMap<String, String> mStudentIdsToNames = null;
+    private List<String> mStudentNames = null;
+    private ScrollView scrollViewDetails;
+    private RelativeLayout relativeLayoutDetails;
+    private Spinner spinnerLevel;
+    private Spinner spinnerWord;
+    private Spinner spinnerChooseStudent;
+
     public ViewStudentsDataFragment() {
     }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_view_students_data, container, false);
-        final ScrollView scrollViewDetails = (ScrollView)v.findViewById(R.id.scrollViewDetails);
+        //final ScrollView scrollViewDetails = (ScrollView)v.findViewById(R.id.scrollViewDetails);
+        scrollViewDetails = (ScrollView)v.findViewById(R.id.scrollViewDetails);
         scrollViewDetails.setVisibility(View.INVISIBLE);
-        final RelativeLayout relativeLayoutDetails = (RelativeLayout)v.findViewById(R.id.relativeLayoutDetails);
-        final Spinner spinnerLevel = (Spinner)v.findViewById(R.id.spinnerChooseLevel);
-        final Spinner spinnerWord = (Spinner)v.findViewById(R.id.spinnerChooseWord);
+        //final RelativeLayout relativeLayoutDetails = (RelativeLayout)v.findViewById(R.id.relativeLayoutDetails);
+        relativeLayoutDetails = (RelativeLayout)v.findViewById(R.id.relativeLayoutDetails);
+        //final Spinner spinnerLevel = (Spinner)v.findViewById(R.id.spinnerChooseLevel);
+        spinnerLevel = (Spinner)v.findViewById(R.id.spinnerChooseLevel);
+        //final Spinner spinnerWord = (Spinner)v.findViewById(R.id.spinnerChooseWord);
+        spinnerWord = (Spinner)v.findViewById(R.id.spinnerChooseWord);
+        spinnerChooseStudent = (Spinner)v.findViewById(R.id.spinnerChooseStudent);
         relativeLayoutDetails.setVisibility(View.INVISIBLE);
         setAllStudentDetailsVisibility(View.INVISIBLE, relativeLayoutDetails);
 
@@ -51,81 +63,36 @@ public class ViewStudentsDataFragment extends Fragment {
         {
             mTeacher = getArguments().getParcelable("user");
         }
-        getStudents();
-        List<String> studentNames = setStudents();
-        final Spinner spinnerChooseStudent = (Spinner)v.findViewById(R.id.spinnerChooseStudent);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, studentNames);
-        spinnerChooseStudent.setAdapter(adapter);
-        spinnerChooseStudent.setSelection(0);
-
-        spinnerChooseStudent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("############# IN ON ITEM SELECTED");
-                System.out.println("#############" + spinnerChooseStudent.getSelectedItem());
-                if(spinnerChooseStudent.getSelectedItemPosition() != 0)
-                {
-                    scrollViewDetails.setVisibility(View.VISIBLE);
-                    relativeLayoutDetails.setVisibility(View.VISIBLE);
-                    setAllStudentDetailsVisibility(View.VISIBLE, relativeLayoutDetails);
-                    setSpinnerLevel(spinnerLevel);
-                    setSpinnerWord(spinnerWord);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        spinnerLevel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        spinnerWord.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        getStudents(scrollViewDetails, relativeLayoutDetails, spinnerLevel, spinnerWord);
 
         return v;
     }
 
     private List<String> setStudents()
     {
+        boolean isNeedToAddChooseStudent = true;
         String id = " ";
         String studentName = " ";
         JSONObject jsonObject = null;
-        mStudentIdsToNames = new HashMap<>();
-        List<String> studentNames = new ArrayList();
-        ///TODO: get real student;
-        for(int i=0; i<=mTeacher.getmNumOfStudents(); i++)
+        ArrayList<String> studentNames = new ArrayList<String>();
+        List<String> ids = new ArrayList<String>(mStudentIdsToNames.keySet());
+        //ids = mStudentIdsToNames.keySet().toArray(new String[mStudentIdsToNames.size()]);
+        System.out.println("SIZE OF ids: " + mStudentIdsToNames.keySet().size());
+        for(int i=0; i<mStudentIdsToNames.size(); i++)
         {
-            if(i == 0)
+            if(isNeedToAddChooseStudent)
             {
                 studentNames.add("בחר תלמיד");
+                isNeedToAddChooseStudent = false;
+                i--;
             }
             else
             {
-                id = String.valueOf(i);
-                studentName = "Student " + id;
-                mStudentIdsToNames.put(id, "Student" + id);
-                studentNames.add("שי לוי");
+                System.out.println("INDEX: " + i);
+                System.out.println("ID: " + ids.get(i));
+                id = ids.get(i);
+                studentName = mStudentIdsToNames.get(id);
+                studentNames.add(studentName);
             }
         }
 
@@ -157,7 +124,8 @@ public class ViewStudentsDataFragment extends Fragment {
         iSpinnerWord.setSelection(0);
     }
 
-    private void getStudents()
+    private void getStudents(final ScrollView iScrollViewDetails, final RelativeLayout iRelativeLayoutDetails, final Spinner iSpinnerLevel,
+                             final Spinner iSpinnerWord)
     {
         String url = "https://speech-rec-server.herokuapp.com/get_students_of_teacher/";
         try {
@@ -175,6 +143,8 @@ public class ViewStudentsDataFragment extends Fragment {
                             try {
                                 JSONArray students = response.getJSONArray("students");
                                 setIdToStudents(students);
+                                mStudentNames = setStudents();
+                                setSpinners();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -231,28 +201,74 @@ public class ViewStudentsDataFragment extends Fragment {
         String studentName = " ";
         JSONObject jsonObject = null;
         mStudentIdsToNames = new HashMap<>();
-        List<String> studentNames = new ArrayList();
         ///TODO: get real student;
         for(int i=0; i<=mTeacher.getmNumOfStudents(); i++)
         {
-            if(i == 0)
-            {
-                studentNames.add("בחר תלמיד");
+            try {
+                jsonObject = iStudents.getJSONObject(i);
+                id = jsonObject.getString("user_id");
+                System.out.println("ID FROM JSON: " + id);
+                studentName = jsonObject.getString("first_name") + " " + jsonObject.getString("last_name");
+                System.out.println("NAME FROM JSON: " + studentName);
             }
-            else
-            {
-                try {
-                    jsonObject = iStudents.getJSONObject(i);
-                    id = jsonObject.getString("user_id");
-                    System.out.println("ID FROM JSON: " + id);
-                    studentName = jsonObject.getString("first_name") + " " + jsonObject.getString("last_name");
-                    System.out.println("NAME FROM JSON: " + studentName);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                mStudentIdsToNames.put(id, studentName);
-                studentNames.add(studentName);
+            catch (JSONException e) {
+                e.printStackTrace();
             }
+            mStudentIdsToNames.put(id, studentName);
         }
+
+        System.out.println("NUM OF STUDENTS IN HASH MAP: " + mStudentIdsToNames.size());
+    }
+
+    private void setSpinners()
+    {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, mStudentNames);
+        spinnerChooseStudent.setAdapter(adapter);
+        spinnerChooseStudent.setSelection(0);
+
+        spinnerChooseStudent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("############# IN ON ITEM SELECTED");
+                System.out.println("#############" + spinnerChooseStudent.getSelectedItem());
+                if(spinnerChooseStudent.getSelectedItemPosition() != 0)
+                {
+                    scrollViewDetails.setVisibility(View.VISIBLE);
+                    relativeLayoutDetails.setVisibility(View.VISIBLE);
+                    setAllStudentDetailsVisibility(View.VISIBLE, relativeLayoutDetails);
+                    setSpinnerLevel(spinnerLevel);
+                    setSpinnerWord(spinnerWord);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinnerLevel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinnerWord.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 }
