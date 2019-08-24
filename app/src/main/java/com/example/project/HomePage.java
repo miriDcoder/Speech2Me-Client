@@ -53,7 +53,6 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         switch (userType)
         {
             case "student":
-                System.out.println("in student");
                 url = "https://speech-rec-server.herokuapp.com/get_student/";
                 getUserFromDatabase(id, url, navigationView);
                 break;

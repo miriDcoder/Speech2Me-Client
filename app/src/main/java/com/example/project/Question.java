@@ -1,7 +1,5 @@
 package com.example.project;
 
-import android.net.Uri;
-
 public class Question {
     private final String mAnswer;
     private final String mImageUrl;
@@ -9,8 +7,9 @@ public class Question {
     private final int mLevel;
     private final int mId;
     private boolean mIsClueUsed = false;
-    private int mNumOfTries = 0;
+    private int mNumOfTries = 1;
     private int mScore = 0;
+    private boolean mSucceeded = false;
 
     public Question(String iAnswer, String iImageUrl, int iAudioRecording, int iLevel, int iId){
         this.mAnswer = iAnswer;
@@ -71,6 +70,16 @@ public class Question {
     public boolean IsClueUsed()
     {
         return this.mIsClueUsed;
+    }
+
+    public boolean GetmSucceeded()
+    {
+        return this.mSucceeded;
+    }
+
+    public void SetmSucceeded()
+    {
+        this.mSucceeded = true;
     }
 
     public void SetClueAsUsed()

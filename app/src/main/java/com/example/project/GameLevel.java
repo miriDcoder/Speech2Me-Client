@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -14,14 +15,32 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
+import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Base64;
 
 public abstract class GameLevel extends AppCompatActivity {
     public QuestionsData questions = new QuestionsData();
+    private ArrayList<Question> questionStatistics = new ArrayList<Question>();
     protected Question mQuestion;
     protected int sizeOfLevel;
     protected int questionNumber = 0;
-    protected int REQUEST_ANSWER = 200;
     protected int mLevel;
     protected int succeededQuestions = 0;
     protected final int REQUEST_PREMISSION_CODE = 1000;
@@ -42,14 +61,13 @@ public abstract class GameLevel extends AppCompatActivity {
     protected TextView textPressToContinue;
     protected MediaRecorder mMediaRecorder;
     protected boolean mIsAudioResourcesFree;
-    protected final int audioGame = 1;
-    protected final int pictureGame = 2;
+    protected String mUserType;
 
-    protected void moveToHomePage(String iCurrUserId)
+    protected void moveToHomePage(String iCurrUserId, String iUserType)
     {
         Intent intent = new Intent(this, HomePage.class);
         intent.putExtra("id", iCurrUserId);
-//        intent.putExtra("newScore", mQuestion.GetmScore());
+        intent.putExtra("user_type", iUserType);
         startActivity(intent);
     }
 
@@ -75,6 +93,7 @@ public abstract class GameLevel extends AppCompatActivity {
             goToNextQuestion.setVisibility(View.VISIBLE);
             nextQuestion = false;
         }
+        answer.setText(R.string.answer);
     }
 
     protected boolean checkPermissionFromDevice()
@@ -123,18 +142,44 @@ public abstract class GameLevel extends AppCompatActivity {
                 answer.setText(R.string.answer_picture);
             }
             Picasso.with(this).load(imagePath).into(iImage);
-            //answer.setText(R.string.answer);
+            answer.setText(R.string.answer);
+
         }
         //finished level
         else {
             String text = String.format("כל הכבוד! סיימת את שלב %d!", mLevel);
             messageToUser(text);
-            //SEND questionsStatistics TO SERVER AND DELETE IT FROM MEMORY
-            //UPDATE score
             // SEND to server "mQuestion.GetmScore()"
+            if (succeededQuestions == sizeOfLevel && mUserType.equals("student")) {
+                        // TODO: SEND to server "true" on increase level
+                        //*************
+                        ArrayList<JSONObject> answers = getAnswers();
+                        System.out.println(answers);
+                        String url = "https://speech-rec-server.herokuapp.com/finish_level/";
+                        JSONObject jsonBody = new JSONObject();
+                        try {
+                            jsonBody.put("user_id", mId);
+                            jsonBody.put("answers", answers);
+                            final RequestQueue queue = Volley.newRequestQueue(this);
+                            System.out.println("+++++++++++++++++++++++" + jsonBody);
+                            final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
+                                    new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+                                            System.out.println("@@@@@@@@@@@@@@@@@@@ " + response);
+                                        }
+                                    }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    System.out.println("ERROR!" + error.getMessage());
+                                }
+                            });
+                            queue.add(jsonRequest);
+                            System.out.println("###############SENT");
 
-            if (succeededQuestions == sizeOfLevel){
-                // SEND to server "true" on increae level
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
             }
             for (int i= 0; i< questions.getSizeOfLevel(mLevel);i++){
                 answeredQuestions[i] = 0;
@@ -147,9 +192,27 @@ public abstract class GameLevel extends AppCompatActivity {
             {
                 Thread.currentThread().interrupt();
             }
-
-            moveToHomePage(mId);
+            moveToHomePage(mId, mUserType);
         }
+    }
+
+    private ArrayList<JSONObject> getAnswers(){
+        JSONObject answer = null;
+        ArrayList<JSONObject> answers = new ArrayList<JSONObject>();
+        for(Question question : questionStatistics){
+            try {
+                answer = new JSONObject();
+                answer.put("isAudioClueUsed", question.IsClueUsed());
+                answer.put("numOfTries", question.GetmNumOfTries());
+                answer.put("word", question.GetmAnswer());
+                answer.put("answer", question.GetmSucceeded());
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+            answers.add(answer);
+        }
+        return answers;
     }
 
     protected void messageToUser(CharSequence text)
@@ -158,5 +221,109 @@ public abstract class GameLevel extends AppCompatActivity {
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+    }
+
+    protected void isCorrectAnswer(MediaRecorder iRecorder, final Button iButton, final ImageView iImgWord, final boolean isAudio)  {
+        String url = "https://speech-rec-server.herokuapp.com/check_talking/";
+        File file = new File(mPathSave);
+        InputStream inFile = null;
+        try {
+            inFile = new FileInputStream(mPathSave);
+            byte[] bytes = fileToBytes();//inputStreamToByteArray(inFile);
+            //new String(bytes, "UTF-8");
+            String stringBytes = null;
+            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+                stringBytes = Base64.getMimeEncoder().encodeToString(bytes);
+
+            } else {
+                System.out.println("low API");
+            }
+            try {
+                JSONObject jsonBody = new JSONObject();
+                jsonBody.put("original_text", mQuestion.GetmAnswer());
+                jsonBody.put("id", mId);
+                jsonBody.put("audio_file", stringBytes);
+                final RequestQueue queue = Volley.newRequestQueue(this);
+                RequestFuture<JSONObject> future = RequestFuture.newFuture();
+                System.out.println("+++++++++++++++++++++++" + jsonBody);
+
+                final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                System.out.println("****************************" + response);
+                                try {
+                                    if(response.getString("answer").toLowerCase() == "true")
+                                    {
+                                        System.out.println("$$$$$$$$$$$$$$ is correct");
+                                        setBirdAnswerVisibility(imageGoodJob, textGoodJob, iImgWord);
+                                        questionNumber++;
+                                        succeededQuestions++;
+                                        mQuestion.IncreasemScore();
+                                        mQuestion.SetmSucceeded();
+                                        if (isAudio){
+                                            questionStatistics.add((AudioRecognitionQuestion)mQuestion);
+                                        }
+                                        else{
+                                            questionStatistics.add((PictureRegocnitionQuestion)mQuestion);
+                                        }
+                                        getNextQuestion(iImgWord, isAudio);
+                                    }
+                                    else
+                                    {
+                                        System.out.println("$$$$$$$$$$$$$$ is not correct");
+                                        setBirdAnswerVisibility(imageTryAgain, textTryAgain, iImgWord);
+                                        mQuestion.IncreasemNumOfTries();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },  new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println("ERROR!" + error.getMessage());
+                    }
+                });
+                queue.add(jsonRequest);
+                System.out.println("###############SENT");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private byte[] fileToBytes() {
+        byte[] bytes = null;
+        File audioFile = new File(mPathSave);
+        try {
+            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+
+                bytes = Files.readAllBytes(audioFile.toPath());
+
+            } else {
+            }
+            ///This part is for debug - checks if the convertion to bytes
+            ///was ok by converting the bytes to file
+            //String str = new String(bytes);
+//            System.out.println("*****************************" + str);
+//            writeToFile(str, PictureRecognitionLevel.this);
+//            File root
+//            = new File(Environment.getExternalStorageDirectory(), "Decodes");
+//            if (!root.exists()) {
+//                root.mkdirs();
+//            }
+//            File gpxfile = new File(root, "audio_decode.mp3");
+//            try (FileOutputStream fos = new FileOutputStream(gpxfile.getAbsolutePath())) {
+//                fos.write(bytes);
+//            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return bytes;
     }
 }

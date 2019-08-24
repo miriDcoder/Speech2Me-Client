@@ -10,8 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.UUID;
 //MISSING:
 //handle get currUser ?
@@ -24,7 +24,6 @@ public class AudioRecognitionLevel extends GameLevel {
     private ImageView play;
     private ImageView pause;
     private MediaPlayer mMediaPlayerListen = null;
-    private ArrayList<AudioRecognitionQuestion> questionStatistics = new ArrayList<AudioRecognitionQuestion>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +48,7 @@ public class AudioRecognitionLevel extends GameLevel {
         Intent intent = getIntent();
         mLevel = Integer.parseInt(intent.getStringExtra("level"));
         mId = intent.getStringExtra("id");
+        mUserType = intent.getStringExtra("user_type");
         questions.makeQuestionList();
         sizeOfLevel = questions.getSizeOfLevel(mLevel);
         answeredQuestions = new int [questions.getSizeOfLevel(mLevel)];
@@ -86,26 +86,18 @@ public class AudioRecognitionLevel extends GameLevel {
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
-//                         isCorrectAnswer(mMediaRecorder, answer);
+                                isCorrectAnswer(mMediaRecorder, answer, imageClue, true);
+                                File recording = new File(mPathSave);
+                                boolean isDeleted = recording.delete();
+                                if (!isDeleted) {
+                                    System.out.println("Couldn't delete file");
+                                }
                             }
                         });
                         thread.start();
                         mMediaRecorder.reset();
                         mMediaRecorder.release();
                         mMediaRecorder = null;
-                        //TODO: sent answer to server and get result in REQUEST_ANSWER
-                        if (REQUEST_ANSWER == 200) {
-                            setBirdAnswerVisibility(imageGoodJob, textGoodJob, play);
-                            imageClue.setVisibility(View.INVISIBLE);
-                            questionStatistics.add((AudioRecognitionQuestion)mQuestion);
-                            questionNumber++;
-                            succeededQuestions++;
-                            mQuestion.IncreasemScore();
-                            getNextQuestion(imageClue, true);
-                        } else {
-                            setBirdAnswerVisibility(imageTryAgain, textTryAgain, play);
-                            mQuestion.IncreasemNumOfTries();
-                        }
                     }
                     mIsRecording = !mIsRecording;
                 }
@@ -170,7 +162,7 @@ public class AudioRecognitionLevel extends GameLevel {
                 });
                 builder.setNegativeButton("כן", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        moveToHomePage(mId);
+                        moveToHomePage(mId, mUserType);
                     }
                 });
 

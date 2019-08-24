@@ -24,10 +24,9 @@ public class QuestionsData {
         questionsLevel1.add(new Question("גזר", "https://imagizer.imageshack.com/img922/7832/1H5nbJ.png", R.raw.gezer, 1, 7));
         questionsLevel1.add(new Question("ארנב", "https://imagizer.imageshack.com/img924/7688/p0TUVG.png", R.raw.arnav, 1, 8));
         questionsLevel1.add(new Question("בובה", "https://imagizer.imageshack.com/img924/8034/pbtjYZ.png", R.raw.buba, 1, 9));
-        questionsLevel1.add(new Question("תוף", "https://imagizer.imageshack.com/img923/4078/nJcqrL.png", R.raw.tof, 1, 10));
-        questionsLevel1.add(new Question("כלב", "https://imagizer.imageshack.com/img922/964/ba8OYg.png", R.raw.kelev, 1, 11));
-        questionsLevel1.add(new Question("בית", "https://imagizer.imageshack.com/img921/3083/jGYCs2.png", R.raw.bait, 1, 12));
-        questionsLevel1.add(new Question("מפה", "https://imagizer.imageshack.com/img922/8577/89Ek20.png", R.raw.mapa, 1, 13));
+        questionsLevel1.add(new Question("כלב", "https://imagizer.imageshack.com/img922/964/ba8OYg.png", R.raw.kelev, 1, 10));
+        questionsLevel1.add(new Question("בית", "https://imagizer.imageshack.com/img921/3083/jGYCs2.png", R.raw.bait, 1, 11));
+        questionsLevel1.add(new Question("מפה", "https://imagizer.imageshack.com/img922/8577/89Ek20.png", R.raw.mapa, 1, 12));
 
 
         mSizeOfLevel1 = questionsLevel1.size();

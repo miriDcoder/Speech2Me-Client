@@ -1,7 +1,6 @@
 package com.example.project;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -70,6 +68,7 @@ public class TeacherHomePageFragment extends Fragment {
                 else {
                     selectedIntent.putExtra("level", level);
                     selectedIntent.putExtra("id", mTeacher.getmId());
+                    selectedIntent.putExtra("user_type", mTeacher.getmType());
                     startActivity(selectedIntent);
                     ((Activity) getActivity()).overridePendingTransition(0, 0);
                 }

@@ -55,6 +55,7 @@ public class StudentHomePageFragment extends Fragment {
                         intent = new Intent(getActivity(), AudioRecognitionLevel.class);
                         intent.putExtra("level", Integer.toString(mStudent.getmLevel()));
                         intent.putExtra("id", mStudent.getmId());
+                        intent.putExtra("user_type", mStudent.getmType());
                         startActivity(intent);
                         ((Activity) getActivity()).overridePendingTransition(0, 0);
                         break;
@@ -62,6 +63,7 @@ public class StudentHomePageFragment extends Fragment {
                         intent = new Intent(getActivity(), PictureRecognitionLevel.class);
                         intent.putExtra("level", Integer.toString(mStudent.getmLevel()));
                         intent.putExtra("id", mStudent.getmId());
+                        intent.putExtra("user_type", mStudent.getmType());
                         startActivity(intent);
                         ((Activity) getActivity()).overridePendingTransition(0, 0);
                         break;
