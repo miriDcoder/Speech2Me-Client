@@ -1,11 +1,13 @@
 package com.example.project;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +37,9 @@ public class StudentHomePageFragment extends Fragment {
         Button buttonPlay = (Button)v.findViewById(R.id.buttonPlay);
         Button buttonPlayWord = (Button)v.findViewById(R.id.buttonPlayWord);
         Button buttonPlayRecord = (Button)v.findViewById(R.id.buttonPlayRecord);
-
+        Button buttonInstructions = (Button)v.findViewById(R.id.buttonGameInstructions);
+        final Dialog instructions = new Dialog(getContext());
+        TextView instructionsMsg = new TextView(getContext());
         if(getArguments() != null)
         {
             mStudent = getArguments().getParcelable("user");
@@ -43,6 +47,7 @@ public class StudentHomePageFragment extends Fragment {
 //        setPositions(textViewHello, textViewYourScore, textViewScore, textViewLevel, imageViewBirdWelcome, imageViewScoreBackground,
 //                buttonPlayWord, buttonPlayRecord);
         displayMyInfo(mStudent, textViewHello, textViewYourScore, textViewScore ,textViewLevel);
+        setInstructionsDialog(instructions, instructionsMsg);
 
 //        setPlayButtons(buttonPlayWord, buttonPlayRecord);
         buttonPlay.setOnClickListener(new View.OnClickListener() {
@@ -97,13 +102,39 @@ public class StudentHomePageFragment extends Fragment {
             }
         });
 
+        buttonInstructions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                instructions.show();
+            }
+        });
+
         return v;
+    }
+
+    private void setInstructionsDialog(Dialog iInstructions, TextView iInstructionsMsg) {
+        String msg = " ";
+        iInstructions.setTitle(getResources().getString(R.string.game_instructions_header));
+        iInstructionsMsg.setGravity(Gravity.RIGHT);
+        switch (mStudent.getmGoal())
+        {
+            case "1":
+                msg = getResources().getString(R.string.game_instructions_audio);
+                break;
+            case "2":
+                msg = getResources().getString(R.string.game_instructions_picture);
+                break;
+            default:
+                msg = getResources().getString(R.string.error_msg);
+        }
+
+        iInstructionsMsg.setText(msg);
+        iInstructions.setContentView(iInstructionsMsg);
     }
 
     private void displayMyInfo(Student iStudent, TextView iTextViewHeader, TextView iTextViewYourScore, TextView iTextViewScore, TextView iTextViewLevel) {
         iTextViewHeader.setText(String.format("שלום, %s!", iStudent.getmFirstName()));
         iTextViewYourScore.setText(String.format("הניקוד שלך"));
-        //iTextViewScore.setText(String.format("%d", iStudent.getmScore()));
         iTextViewScore.setText(String.format("%d", mStudent.getmScore()));
         iTextViewLevel.setText(String.format("שלב %d מתוך 10", iStudent.getmLevel()));
     }

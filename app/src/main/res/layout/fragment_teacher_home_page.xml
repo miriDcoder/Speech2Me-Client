@@ -30,10 +30,10 @@
         <ImageView
             android:id="@+id/imageViewProgressBackground"
             android:layout_width="324dp"
-            android:layout_height="160dp"
+            android:layout_height="246dp"
             android:layout_marginStart="45dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="45dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/shape_rectangle_score"
@@ -103,7 +103,7 @@
             android:id="@+id/textViewWatchStatistics"
             android:layout_width="237dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="48dp"
             android:gravity="start"
             android:text="@string/watch_student_statistics"
             android:textAlignment="textStart"
@@ -113,7 +113,7 @@
             android:typeface="sans"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewProgressBackground"
             app:layout_constraintEnd_toEndOf="@+id/imageViewProgressBackground"
-            app:layout_constraintHorizontal_bias="0.609"
+            app:layout_constraintHorizontal_bias="0.643"
             app:layout_constraintStart_toStartOf="@+id/imageViewProgressBackground" />
 
         <ImageView
@@ -220,5 +220,75 @@
             app:layout_constraintStart_toStartOf="@+id/imageViewGameBackground"
             app:layout_constraintTop_toBottomOf="@+id/textViewWatchStatistics"
             app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/textViewTeacherCodeHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginBottom="8dp"
+            android:text="קוד הזיהוי שלך:"
+            android:textColor="#000"
+            android:textSize="20sp"
+            app:fontFamily="@font/heebo_regular"
+            app:layout_constraintBottom_toTopOf="@+id/textViewWatchStatistics"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewProgressBackground" />
+
+        <TextView
+            android:id="@+id/textViewTeacherCodeData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="TextView"
+            android:textColor="#000"
+            android:textSize="20sp"
+            app:fontFamily="@font/heebo_bold"
+            app:layout_constraintBottom_toTopOf="@+id/textViewWatchStatistics"
+            app:layout_constraintEnd_toStartOf="@+id/textViewTeacherCodeHeader"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/imageViewProgressBackground"
+            app:layout_constraintTop_toBottomOf="@+id/textViewAmountOfStudents"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/textViewCodeList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/to_goals_header"
+            android:textColor="@color/colorText"
+            android:textSize="20sp"
+            app:fontFamily="@font/heebo_regular"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewProgressBackground"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewProgressBackground"
+            app:layout_constraintHorizontal_bias="0.834"
+            app:layout_constraintStart_toStartOf="@+id/imageViewProgressBackground"
+            app:layout_constraintTop_toBottomOf="@+id/textViewWatchStatistics"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/textViewTeacherCodeInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/help"
+            android:textSize="17sp"
+            app:fontFamily="@font/heebo_regular"
+            app:layout_constraintBottom_toTopOf="@+id/textViewWatchStatistics"
+            app:layout_constraintEnd_toStartOf="@+id/textViewTeacherCodeData"
+            app:layout_constraintStart_toStartOf="@+id/imageViewProgressBackground"
+            app:layout_constraintTop_toBottomOf="@+id/textViewAmountOfStudents" />
 
 </android.support.constraint.ConstraintLayout>

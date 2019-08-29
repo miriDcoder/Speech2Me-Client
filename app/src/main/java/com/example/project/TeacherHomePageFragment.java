@@ -1,11 +1,13 @@
 package com.example.project;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +36,15 @@ public class TeacherHomePageFragment extends Fragment {
         TextView textViewYourAmountOfStudents = (TextView)v.findViewById(R.id.textViewYourAmountOfStudents);
         ImageView imageViewGameBackground = (ImageView)v.findViewById(R.id.imageViewGameBackground);
         ImageView imageViewProgressBackground = (ImageView)v.findViewById(R.id.imageViewProgressBackground);
+        TextView textViewTeacherCode = (TextView)v.findViewById(R.id.textViewTeacherCodeData);
+        TextView textViewCodeList = (TextView)v.findViewById(R.id.textViewCodeList);
         RadioGroup radioGame = (RadioGroup)v.findViewById(R.id.radioGame);
         TextView buttonPlay = (TextView) v.findViewById(R.id.buttonPlay);
+        TextView textViewIdCode = (TextView)v.findViewById(R.id.textViewTeacherCodeInfo);
+        final Dialog teacherCodeDialog = new Dialog(getContext());
+        TextView teacherCodeMsg = new TextView(getContext());
+        final Dialog codesDialog = new Dialog(getContext());
+        TextView instructionsMsg = new TextView(getContext());
         final Spinner spinnerLevel = (Spinner)v.findViewById(R.id.spinner);
         String[] items = new String[]{"שלב", "1", "2", "3"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
@@ -47,8 +56,9 @@ public class TeacherHomePageFragment extends Fragment {
         }
 //        setPositions(textViewHello, textViewYourAmountOfStudents, textViewAmountOfStudents, textViewWatchStatistics,
 //                imageViewProgressBackground, radioGame, spinnerLevel, buttonPlay);
-        displayMyInfo(mTeacher, textViewHello, textViewAmountOfStudents);
-
+        displayMyInfo(mTeacher, textViewHello, textViewAmountOfStudents, textViewTeacherCode);
+        setInstructionsDialog(codesDialog, instructionsMsg);
+        setTeacherCodeDialog(teacherCodeDialog, teacherCodeMsg);
         buttonPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,16 +110,39 @@ public class TeacherHomePageFragment extends Fragment {
                 }
             }
         });
+
+        textViewCodeList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                codesDialog.show();
+            }
+        });
+
+        textViewIdCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                teacherCodeDialog.show();
+            }
+        });
         return v;
     }
 
-
-    private void displayMyInfo(Teacher iTeacher, TextView iTextViewHeader, TextView iTextViewAmountOfStudents) {
-        iTextViewHeader.setText(String.format("שלום, %s!", iTeacher.getmFirstName()));
-        iTextViewAmountOfStudents.setText(String.format("%d", iTeacher.getmNumOfStudents()));
+    private void setTeacherCodeDialog(Dialog iTeacherCodeDialog, TextView iTeacherCodeMsg) {
+        String msg = " ";
+        iTeacherCodeDialog.setTitle(getResources().getString(R.string.game_instructions_header));
+        iTeacherCodeMsg.setGravity(Gravity.RIGHT);
+        msg = String.format("%s", getResources().getString(R.string.teacher_code_info));
+        iTeacherCodeMsg.setText(msg);
+        iTeacherCodeDialog.setContentView(iTeacherCodeMsg);
     }
 
 
+    private void displayMyInfo(Teacher iTeacher, TextView iTextViewHeader, TextView iTextViewAmountOfStudents,
+                               TextView iTextViewTeacherCode) {
+        iTextViewHeader.setText(String.format("שלום, %s!", iTeacher.getmFirstName()));
+        iTextViewAmountOfStudents.setText(String.format("%d", iTeacher.getmNumOfStudents()));
+        iTextViewTeacherCode.setText(iTeacher.getmId());
+    }
 
     public void onRadioButtonClicked(View v){
         // Check which radio button was clicked
@@ -143,6 +176,17 @@ public class TeacherHomePageFragment extends Fragment {
         iSpinnerLevel.setY(500);
 //        iButtonPlay.setX(40);
 //        iButtonPlay.setY(250);
+    }
+
+    private void setInstructionsDialog(Dialog iInstructions, TextView iInstructionsMsg) {
+        String msg = " ";
+        iInstructions.setTitle(getResources().getString(R.string.game_instructions_header));
+        iInstructionsMsg.setGravity(Gravity.RIGHT);
+        msg = String.format("%s\n%s\n%s", getResources().getString(R.string.teacher_instructions),
+                getResources().getString(R.string.goal_audio_with_code),
+                getResources().getString(R.string.goal_picture_with_code));
+        iInstructionsMsg.setText(msg);
+        iInstructions.setContentView(iInstructionsMsg);
     }
 
 }

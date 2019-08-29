@@ -37,6 +37,37 @@
     <string name="play"><u>למשחק</u></string>
     <string name="teacher_type"><u>teacher</u></string>
     <string name="student_type"><u>student</u></string>
+    <string name="game_instructions_header"><u>הוראות</u></string>
+    <string name="game_instructions_audio">
+        <b>ברוכים הבאים!\n</b>
+        <u>איך משחקים?\n</u>
+        1. תחילה עליכם להאזין למילה על ידי לחיצה על כפתור ההשמעה (הכפתור עם המשולש הירוק).\n
+        2. לאחר ששמעתם את המילה, לחצו על כפתור ההקלטה ואימרו את המילה ששמעתם. בסוף ההקלטה לחצו על אותו כפתור כדי לסיים את ההקלטה.\n
+        האפליקציה תגיד לכם האם זיהיתם את המילה בהצלחה.\n
+        <u>הערות:\n</u>
+        1. אם המילה קצת קשה - תמיד ניתן להשתמש בכפתור הרמז.\n
+        2. ניתן לדלג על התמונה הנוכחית או לחזור למסך הבית בכל שלב.\n
+        בהצלחה!
+    </string>
+    <string name="game_instructions_picture">
+        <b>ברוכים הבאים!\n</b>
+        <u>איך משחקים?\n</u>
+        1. תחילה עליכם להסתכל על התמונה המופיעה על המסך.\n
+        2. לאחר שראיתם את התמונה, לחצו על כפתור ההקלטה ואימרו מה בתמונה. בסוף ההקלטה לחצו על אותו כפתור כדי לסיים את ההקלטה.\n
+        האפליקציה תגיד לכם האם זיהיתם את המילה בהצלחה.\n
+        <u>הערות:\n</u>
+        1. אם המילה קצת קשה - תמיד ניתן להשתמש בכפתור הרמז.\n
+        2. ניתן לדלג על התמונה הנוכחית או לחזור למסך הבית בכל שלב.\n
+        בהצלחה!
+    </string>
+    <string name="goal_audio_with_code">חיקוי - 1</string>
+    <string name="goal_picture_with_code">זיהוי מילה - 2</string>
+    <string name="teacher_instructions"><b>על מנת שנוכל להתאים את המשחק לצורך של המטופל, אנא מסרו למטופל בטרם ההרשמה את הקוד המתאים למטרה אותה אתם רוצים להשיג:</b>
+    </string>
+    <string name="error_msg">אירעה שגיאה. אנא נסו שנית.</string>
+    <string name="to_goals_header"><u>לרשימת המטרות</u></string>
+    <string name="help"><u>(?)</u></string>
+    <string name="teacher_code_info">זהו קוד הזיהוי שלכם. עליכם למסור אותו למטופלים בטרם ההרשמה, כדי שנוכל לקשר אותם אליכם וכך תוכלו לצפות בהתקדמותם.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
