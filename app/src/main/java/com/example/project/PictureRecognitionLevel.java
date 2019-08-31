@@ -10,10 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -282,22 +279,22 @@ public class PictureRecognitionLevel extends GameLevel{
 //        return bytes;
 //    }
 
-    private byte[] getBytes(File iAudioFile) throws IOException, FileNotFoundException {
-        byte[] buffer = new byte[1024];
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        FileInputStream fis = new FileInputStream(iAudioFile);
-        int read;
-
-        while((read = fis.read(buffer)) != -1)
-        {
-            os.write(buffer, 0, read);
-        }
-
-        fis.close();
-        os.close();
-
-        return os.toByteArray();
-    }
+//    private byte[] getBytes(File iAudioFile) throws IOException, FileNotFoundException {
+//        byte[] buffer = new byte[1024];
+//        ByteArrayOutputStream os = new ByteArrayOutputStream();
+//        FileInputStream fis = new FileInputStream(iAudioFile);
+//        int read;
+//
+//        while((read = fis.read(buffer)) != -1)
+//        {
+//            os.write(buffer, 0, read);
+//        }
+//
+//        fis.close();
+//        os.close();
+//
+//        return os.toByteArray();
+//    }
 
     private void writeToFile(String data, Context context) {
         try {

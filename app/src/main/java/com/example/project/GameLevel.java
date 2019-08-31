@@ -27,8 +27,10 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -150,9 +152,8 @@ public abstract class GameLevel extends AppCompatActivity {
             String text = String.format("כל הכבוד! סיימת את שלב %d!", mLevel);
             messageToUser(text);
             // SEND to server "mQuestion.GetmScore()"
+            updateScore();
             if (succeededQuestions == sizeOfLevel && mUserType.equals("student")) {
-                        // TODO: SEND to server "true" on increase level
-                        //*************
                         ArrayList<JSONObject> answers = getAnswers();
                         System.out.println(answers);
                         String url = "https://speech-rec-server.herokuapp.com/finish_level/";
@@ -160,12 +161,14 @@ public abstract class GameLevel extends AppCompatActivity {
                         try {
                             jsonBody.put("user_id", mId);
                             jsonBody.put("answers", answers);
+                            jsonBody.put("level", mLevel);
                             final RequestQueue queue = Volley.newRequestQueue(this);
                             System.out.println("+++++++++++++++++++++++" + jsonBody);
                             final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
                                     new Response.Listener<JSONObject>() {
                                         @Override
                                         public void onResponse(JSONObject response) {
+                                            updateLevel();
                                             System.out.println("@@@@@@@@@@@@@@@@@@@ " + response);
                                         }
                                     }, new Response.ErrorListener() {
@@ -180,6 +183,7 @@ public abstract class GameLevel extends AppCompatActivity {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+
             }
             for (int i= 0; i< questions.getSizeOfLevel(mLevel);i++){
                 answeredQuestions[i] = 0;
@@ -236,7 +240,7 @@ public abstract class GameLevel extends AppCompatActivity {
                 stringBytes = Base64.getMimeEncoder().encodeToString(bytes);
 
             } else {
-                System.out.println("low API");
+                stringBytes = android.util.Base64.encodeToString(bytes, android.util.Base64.DEFAULT);
             }
             try {
                 JSONObject jsonBody = new JSONObject();
@@ -259,7 +263,6 @@ public abstract class GameLevel extends AppCompatActivity {
                                         setBirdAnswerVisibility(imageGoodJob, textGoodJob, iImgWord);
                                         questionNumber++;
                                         succeededQuestions++;
-                                        mQuestion.IncreasemScore();
                                         mQuestion.SetmSucceeded();
                                         if (isAudio){
                                             questionStatistics.add((AudioRecognitionQuestion)mQuestion);
@@ -305,9 +308,12 @@ public abstract class GameLevel extends AppCompatActivity {
                 bytes = Files.readAllBytes(audioFile.toPath());
 
             } else {
+                System.out.println("$$$$$$$$$$$$$$$$$IN LOWER APK");
+                bytes = fileToBytesLowApk();
             }
             ///This part is for debug - checks if the convertion to bytes
             ///was ok by converting the bytes to file
+            //String str = new String(bytes);
             //String str = new String(bytes);
 //            System.out.println("*****************************" + str);
 //            writeToFile(str, PictureRecognitionLevel.this);
@@ -322,6 +328,84 @@ public abstract class GameLevel extends AppCompatActivity {
 //            }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        return bytes;
+    }
+
+    private void updateScore(){
+        String url = "https://speech-rec-server.herokuapp.com/update_level/";// TODO
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("user_id", mId);
+            jsonBody.put("add_to_score", succeededQuestions);
+            final RequestQueue queue = Volley.newRequestQueue(this);
+            System.out.println("+++++++++++++++++++++++" + jsonBody);
+            final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            System.out.println("@@@@@@@@@@@@@@@@@@@ " + response);
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println("ERROR!" + error.getMessage());
+                }
+            });
+            queue.add(jsonRequest);
+            System.out.println("###############SENT");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateLevel(){
+        String url = "https://speech-rec-server.herokuapp.com/update_level/";// TODO
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("user_id", mId);
+            final RequestQueue queue = Volley.newRequestQueue(this);
+            System.out.println("+++++++++++++++++++++++" + jsonBody);
+            final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            System.out.println("@@@@@@@@@@@@@@@@@@@ " + response);
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println("ERROR!" + error.getMessage());
+                }
+            });
+            queue.add(jsonRequest);
+            System.out.println("###############SENT");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private byte[] fileToBytesLowApk()
+    {
+        File file = new File(mPathSave);
+        int size = (int) file.length();
+        byte[] bytes = null;
+        try {
+            bytes = new byte[size];
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+            buf.read(bytes, 0, bytes.length);
+            buf.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            bytes = null;
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            bytes = null;
         }
 
         return bytes;

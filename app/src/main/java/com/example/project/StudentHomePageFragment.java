@@ -44,12 +44,9 @@ public class StudentHomePageFragment extends Fragment {
         {
             mStudent = getArguments().getParcelable("user");
         }
-//        setPositions(textViewHello, textViewYourScore, textViewScore, textViewLevel, imageViewBirdWelcome, imageViewScoreBackground,
-//                buttonPlayWord, buttonPlayRecord);
         displayMyInfo(mStudent, textViewHello, textViewYourScore, textViewScore ,textViewLevel);
         setInstructionsDialog(instructions, instructionsMsg);
 
-//        setPlayButtons(buttonPlayWord, buttonPlayRecord);
         buttonPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,10 +70,6 @@ public class StudentHomePageFragment extends Fragment {
                         ((Activity) getActivity()).overridePendingTransition(0, 0);
                         break;
                 }
-//                intent.putExtra("level", Integer.toString(mStudent.getmLevel()));
-//                intent.putExtra("id", mStudent.getmId());
-//                startActivity(intent);
-//                ((Activity) getActivity()).overridePendingTransition(0, 0);
             }
         });
 
@@ -139,28 +132,4 @@ public class StudentHomePageFragment extends Fragment {
         iTextViewLevel.setText(String.format("שלב %d מתוך 10", iStudent.getmLevel()));
     }
 
-    private void setPositions(TextView iTextViewHeader,TextView iTextViewYourScore, TextView iTextViewScore, TextView iTextViewLevel,ImageView iImageViewBirdWelcome,
-                                       ImageView iImageViewScoreBackground, Button iButtonPlayWord, Button iButtonPlayRecord){
-        iTextViewHeader.setX(10);
-        iTextViewHeader.setY(50);
-        iTextViewYourScore.setX(10);
-        iTextViewYourScore.setY(340);
-        iTextViewScore.setX(10);
-        iTextViewScore.setY(420);
-        iTextViewLevel.setX(10);
-        iTextViewLevel.setY(600);
-        iImageViewBirdWelcome.setX(630);
-        iImageViewBirdWelcome.setY(350);
-//        iImageViewScoreBackground.setX(10);
-        iImageViewScoreBackground.setY(250);
-        iButtonPlayWord.setX(40);
-        iButtonPlayWord.setY(250);
-        iButtonPlayRecord.setX(40);
-//        iButtonPlayRecord.setY();
-    }
-
-    private void setPlayButtons(Button iWord, Button iVoice)
-    {
-        iVoice.setY(iWord.getY() + 400);
-    }
 }

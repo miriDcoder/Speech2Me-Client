@@ -29,18 +29,18 @@
 
         <ImageView
             android:id="@+id/imageViewProgressBackground"
-            android:layout_width="324dp"
-            android:layout_height="246dp"
-            android:layout_marginStart="45dp"
-            android:layout_marginLeft="20dp"
+            android:layout_width="322dp"
+            android:layout_height="213dp"
+            android:layout_marginStart="92dp"
+            android:layout_marginLeft="92dp"
             android:layout_marginTop="40dp"
-            android:layout_marginEnd="45dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:background="@drawable/shape_rectangle_score"
             android:shadowDx="5"
             android:shadowDy="5"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewHeader" />
 
@@ -48,8 +48,6 @@
             android:id="@+id/textViewProgress"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginStart="260dp"
-            android:layout_marginLeft="260dp"
             android:layout_marginTop="8dp"
             android:gravity="start"
             android:text="התקדמות"
@@ -58,6 +56,8 @@
             android:textDirection="rtl"
             android:textSize="15sp"
             android:typeface="sans"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewProgressBackground"
+            app:layout_constraintHorizontal_bias="0.96"
             app:layout_constraintStart_toStartOf="@+id/imageViewProgressBackground"
             app:layout_constraintTop_toTopOf="@+id/imageViewProgressBackground" />
 
@@ -65,9 +65,6 @@
             android:id="@+id/textViewYourAmountOfStudents"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="8dp"
             android:gravity="start"
             android:text="@string/amount_of_students"
             android:textAlignment="textStart"
@@ -76,28 +73,26 @@
             android:textSize="15sp"
             android:typeface="sans"
             app:layout_constraintEnd_toEndOf="@+id/imageViewProgressBackground"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.746"
             app:layout_constraintStart_toStartOf="@+id/imageViewProgressBackground"
             app:layout_constraintTop_toBottomOf="@+id/textViewProgress" />
 
         <TextView
             android:id="@+id/textViewAmountOfStudents"
-            android:layout_width="149dp"
-            android:layout_height="62dp"
-            android:layout_marginStart="100dp"
-            android:layout_marginLeft="100dp"
+            android:layout_width="96dp"
+            android:layout_height="63dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/heebo_regular"
             android:gravity="start"
-            android:text="Amount"
+            android:text="0"
             android:textAlignment="textStart"
             android:textColor="#000000"
             android:textDirection="rtl"
-            android:textFontWeight="500"
-            android:textSize="50sp"
+            android:textSize="50dp"
             app:layout_constraintEnd_toEndOf="@+id/imageViewProgressBackground"
-            app:layout_constraintHorizontal_bias="0.546"
+            app:layout_constraintHorizontal_bias="0.861"
             app:layout_constraintStart_toStartOf="@+id/imageViewProgressBackground"
-            app:layout_constraintTop_toBottomOf="@+id/textViewYourAmountOfStudents" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewProgress" />
 
         <TextView
             android:id="@+id/textViewWatchStatistics"
@@ -118,18 +113,18 @@
 
         <ImageView
             android:id="@+id/imageViewGameBackground"
-            android:layout_width="324dp"
-            android:layout_height="160dp"
-            android:layout_marginStart="45dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="80dp"
-            android:layout_marginEnd="45dp"
-            android:layout_marginRight="20dp"
+            android:layout_width="326dp"
+            android:layout_height="162dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:background="@drawable/shape_rectangle_score"
             android:shadowDx="5"
             android:shadowDy="5"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageViewProgressBackground" />
 
@@ -232,6 +227,7 @@
             android:textColor="#000"
             android:textSize="20sp"
             app:fontFamily="@font/heebo_regular"
+            app:layout_constraintTop_toBottomOf="@+id/textViewAmountOfStudents"
             app:layout_constraintBottom_toTopOf="@+id/textViewWatchStatistics"
             app:layout_constraintEnd_toEndOf="@+id/imageViewProgressBackground" />
 
@@ -254,7 +250,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/imageViewProgressBackground"
             app:layout_constraintTop_toBottomOf="@+id/textViewAmountOfStudents"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.604" />
 
         <TextView
             android:id="@+id/textViewCodeList"
@@ -288,7 +284,9 @@
             app:fontFamily="@font/heebo_regular"
             app:layout_constraintBottom_toTopOf="@+id/textViewWatchStatistics"
             app:layout_constraintEnd_toStartOf="@+id/textViewTeacherCodeData"
+            app:layout_constraintHorizontal_bias="0.838"
             app:layout_constraintStart_toStartOf="@+id/imageViewProgressBackground"
-            app:layout_constraintTop_toBottomOf="@+id/textViewAmountOfStudents" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewAmountOfStudents"
+            app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>

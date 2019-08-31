@@ -25,13 +25,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SignUp extends AppCompatActivity {
-
+    Button btnSignUp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        Button btnSignUp = (Button)findViewById(R.id.buttonSignup);
+        btnSignUp = (Button)findViewById(R.id.buttonSignup);
         //final EditText textViewRequest = (EditText) findViewById(R.id.editTextRequest);
         ImageView imageViewArrowBack = (ImageView) findViewById(R.id.imgArrowBack);
         final EditText editTextFirstName = (EditText) findViewById(R.id.editTextFirstName);
@@ -57,22 +57,18 @@ public class SignUp extends AppCompatActivity {
                     String teacherId = editTextTeacherId.getText().toString();
 
                     User currUser;
-                    //Intent intent;
                     String type = null;
                     String goal = null;
                     if(switchIsStudent.isChecked())
                     {
                         goal = editTextGoalCode.getText().toString();
                         teacherId = editTextTeacherId.getText().toString();
-                        //TODO: insert to students db
-                        //TODO: insert to teacher to students db
                         currUser = new Student(email, password, firstName,
                                                         lastName, teacherId, goal);
                         type = "student";
                     }
                     else
                     {
-                        //TODO: insert to teacher db
                         teacherId = null;
                         System.out.println("In teacher case");
                         currUser = new Teacher(email, password, firstName, lastName);
@@ -200,8 +196,6 @@ public class SignUp extends AppCompatActivity {
         try {
             System.out.println("In insert New User, type: " + iType);
             System.out.println("In insert New User, goal: " + iGoal);
-            //JSONObject request = new JSONObject(new Gson().toJson(iUser, User.class));
-            //System.out.print(request);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("first_name", iUser.getmFirstName());
             jsonBody.put("last_name", iUser.getmLastName());
@@ -212,7 +206,6 @@ public class SignUp extends AppCompatActivity {
             jsonBody.put("goal", iGoal);
             RequestQueue queue = Volley.newRequestQueue(this);
             String url ="https://speech-rec-server.herokuapp.com/user_signup/";
-// Request a string response from the provided URL.
             JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -228,21 +221,36 @@ public class SignUp extends AppCompatActivity {
                                 startActivity(intent);
                             } catch (JSONException e) {
                                 e.printStackTrace();
-
+                                setButtons(true);
                             }
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     System.out.print("ERROR!");
+                    messageToUser(getResources().getString(R.string.error_server));
+                    setButtons(true);
                 }
             });
             queue.add(jsonRequest);
+            setButtons(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    //TODO: app design and colors
+    private void messageToUser(CharSequence text)
+    {
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+
+    private void setButtons(boolean iVal)
+    {
+        btnSignUp.setEnabled(iVal);
+        btnSignUp.setClickable(iVal);
+    }
 
 }

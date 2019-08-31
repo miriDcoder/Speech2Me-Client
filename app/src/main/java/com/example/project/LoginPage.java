@@ -22,23 +22,19 @@ import org.json.JSONObject;
 
 public class LoginPage extends AppCompatActivity {
     EditText email, password;
-    DataBase db = new DataBase();
-    //JSONObject mResponse = null;
+    Button loginBtn;
+    Button signupBtn;
+
+    //DataBase db = new DataBase();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
-        final Button loginBtn = (Button) findViewById(R.id.loginBtn);
+        loginBtn = (Button) findViewById(R.id.loginBtn);
         email = (EditText) findViewById(R.id.emailEditText);
         password = (EditText) findViewById(R.id.passwordEditText);
-        //Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Montserrat-Regular.ttf");
-//        email.setTypeface(custom_font);
-//        password.setTypeface(custom_font);
-//        loginBtn.setTypeface(custom_font);
-
-
-        Button signUpBtn = (Button)findViewById(R.id.signUpBtn);
-        signUpBtn.setOnClickListener(new View.OnClickListener(){
+        signupBtn = (Button)findViewById(R.id.signUpBtn);
+        signupBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 email = (EditText) findViewById(R.id.emailEditText);
@@ -46,88 +42,39 @@ public class LoginPage extends AppCompatActivity {
             }
         });
 
-        Button studentTestingBtn = (Button)findViewById(R.id.studentTestingBtn);
-        studentTestingBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                User currUser = DbUtils.GetUserByMail(db.makeUserList(), "miri@gmail.com");
-                moveToHomePage(currUser.getmId(), currUser.getmType().toString());
-            }
-        });
-
-        Button teacherTestingBtn = (Button)findViewById(R.id.teacherTestingBtn);
-        teacherTestingBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                User currUser = DbUtils.GetUserByMail(db.makeUserList(), "dana@gmail.com");
-                moveToHomePage(currUser.getmId(), currUser.getmType().toString());
-            }
-        });
-
         loginBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 getUserFromDatabase(email.getText().toString(), password.getText().toString());
-//                if(userValidation == eUserValidation.validUser)
-//                {
-//                    loginBtn.setText("מתחבר");
-//                    loginBtn.setEnabled(false);
-//                    User currUser = DbUtils
-//                            .GetUserByMail(db.makeUserList(), email.getText().toString());
-//                    moveToHomePage(currUser);
-//                }
-//                else if(userValidation == eUserValidation.wrongPassword)
-//                {
-//                    password.getText().clear();
-//                    messageToUser("סיסמה שגויה!");
-//                }
-//                else
-//                {
-//                    //give the user an option - either re-enter the details for login
-//                    //or move to sign up page.
-//                    password.getText().clear();
-//                    email.getText().clear();
-//                    messageToUser("הפרטים שהזנת שגויים! אנא הכנס פרטים תקינים, או הירשם");
-//                }
             }
         });
     }
 
-//    private boolean waitForResponse(){
-//        for(int wait=0; wait<10;wait++){
-//            try{
-//                TimeUnit.SECONDS.sleep(1);
-//            }
-//            catch (InterruptedException e){
-//                e.printStackTrace();
-//                break;
-//            }
-//            if(mResponse!=null){
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-
     private void getUserFromDatabase(String iEmail, String iPassword) {
-        eUserValidation validation = eUserValidation.invalidUser;
         try {
-            //TODO: encript password?
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("password", iPassword);
-            jsonBody.put("email", iEmail);
+            jsonBody.put("email", iEmail.toLowerCase());
             final RequestQueue queue = Volley.newRequestQueue(this);
             String url = "https://speech-rec-server.herokuapp.com/user_login/";
             RequestFuture<JSONObject> future = RequestFuture.newFuture();
-            //final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, future, future);
             final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             System.out.print(response);
                             EditText responseLogin = (EditText) findViewById(R.id.responseLogin);
+                            if(response.has("error"))
+                            {
+                                try {
+                                    if(response.getString("error").toLowerCase().equals(getResources().getString(R.string.server_error_login)))
+                                    messageToUser("האימייל או הסיסמה שהוזנו אינם נכונים. אנא נסו שוב");
+                                    setButtons(true);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                             responseLogin.setText(response.toString());
-                            //mResponse = response;
                             try {
                                 moveToHomePage(response.getString("id"), response.getString("user_type"));
                             } catch (JSONException e) {
@@ -139,30 +86,12 @@ public class LoginPage extends AppCompatActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     System.out.print("ERROR!");
+                    setButtons(true);
+                    messageToUser(getResources().getString(R.string.error_server));
                 }
             });
-            //JsonObjectRequest request = new JsonObjectRequest()
-//            try{
-//                JSONObject response = future.get(10,TimeUnit.SECONDS);
-//            }
-//            catch (InterruptedException e){
-//
-//            }
-//            catch (ExecutionException e){
-//
-//            }
-
             queue.add(jsonRequest);
-            //waitForResponse();
-//            if(mResponse != null)
-//            {
-//                validation = eUserValidation.invalidUser;
-//            }
-//            else
-//            {
-//                validation = eUserValidation.validUser;
-//            }
-
+            setButtons(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -183,6 +112,12 @@ public class LoginPage extends AppCompatActivity {
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
-}
 
-//TODO: case of error from request
+    private void setButtons(boolean iVal)
+    {
+        loginBtn.setEnabled(iVal);
+        loginBtn.setClickable(iVal);
+        signupBtn.setEnabled(iVal);
+        signupBtn.setClickable(iVal);
+    }
+}

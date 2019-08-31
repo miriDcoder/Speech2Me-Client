@@ -118,7 +118,6 @@ public class AudioRecognitionLevel extends GameLevel {
                             pause.setVisibility(View.INVISIBLE);
                             play.setVisibility(View.VISIBLE);
                             int score = ((Question)mQuestion).GetmScore();
-                            mQuestion.IncreasemScore();
                         }
                     });
                     mMediaPlayerListen.start();

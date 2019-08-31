@@ -22,7 +22,6 @@
         </activity>
         <activity android:name=".PictureRecognitionLevel">
         </activity>
-        <activity android:name=".Game"></activity>
         <activity android:name=".SignUp" />
         <activity android:name=".MainActivity">
              <intent-filter>

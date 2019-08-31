@@ -52,16 +52,6 @@ public class Question {
         this.mNumOfTries++;
     }
 
-    public void SetmScore(int iScore)
-    {
-        this.mScore = iScore;
-    }
-
-    public void IncreasemScore()
-    {
-        this.mScore ++;
-    }
-
     public int GetmScore()
     {
         return this.mScore;

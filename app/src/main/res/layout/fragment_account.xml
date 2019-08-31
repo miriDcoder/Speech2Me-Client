@@ -7,265 +7,254 @@
     android:background="@drawable/background_clean"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<android.support.constraint.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
-    <ImageView
-        android:id="@+id/imageViewAccountBackground"
-        android:layout_width="368dp"
-        android:layout_height="500dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/shape_rectangle_score"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewHeader" />
+        <ImageView
+            android:id="@+id/imageViewAccountBackground"
+            android:layout_width="319dp"
+            android:layout_height="512dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="36dp"
+            android:background="@drawable/shape_rectangle_score"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textViewFirstName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="44dp"
-        android:layout_marginRight="44dp"
-        android:text="שם פרטי"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewHeader" />
+        <TextView
+            android:id="@+id/textViewFirstName"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:text="שם פרטי"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
+            app:layout_constraintTop_toBottomOf="@+id/textViewHeader" />
 
-    <TextView
-        android:id="@+id/textViewLastName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginRight="36dp"
-        android:text="שם משפחה"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFirstName" />
+        <TextView
+            android:id="@+id/textViewLastName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="שם משפחה"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
+            app:layout_constraintTop_toBottomOf="@+id/textViewFirstName" />
 
-    <TextView
-        android:id="@+id/textViewMail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginRight="36dp"
-        android:text="מייל"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLastName" />
+        <TextView
+            android:id="@+id/textViewMail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:text="מייל"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
+            app:layout_constraintTop_toBottomOf="@+id/textViewLastName" />
 
-    <TextView
-        android:id="@+id/textViewCity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginRight="36dp"
-        android:text="עיר"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewMail" />
+        <TextView
+            android:id="@+id/textViewCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:text="עיר"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
+            app:layout_constraintTop_toBottomOf="@+id/textViewMail" />
 
-    <TextView
-        android:id="@+id/textViewHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="עריכת פרטי חשבון"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.518"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/textViewHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="עריכת פרטי חשבון"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="@+id/textViewCurrPassword"
+            app:layout_constraintHorizontal_bias="0.696"
+            app:layout_constraintStart_toStartOf="@+id/imageViewAccountBackground"
+            app:layout_constraintTop_toTopOf="@+id/imageViewAccountBackground" />
 
-    <EditText
-        android:id="@+id/editTextAccountFirstName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/textViewFirstName"
-        app:layout_constraintHorizontal_bias="0.813"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewHeader" />
+        <EditText
+            android:id="@+id/editTextAccountFirstName"
+            android:layout_width="90pt"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginRight="28dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toStartOf="@+id/textViewFirstName"
+            app:layout_constraintTop_toBottomOf="@+id/textViewHeader" />
 
-    <EditText
-        android:id="@+id/editTextAccountLastName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/textViewLastName"
-        app:layout_constraintHorizontal_bias="0.894"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAccountFirstName" />
+        <EditText
+            android:id="@+id/editTextAccountLastName"
+            android:layout_width="90pt"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toStartOf="@+id/textViewLastName"
+            app:layout_constraintTop_toBottomOf="@+id/editTextAccountFirstName" />
 
-    <EditText
-        android:id="@+id/editTextAccountMail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        app:layout_constraintEnd_toStartOf="@+id/textViewMail"
-        app:layout_constraintHorizontal_bias="0.536"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAccountLastName" />
+        <EditText
+            android:id="@+id/editTextAccountMail"
+            android:layout_width="90pt"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="60dp"
+            android:layout_marginRight="60dp"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toStartOf="@+id/textViewMail"
+            app:layout_constraintTop_toBottomOf="@+id/editTextAccountLastName" />
 
-    <EditText
-        android:id="@+id/editTextAccountCity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/textViewCity"
-        app:layout_constraintHorizontal_bias="0.546"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAccountMail" />
+        <EditText
+            android:id="@+id/editTextAccountCity"
+            android:layout_width="90pt"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="68dp"
+            android:layout_marginRight="68dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toStartOf="@+id/textViewCity"
+            app:layout_constraintTop_toBottomOf="@+id/editTextAccountMail" />
 
-    <TextView
-        android:id="@+id/textViewCurrPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginRight="36dp"
-        android:text="ססמה נוכחית"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCity" />
+        <TextView
+            android:id="@+id/textViewCurrPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="סיסמה נוכחית"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
+            app:layout_constraintTop_toBottomOf="@+id/textViewCity" />
 
-    <EditText
-        android:id="@+id/editTextAccountCurrPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:ems="10"
-        android:hint="אם ברצונך לשנות ססמה"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toStartOf="@+id/textViewCurrPassword"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAccountCity" />
+        <EditText
+            android:id="@+id/editTextAccountCurrPassword"
+            android:layout_width="90pt"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:gravity="right"
+            android:hint="אם ברצונך לשנות סיסמה"
+            android:inputType="textPassword"
+            android:textDirection="rtl"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toStartOf="@+id/textViewCurrPassword"
+            app:layout_constraintTop_toBottomOf="@+id/editTextAccountCity" />
 
-    <TextView
-        android:id="@+id/textViewNewPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginRight="36dp"
-        android:text="ססמה חדשה"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCurrPassword" />
+        <TextView
+            android:id="@+id/textViewNewPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="סיסמה חדשה"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
+            app:layout_constraintTop_toBottomOf="@+id/textViewCurrPassword" />
 
-    <EditText
-        android:id="@+id/editTextAccountNewPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:ems="10"
-        android:hint="הקלד ססמה חדשה"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toStartOf="@+id/textViewNewPassword"
-        app:layout_constraintHorizontal_bias="0.985"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAccountCurrPassword" />
+        <EditText
+            android:id="@+id/editTextAccountNewPassword"
+            android:layout_width="90pt"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:ems="10"
+            android:gravity="right"
+            android:hint="הקלד סיסמה חדשה"
+            android:inputType="textPassword"
+            android:textDirection="rtl"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toStartOf="@+id/textViewNewPassword"
+            app:layout_constraintTop_toBottomOf="@+id/editTextAccountCurrPassword" />
 
-    <EditText
-        android:id="@+id/editTextAccountNewPasswordAgain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginLeft="28dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:ems="10"
-        android:hint="הקלד ססמה חדשה בשנית"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toStartOf="@+id/textViewNewPasswordAgain"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAccountNewPassword" />
+        <EditText
+            android:id="@+id/editTextAccountNewPasswordAgain"
+            android:layout_width="90pt"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:ems="10"
+            android:gravity="right"
+            android:hint="הקלד ססמה חדשה בשנית"
+            android:inputType="textPassword"
+            android:textDirection="rtl"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toStartOf="@+id/textViewNewPasswordAgain"
+            app:layout_constraintTop_toBottomOf="@+id/editTextAccountNewPassword" />
 
-    <TextView
-        android:id="@+id/textViewNewPasswordAgain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginRight="36dp"
-        android:text="ססמה חדשה"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNewPassword" />
+        <TextView
+            android:id="@+id/textViewNewPasswordAgain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="סיסמה חדשה"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
+            app:layout_constraintTop_toBottomOf="@+id/textViewNewPassword" />
 
-    <Button
-        android:id="@+id/buttonSaveChanges"
-        android:layout_width="wrap_content"
-        android:layout_height="47dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginBottom="256dp"
-        android:enabled="false"
-        android:background="@drawable/shape_button"
-        android:textColor="#FFFF"
-        android:text="שמור שינויים"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
-        app:layout_constraintStart_toStartOf="parent" />
+        <Button
+            android:id="@+id/buttonSaveChanges"
+            android:layout_width="wrap_content"
+            android:layout_height="47dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shape_button"
+            android:enabled="false"
+            android:text="שמור שינויים"
+            android:textColor="#FFFF"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewAccountBackground"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
+            app:layout_constraintHorizontal_bias="0.478"
+            app:layout_constraintStart_toStartOf="@+id/imageViewAccountBackground"
+            app:layout_constraintTop_toBottomOf="@+id/editTextAccountNewPasswordAgain"
+            app:layout_constraintVertical_bias="0.0" />
 
-    <Button
-        android:id="@+id/buttonAccountEditDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="492dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="עריכת פרטים"
-        android:background="@drawable/shape_button"
-        android:textColor="#FFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/buttonAccountEditDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="22dp"
+            android:background="@drawable/shape_button"
+            android:text="עריכת פרטים"
+            android:textColor="#FFFF"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewAccountBackground"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="@+id/imageViewAccountBackground"
+            app:layout_constraintTop_toBottomOf="@+id/editTextAccountNewPasswordAgain"
+            app:layout_constraintVertical_bias="0.675" />
 
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
 </ScrollView>
