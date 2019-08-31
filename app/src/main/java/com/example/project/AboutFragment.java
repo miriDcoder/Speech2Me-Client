@@ -64,11 +64,8 @@ public class AboutFragment extends Fragment {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("&$$$$$$$$$$$$$$$$" + msgHeader.getText());
                 String subject = msgHeader.getText().toString();
-                System.out.println("&$$$$$$$$$$$$$$$$");
                 String msg = msgText.getText().toString();
-                System.out.println("&$$$$$$$$$$$$$$$$" + subject +","+ msg);
                 if (subject != null && msg != null) {
                     setContactUs(subject, msg);
                 }

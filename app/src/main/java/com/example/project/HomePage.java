@@ -27,7 +27,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
 {
     public User currUser;
     private DrawerLayout drawer;
-    public DataBase db = new DataBase();
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
-        final NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle= new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -47,7 +47,6 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         String url = null;
         toggle.syncState();
         Intent intent = getIntent();
-        System.out.println("~~~~~~~~~~~~IN HOME PAGE");
         String id = intent.getStringExtra("id");
         String userType = intent.getStringExtra("user_type");
         switch (userType)
@@ -57,7 +56,6 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                 getUserFromDatabase(id, url, navigationView);
                 break;
             case "teacher":
-                System.out.println("~~~~~~~~~~~~IN TEACHER BEFORE REQUEST");
                 url = "https://speech-rec-server.herokuapp.com/get_teacher/";
                 getUserFromDatabase(id, url, navigationView);
                 break;
@@ -73,7 +71,6 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
 //        }
 //        if (savedInstanceState==null) {
 //            moveToHomePage();
-//            navigationView.setCheckedItem(R.id.nav_home_page);
 //        }
     }
 
@@ -128,6 +125,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
             drawer.closeDrawer(GravityCompat.START);
         }
         else {
+            navigationView.setCheckedItem(R.id.nav_home_page);
             moveToHomePage();
         }
     }
