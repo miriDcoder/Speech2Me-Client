@@ -108,4 +108,67 @@
         app:layout_constraintHorizontal_bias="0.55"
         app:layout_constraintStart_toStartOf="@+id/imageViewAboutBackground" />
 
+    <EditText
+        android:id="@+id/txtSubject"
+        android:layout_width="257dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="80dp"
+        android:hint="נושא"
+        android:visibility="invisible"
+        android:textDirection="rtl"
+        android:gravity="right"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewAboutBackground"
+        app:layout_constraintStart_toStartOf="@+id/imageViewAboutBackground"
+        app:layout_constraintTop_toTopOf="@+id/imageViewAboutBackground"
+        />
+
+    <EditText
+        android:id="@+id/txtMessage"
+        android:layout_width="257dp"
+        android:layout_height="240dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:hint="הודעה"
+        android:visibility="invisible"
+        android:textDirection="rtl"
+        android:gravity="right"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewAboutBackground"
+        app:layout_constraintStart_toStartOf="@+id/imageViewAboutBackground"
+        app:layout_constraintTop_toBottomOf="@+id/txtSubject"
+         />
+
+    <Button
+        android:id="@+id/btnOK"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/shape_button"
+        android:text="שלח"
+        android:textColor="#FFFFFF"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewAboutBackground"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewAboutBackground"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="@+id/imageViewAboutBackground"
+        app:layout_constraintTop_toBottomOf="@+id/txtMessage"
+        app:layout_constraintVertical_bias="1.0"
+        />
+
+    <Button
+        android:id="@+id/buttonBack"
+        android:layout_width="14dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="660dp"
+        android:background="@drawable/ic_back"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewAboutBackground"
+        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintStart_toStartOf="@+id/imageViewAboutBackground"
+        app:layout_constraintTop_toTopOf="@+id/imageViewAboutBackground"
+        app:layout_constraintVertical_bias="1.0" />
+
 </android.support.constraint.ConstraintLayout>
