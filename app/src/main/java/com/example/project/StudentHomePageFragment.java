@@ -2,11 +2,13 @@ package com.example.project;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,14 +40,14 @@ public class StudentHomePageFragment extends Fragment {
         Button buttonPlayWord = (Button)v.findViewById(R.id.buttonPlayWord);
         Button buttonPlayRecord = (Button)v.findViewById(R.id.buttonPlayRecord);
         Button buttonInstructions = (Button)v.findViewById(R.id.buttonGameInstructions);
-        final Dialog instructions = new Dialog(getContext());
-        TextView instructionsMsg = new TextView(getContext());
+        //final AlertDialog instructions = new AlertDialog(getContext());
+        //TextView instructionsMsg = new TextView(getContext());
         if(getArguments() != null)
         {
             mStudent = getArguments().getParcelable("user");
         }
         displayMyInfo(mStudent, textViewHello, textViewYourScore, textViewScore ,textViewLevel);
-        setInstructionsDialog(instructions, instructionsMsg);
+        //setInstructionsDialog(instructions, instructionsMsg);
 
         buttonPlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +100,27 @@ public class StudentHomePageFragment extends Fragment {
         buttonInstructions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                instructions.show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                String msg;
+                switch (mStudent.getmGoal())
+                {
+                    case "1":
+                        msg = getResources().getString(R.string.game_instructions_audio);
+                        break;
+                    case "2":
+                        msg = getResources().getString(R.string.game_instructions_picture);
+                        break;
+                    default:
+                        msg = getResources().getString(R.string.error_msg);
+                }
+                builder.setMessage(msg).setTitle(getResources().getString(R.string.game_instructions_header));
+                builder.setPositiveButton("הבנתי", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
@@ -120,7 +142,7 @@ public class StudentHomePageFragment extends Fragment {
             default:
                 msg = getResources().getString(R.string.error_msg);
         }
-
+        iInstructionsMsg.setPadding(30,30,30,30);
         iInstructionsMsg.setText(msg);
         iInstructions.setContentView(iInstructionsMsg);
     }

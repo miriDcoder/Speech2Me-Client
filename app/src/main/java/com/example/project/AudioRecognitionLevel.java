@@ -24,6 +24,7 @@ public class AudioRecognitionLevel extends GameLevel {
     private ImageView play;
     private ImageView pause;
     private MediaPlayer mMediaPlayerListen = null;
+    private boolean isAtLeaseOncePlayed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,7 @@ public class AudioRecognitionLevel extends GameLevel {
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mMediaPlayerListen == null)
+                if(mMediaPlayerListen == null || !isAtLeaseOncePlayed)
                 {
                     messageToUser("השמע את ההקלטה טרם מתן תשובה");
                 }
@@ -123,6 +124,7 @@ public class AudioRecognitionLevel extends GameLevel {
                     mMediaPlayerListen.start();
                     play.setVisibility(View.INVISIBLE);
                     pause.setVisibility(View.VISIBLE);
+                    isAtLeaseOncePlayed = true;
                 }
             }
         });

@@ -125,6 +125,20 @@ public class PictureRecognitionLevel extends GameLevel{
             }
         });
 
+        textGoodJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setNextLevelVisibility(imageGoodJob, textGoodJob, imgWord);
+            }
+        });
+
+        textTryAgain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setNextLevelVisibility(imageTryAgain, textTryAgain, imgWord);
+            }
+        });
+
         homePage.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 AlertDialog.Builder builder = new AlertDialog.Builder(PictureRecognitionLevel.this);

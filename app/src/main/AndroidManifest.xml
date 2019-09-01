@@ -18,21 +18,27 @@
         android:networkSecurityConfig="@xml/network_security_config"
         >
 
-        <activity android:name=".AudioRecognitionLevel">
+        <activity android:name=".AudioRecognitionLevel"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".PictureRecognitionLevel">
+        <activity android:name=".PictureRecognitionLevel"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".SignUp" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".SignUp"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
              <intent-filter>
              <action android:name="android.intent.action.MAIN" />
              <category android:name="android.intent.category.LAUNCHER" />
              </intent-filter>
         </activity>
-        <activity android:name=".LoginPage" />
+        <activity android:name=".LoginPage"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".HomePage"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

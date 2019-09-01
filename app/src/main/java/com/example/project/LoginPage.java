@@ -120,4 +120,7 @@ public class LoginPage extends AppCompatActivity {
         signupBtn.setEnabled(iVal);
         signupBtn.setClickable(iVal);
     }
+
+    public void onBackPressed(){
+    }
 }
