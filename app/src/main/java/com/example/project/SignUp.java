@@ -211,8 +211,6 @@ public class SignUp extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             System.out.print(response);
-                            EditText responseSignup = (EditText)findViewById(R.id.responseSignup);
-                            responseSignup.setText(response.toString());
                             Intent intent = null;
                             try {
                                 System.out.println(response.getString("id"));

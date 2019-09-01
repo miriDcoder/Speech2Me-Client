@@ -156,19 +156,16 @@
         app:layout_constraintVertical_bias="1.0"
         />
 
-    <Button
+    <ImageView
         android:id="@+id/buttonBack"
-        android:layout_width="22dp"
-        android:layout_height="21dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="660dp"
-        android:background="@drawable/ic_back"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageViewAboutBackground"
-        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintHorizontal_bias="0.051"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="@+id/imageViewAboutBackground"
         app:layout_constraintTop_toTopOf="@+id/imageViewAboutBackground"
-        app:layout_constraintVertical_bias="1.0" />
+        app:srcCompat="@drawable/ic_back" />
 
 </android.support.constraint.ConstraintLayout>

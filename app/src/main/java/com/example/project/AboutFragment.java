@@ -3,6 +3,7 @@ package com.example.project;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -23,7 +25,7 @@ public class AboutFragment extends Fragment {
     private TextView contactUs;
     private TextView aboutHeader;
     private TextView aboutText;
-    private TextView backButton;
+    private ImageView backButton;
     private EditText msgHeader;
     private EditText msgText;
     private Button btnSend;
@@ -37,7 +39,7 @@ public class AboutFragment extends Fragment {
         contactUs = (TextView)v.findViewById(R.id.textViewContact);
         aboutHeader = (TextView)v.findViewById(R.id.textViewAboutHeadline);
         aboutText = (TextView)v.findViewById(R.id.textViewAbout);
-        backButton = (TextView)v.findViewById(R.id.buttonBack);
+        backButton = (ImageView)v.findViewById(R.id.buttonBack);
         msgHeader = (EditText) v.findViewById(R.id.txtSubject);
         msgText = (EditText) v.findViewById(R.id.txtMessage);
         btnSend = (Button)v.findViewById(R.id.btnOK);
