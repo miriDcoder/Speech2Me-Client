@@ -50,6 +50,7 @@ public class ViewStudentsDataFragment extends Fragment {
     private TableLayout tableData;
     private MiniStudent chosenStudent;
     private Button buttonExport;
+    private TextView textViewNoData;
 
     public ViewStudentsDataFragment() {
     }
@@ -76,6 +77,7 @@ public class ViewStudentsDataFragment extends Fragment {
         textViewCurrLevelHeader = (TextView)v.findViewById(R.id.textViewCurrLevelHeader);
         textViewGoalHeader = (TextView)v.findViewById(R.id.textViewGoalHeader);
         buttonExport = (Button)v.findViewById(R.id.buttonExportToMail);
+        textViewNoData = (TextView)v.findViewById(R.id.textViewNoDataToShow);
 
         if(getArguments() != null)
         {
@@ -261,7 +263,6 @@ public class ViewStudentsDataFragment extends Fragment {
                     textViewCurrLevel.setVisibility(View.VISIBLE);
                     textViewCurrLevelHeader.setVisibility(View.VISIBLE);
                     textViewGoalHeader.setVisibility(View.VISIBLE);
-                    buttonExport.setVisibility(View.VISIBLE);
                     getStudentDetails();
                 }
             }
@@ -315,55 +316,58 @@ public class ViewStudentsDataFragment extends Fragment {
         TableRow tableRow = null;
         TextView textView = null;
         JSONObject jsonObject = null;
-        TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f);
-        setTableHeaders(params);
-        for(int i=0; i<iAnswers.length(); i++)
+        if(iAnswers.length() == 0)
         {
-            try {
-                System.out.println("IN LOOP, INDEX: " + i);
-                jsonObject = iAnswers.getJSONObject(i);
-                tableRow = new TableRow(currContext);
-                textView = new TextView(currContext);
-                textView.setText(jsonObject.getString("word"));
-                tableRow.addView(textView, params);
-                textView = new TextView(currContext);
-                textView.setText(jsonObject.getString("level"));
-                tableRow.addView(textView, params);
-                textView = new TextView(currContext);
-                textView.setText(jsonObject.getString("numOfTries"));
-                tableRow.addView(textView, params);
-                checkBox = new CheckBox(currContext);
-                isClueUsed = jsonObject.getString("isAudioClueUsed");
-                if(isClueUsed.toLowerCase().equals("true"))
-                {
-                    checkBox.setChecked(true);
+            textViewNoData.setVisibility(View.VISIBLE);
+            buttonExport.setVisibility(View.INVISIBLE);
+        }
+        else {
+            textViewNoData.setVisibility(View.INVISIBLE);
+            buttonExport.setVisibility(View.VISIBLE);
+            TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f);
+            setTableHeaders(params);
+            for (int i = 0; i < iAnswers.length(); i++) {
+                try {
+                    System.out.println("IN LOOP, INDEX: " + i);
+                    jsonObject = iAnswers.getJSONObject(i);
+                    tableRow = new TableRow(currContext);
+                    textView = new TextView(currContext);
+                    textView.setText(jsonObject.getString("word"));
+                    tableRow.addView(textView, params);
+                    textView = new TextView(currContext);
+                    textView.setText(jsonObject.getString("level"));
+                    tableRow.addView(textView, params);
+                    textView = new TextView(currContext);
+                    textView.setText(jsonObject.getString("numOfTries"));
+                    tableRow.addView(textView, params);
+                    checkBox = new CheckBox(currContext);
+                    isClueUsed = jsonObject.getString("isAudioClueUsed");
+                    if (isClueUsed.toLowerCase().equals("true")) {
+                        checkBox.setChecked(true);
+                    } else {
+                        checkBox.setChecked(false);
+                    }
+                    checkBox.setEnabled(false);
+                    tableRow.addView(checkBox, params);
+                    checkBox = new CheckBox(currContext);
+                    isCompleted = jsonObject.getString("answer");
+                    if (isCompleted.toLowerCase().equals("true")) {
+                        checkBox.setChecked(true);
+                    } else {
+                        checkBox.setChecked(false);
+                    }
+                    checkBox.setEnabled(false);
+                    tableRow.addView(checkBox, params);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                        tableRow.setBackground(getResources().getDrawable(R.drawable.shape_cell));
+                        tableRow.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+                        tableRow.setTextDirection(View.LAYOUT_DIRECTION_RTL);
+                        tableRow.setMinimumWidth(0);
+                    }
+                    tableData.addView(tableRow);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                else{
-                    checkBox.setChecked(false);
-                }
-                checkBox.setEnabled(false);
-                tableRow.addView(checkBox, params);
-                checkBox = new CheckBox(currContext);
-                isCompleted = jsonObject.getString("answer");
-                if(isCompleted.toLowerCase().equals("true"))
-                {
-                    checkBox.setChecked(true);
-                }
-                else{
-                    checkBox.setChecked(false);
-                }
-                checkBox.setEnabled(false);
-                tableRow.addView(checkBox, params);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    tableRow.setBackground(getResources().getDrawable(R.drawable.shape_cell));
-                    tableRow.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-                    tableRow.setTextDirection(View.LAYOUT_DIRECTION_RTL);
-                    tableRow.setMinimumWidth(0);
-                }
-                tableData.addView(tableRow);
-            }
-            catch (JSONException e) {
-                e.printStackTrace();
             }
         }
     }

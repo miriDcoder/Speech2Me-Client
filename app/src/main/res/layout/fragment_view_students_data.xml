@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:textDirection="rtl"
@@ -113,6 +114,25 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewGoalData"></TableLayout>
 
+        <TextView
+            android:id="@+id/textViewNoDataToShow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/heebo_regular"
+            android:text="@string/no_data_to_show"
+            android:textDirection="rtl"
+            android:textSize="25dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tableData"
+            app:layout_constraintHorizontal_bias="0.48"
+            app:layout_constraintStart_toStartOf="@+id/tableData"
+            app:layout_constraintTop_toTopOf="@+id/buttonExportToMail"
+            app:layout_constraintVertical_bias="1.0" />
+
             <Button
                 android:id="@+id/buttonExportToMail"
                 android:layout_width="wrap_content"
@@ -130,6 +150,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tableData" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewGoalData" />
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>
