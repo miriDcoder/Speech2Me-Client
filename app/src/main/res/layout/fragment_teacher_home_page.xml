@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:exported="true"
+    android:textDirection="rtl"
+    android:layoutDirection="rtl"
     android:background="@drawable/background_clean">
-
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <TextView
             android:id="@+id/textViewHeader"
             android:layout_width="match_parent"
@@ -24,23 +28,18 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            />
+            android:layout_marginBottom="8dp" />
 
         <ImageView
             android:id="@+id/imageViewProgressBackground"
             android:layout_width="322dp"
-            android:layout_height="213dp"
-            android:layout_marginStart="92dp"
-            android:layout_marginLeft="92dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_height="270dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/shape_rectangle_score"
             android:shadowDx="5"
             android:shadowDy="5"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.39"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewHeader" />
 
@@ -53,11 +52,11 @@
             android:text="התקדמות"
             android:textAlignment="textStart"
             android:textColor="@color/colorText"
-            android:textDirection="rtl"
+            android:textDirection="inherit"
             android:textSize="15sp"
             android:typeface="sans"
             app:layout_constraintEnd_toEndOf="@+id/imageViewProgressBackground"
-            app:layout_constraintHorizontal_bias="0.96"
+            app:layout_constraintHorizontal_bias="0.05"
             app:layout_constraintStart_toStartOf="@+id/imageViewProgressBackground"
             app:layout_constraintTop_toTopOf="@+id/imageViewProgressBackground" />
 
@@ -73,15 +72,14 @@
             android:textSize="15sp"
             android:typeface="sans"
             app:layout_constraintEnd_toEndOf="@+id/imageViewProgressBackground"
-            app:layout_constraintHorizontal_bias="0.746"
+            app:layout_constraintHorizontal_bias="0.11"
             app:layout_constraintStart_toStartOf="@+id/imageViewProgressBackground"
             app:layout_constraintTop_toBottomOf="@+id/textViewProgress" />
 
         <TextView
             android:id="@+id/textViewAmountOfStudents"
-            android:layout_width="96dp"
-            android:layout_height="63dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/heebo_regular"
             android:gravity="start"
             android:text="0"
@@ -90,146 +88,24 @@
             android:textDirection="rtl"
             android:textSize="50dp"
             app:layout_constraintEnd_toEndOf="@+id/imageViewProgressBackground"
-            app:layout_constraintHorizontal_bias="0.861"
+            app:layout_constraintHorizontal_bias="0.06"
             app:layout_constraintStart_toStartOf="@+id/imageViewProgressBackground"
-            app:layout_constraintTop_toBottomOf="@+id/textViewProgress" />
-
-        <TextView
-            android:id="@+id/textViewWatchStatistics"
-            android:layout_width="237dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="48dp"
-            android:gravity="start"
-            android:text="@string/watch_student_statistics"
-            android:textAlignment="textStart"
-            android:textColor="@color/colorText"
-            android:textDirection="rtl"
-            android:textSize="20sp"
-            android:typeface="sans"
-            app:layout_constraintBottom_toBottomOf="@+id/imageViewProgressBackground"
-            app:layout_constraintEnd_toEndOf="@+id/imageViewProgressBackground"
-            app:layout_constraintHorizontal_bias="0.643"
-            app:layout_constraintStart_toStartOf="@+id/imageViewProgressBackground" />
-
-        <ImageView
-            android:id="@+id/imageViewGameBackground"
-            android:layout_width="326dp"
-            android:layout_height="162dp"
-            android:layout_marginStart="100dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="48dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/shape_rectangle_score"
-            android:shadowDx="5"
-            android:shadowDy="5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewProgressBackground" />
-
-        <TextView
-            android:id="@+id/textViewPracticeGame"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="start"
-            android:text="התנסות במשחק"
-            android:textAlignment="textStart"
-            android:textColor="@color/colorText"
-            android:textDirection="rtl"
-            android:textSize="15sp"
-            android:typeface="sans"
-            app:layout_constraintEnd_toEndOf="@+id/imageViewGameBackground"
-            app:layout_constraintHorizontal_bias="0.948"
-            app:layout_constraintStart_toStartOf="@+id/imageViewGameBackground"
-            app:layout_constraintTop_toTopOf="@+id/imageViewGameBackground" />
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="122dp"
-            android:layout_height="31dp"
-            android:layout_marginLeft="400px"
-            android:layout_marginTop="76dp"
-            android:background="@android:drawable/btn_dropdown"
-            android:radius="5dp"
-            android:spinnerMode="dropdown"
-            android:text="@string/level"
-            app:layout_constraintEnd_toStartOf="@+id/radioGame"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/imageViewGameBackground"
-            app:layout_constraintTop_toTopOf="@+id/imageViewGameBackground" />
-
-        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/radioGame"
-            android:layout_width="144dp"
-            android:layout_height="63dp"
-            android:layout_alignParentLeft="true"
-            android:layout_gravity="right"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
-            android:gravity=""
-            android:inputType="text"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="@+id/imageViewGameBackground"
-            app:layout_constraintTop_toBottomOf="@+id/textViewPracticeGame">
-
-                <RadioButton
-                    android:id="@+id/radioPictureGame"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:gravity="right"
-                    android:layoutDirection="rtl"
-                    android:text="@string/picture_game"
-                    android:textAlignment="center" />
-
-                <RadioButton
-                    android:id="@+id/radioAudioGame"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:gravity="right"
-                    android:layoutDirection="rtl"
-                    android:text="@string/audio_game"
-                    android:textAlignment="center" />
-
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/buttonPlay"
-            android:layout_width="66dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="10dp"
-            android:shadowColor="#A8A8A8"
-            android:text="@string/play"
-            android:textColor="@color/colorText"
-            android:textDirection="rtl"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageViewGameBackground"
-            app:layout_constraintEnd_toEndOf="@+id/imageViewGameBackground"
-            app:layout_constraintHorizontal_bias="0.875"
-            app:layout_constraintStart_toStartOf="@+id/imageViewGameBackground"
-            app:layout_constraintTop_toBottomOf="@+id/textViewWatchStatistics"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewYourAmountOfStudents" />
 
         <TextView
             android:id="@+id/textViewTeacherCodeHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
             android:text="קוד הזיהוי שלך:"
             android:textColor="#000"
+            android:textDirection="rtl"
             android:textSize="20sp"
             app:fontFamily="@font/heebo_regular"
-            app:layout_constraintTop_toBottomOf="@+id/textViewAmountOfStudents"
-            app:layout_constraintBottom_toTopOf="@+id/textViewWatchStatistics"
-            app:layout_constraintEnd_toEndOf="@+id/imageViewProgressBackground" />
+            app:layout_constraintEnd_toEndOf="@+id/imageViewProgressBackground"
+            app:layout_constraintHorizontal_bias="0.09"
+            app:layout_constraintStart_toStartOf="@+id/imageViewProgressBackground"
+            app:layout_constraintTop_toBottomOf="@+id/textViewAmountOfStudents" />
 
         <TextView
             android:id="@+id/textViewTeacherCodeData"
@@ -238,19 +114,68 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
+            android:layoutDirection="ltr"
+            android:text="X"
+            android:textColor="#000"
+            android:textDirection="rtl"
+            android:textSize="20sp"
+            app:fontFamily="@font/heebo_bold"
+            app:layout_constraintEnd_toStartOf="@+id/textViewTeacherCodeHeader"
+            app:layout_constraintStart_toStartOf="@+id/imageViewProgressBackground"
+            app:layout_constraintTop_toBottomOf="@+id/textViewAmountOfStudents" />
+
+        <TextView
+            android:id="@+id/textViewTeacherCodeInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layoutDirection="ltr"
+            android:text="@string/help"
+            android:textDirection="rtl"
+            android:textSize="17sp"
+            app:fontFamily="@font/heebo_regular"
+            app:layout_constraintEnd_toStartOf="@+id/textViewTeacherCodeData"
+            app:layout_constraintStart_toStartOf="@+id/imageViewProgressBackground"
+            app:layout_constraintTop_toBottomOf="@+id/textViewAmountOfStudents" />
+
+        <TextView
+            android:id="@+id/textViewWatchStatistics"
+            android:layout_width="237dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/heebo_regular"
+            android:gravity="start"
+            android:text="@string/watch_student_statistics"
+            android:textAlignment="textStart"
+            android:textColor="@color/colorText"
+            android:textDirection="rtl"
+            android:textSize="20sp"
+            android:typeface="sans"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewProgressBackground"
+            app:layout_constraintHorizontal_bias="0.16"
+            app:layout_constraintStart_toStartOf="@+id/imageViewProgressBackground"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTeacherCodeHeader" />
+
+        <ImageView
+            android:id="@+id/imageViewGameBackground"
+            android:layout_width="326dp"
+            android:layout_height="185dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="52dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
-            android:text="TextView"
-            android:textColor="#000"
-            android:textSize="20sp"
-            app:fontFamily="@font/heebo_bold"
-            app:layout_constraintBottom_toTopOf="@+id/textViewWatchStatistics"
-            app:layout_constraintEnd_toStartOf="@+id/textViewTeacherCodeHeader"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/imageViewProgressBackground"
-            app:layout_constraintTop_toBottomOf="@+id/textViewAmountOfStudents"
-            app:layout_constraintVertical_bias="0.604" />
+            android:background="@drawable/shape_rectangle_score"
+            android:shadowDx="5"
+            android:shadowDy="5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.48"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewProgressBackground" />
 
         <TextView
             android:id="@+id/textViewCodeList"
@@ -264,29 +189,96 @@
             app:fontFamily="@font/heebo_regular"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewProgressBackground"
             app:layout_constraintEnd_toEndOf="@+id/imageViewProgressBackground"
-            app:layout_constraintHorizontal_bias="0.834"
+            app:layout_constraintHorizontal_bias="0.09"
             app:layout_constraintStart_toStartOf="@+id/imageViewProgressBackground"
-            app:layout_constraintTop_toBottomOf="@+id/textViewWatchStatistics"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewWatchStatistics" />
 
         <TextView
-            android:id="@+id/textViewTeacherCodeInfo"
+            android:id="@+id/textViewPracticeGame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/help"
-            android:textSize="17sp"
-            app:fontFamily="@font/heebo_regular"
-            app:layout_constraintBottom_toTopOf="@+id/textViewWatchStatistics"
-            app:layout_constraintEnd_toStartOf="@+id/textViewTeacherCodeData"
-            app:layout_constraintHorizontal_bias="0.838"
-            app:layout_constraintStart_toStartOf="@+id/imageViewProgressBackground"
-            app:layout_constraintTop_toBottomOf="@+id/textViewAmountOfStudents"
-            app:layout_constraintVertical_bias="1.0" />
+            android:fontFamily="@font/heebo_regular"
+            android:gravity="start"
+            android:text="התנסות במשחק"
+            android:textAlignment="textStart"
+            android:textColor="@color/colorText"
+            android:textDirection="rtl"
+            android:textSize="15sp"
+            android:typeface="sans"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewGameBackground"
+            app:layout_constraintHorizontal_bias="0.08"
+            app:layout_constraintStart_toStartOf="@+id/imageViewGameBackground"
+            app:layout_constraintTop_toTopOf="@+id/imageViewGameBackground" />
 
-</android.support.constraint.ConstraintLayout>
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/radioGame"
+            android:layout_width="144dp"
+            android:layout_height="63dp"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="right"
+            android:layout_marginTop="8dp"
+            android:gravity=""
+            android:inputType="text"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewGameBackground"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toStartOf="@+id/imageViewGameBackground"
+            app:layout_constraintTop_toBottomOf="@+id/textViewPracticeGame">
+
+            <RadioButton
+                android:id="@+id/radioPictureGame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:layoutDirection="rtl"
+                android:text="@string/picture_game"
+                android:textAlignment="center" />
+
+            <RadioButton
+                android:id="@+id/radioAudioGame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:layoutDirection="rtl"
+                android:text="@string/audio_game"
+                android:textAlignment="center" />
+
+        </RadioGroup>
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="122dp"
+            android:layout_height="31dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:drawable/btn_dropdown"
+            android:radius="5dp"
+            android:spinnerMode="dropdown"
+            android:text="@string/level"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewGameBackground"
+            app:layout_constraintHorizontal_bias="0.11"
+            app:layout_constraintStart_toStartOf="@+id/imageViewGameBackground"
+            app:layout_constraintTop_toBottomOf="@+id/radioGame" />
+
+        <TextView
+            android:id="@+id/buttonPlay"
+            android:layout_width="66dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/heebo_regular"
+            android:shadowColor="#A8A8A8"
+            android:text="@string/play"
+            android:textColor="@color/colorText"
+            android:textDirection="rtl"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewGameBackground"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewGameBackground"
+            app:layout_constraintHorizontal_bias="0.89"
+            app:layout_constraintStart_toStartOf="@+id/imageViewGameBackground"
+            app:layout_constraintTop_toBottomOf="@+id/spinner" />
+    </android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.NestedScrollView>

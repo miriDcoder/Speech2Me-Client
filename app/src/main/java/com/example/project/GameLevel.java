@@ -160,8 +160,8 @@ public abstract class GameLevel extends AppCompatActivity {
                         JSONObject jsonBody = new JSONObject();
                         try {
                             jsonBody.put("user_id", mId);
-                            jsonBody.put("answers", answers);
                             jsonBody.put("level", mLevel);
+                            jsonBody.put("answers", answers);
                             final RequestQueue queue = Volley.newRequestQueue(this);
                             System.out.println("+++++++++++++++++++++++" + jsonBody);
                             final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
@@ -169,7 +169,8 @@ public abstract class GameLevel extends AppCompatActivity {
                                         @Override
                                         public void onResponse(JSONObject response) {
                                             updateLevel();
-                                            System.out.println("@@@@@@@@@@@@@@@@@@@ " + response);
+                                            System.out.println("@@@@@@@@@@@@@@@@@@@ GOT RESPONSE FINISH LEVEL " + response);
+                                            moveToHomePage(mId, mUserType);
                                         }
                                     }, new Response.ErrorListener() {
                                 @Override
@@ -196,7 +197,8 @@ public abstract class GameLevel extends AppCompatActivity {
             {
                 Thread.currentThread().interrupt();
             }
-            moveToHomePage(mId, mUserType);
+
+            //moveToHomePage(mId, mUserType);
         }
     }
 
@@ -222,7 +224,7 @@ public abstract class GameLevel extends AppCompatActivity {
     protected void messageToUser(CharSequence text)
     {
         Context context = getBaseContext();
-        int duration = Toast.LENGTH_SHORT;
+        int duration = Toast.LENGTH_LONG;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
@@ -334,7 +336,7 @@ public abstract class GameLevel extends AppCompatActivity {
     }
 
     private void updateScore(){
-        String url = "https://speech-rec-server.herokuapp.com/update_level/";// TODO
+        String url = "https://speech-rec-server.herokuapp.com/update_score/";// TODO
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("user_id", mId);
@@ -345,6 +347,16 @@ public abstract class GameLevel extends AppCompatActivity {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            try {
+                                if(response.getString("body").toLowerCase().equals("updated score to user user_id")){
+                                    //GOOD
+                                }
+                                else{
+                                    //SOMETHING WENT WRONG
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             System.out.println("@@@@@@@@@@@@@@@@@@@ " + response);
                         }
                     }, new Response.ErrorListener() {
@@ -362,7 +374,7 @@ public abstract class GameLevel extends AppCompatActivity {
     }
 
     private void updateLevel(){
-        String url = "https://speech-rec-server.herokuapp.com/update_level/";// TODO
+        String url = "https://speech-rec-server.herokuapp.com/update_level/";
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("user_id", mId);
@@ -372,7 +384,7 @@ public abstract class GameLevel extends AppCompatActivity {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            System.out.println("@@@@@@@@@@@@@@@@@@@ " + response);
+                            System.out.println("@@@@@@@@@@@@@@@@@@@ GOT RESPONSE FROM UPDATE LEVEL " + response);
                         }
                     }, new Response.ErrorListener() {
                 @Override

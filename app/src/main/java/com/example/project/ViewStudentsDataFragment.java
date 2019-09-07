@@ -12,12 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -35,21 +37,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-//TODO: rearrange set spinners functions
 public class ViewStudentsDataFragment extends Fragment {
     private Teacher mTeacher;
     private HashMap<String, MiniStudent> mStudentIdsToNames = null;
-    //private HashMap<String, String> mStudentIdsToNames = null;
     private List<String> mStudentNames = null;
     private Spinner spinnerLevel;
-//    private ScrollView scrollViewDetails;
-//    private RelativeLayout relativeLayoutDetails;
-//    private Spinner spinnerLevel;
-//    private Spinner spinnerWord;
+    private TextView textViewCurrLevel;
+    private TextView textViewCurrLevelHeader;
+    private TextView textViewGoal;
+    private TextView textViewGoalHeader;
     private Spinner spinnerChooseStudent;
     private TableLayout tableData;
-//    private TextView goalInfo;
-//    private TextView currLevel;
+    private MiniStudent chosenStudent;
+    private Button buttonExport;
 
     public ViewStudentsDataFragment() {
     }
@@ -69,31 +69,31 @@ public class ViewStudentsDataFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_view_students_data, container, false);
-        //scrollViewDetails = (ScrollView)v.findViewById(R.id.scrollViewDetails);
-        //scrollViewDetails.setVisibility(View.INVISIBLE);
-        //relativeLayoutDetails = (RelativeLayout)v.findViewById(R.id.relativeLayoutDetails);
-        //spinnerLevel = (Spinner)v.findViewById(R.id.spinnerChooseLevel);
-        //spinnerWord = (Spinner)v.findViewById(R.id.spinnerChooseWord);
         spinnerChooseStudent = (Spinner)v.findViewById(R.id.spinnerChooseStudent);
         tableData = (TableLayout)v.findViewById(R.id.tableData);
-        //relativeLayoutDetails.setVisibility(View.INVISIBLE);
-        //setAllStudentDetailsVisibility(View.INVISIBLE, relativeLayoutDetails);
-        //goalInfo = (TextView)v.findViewById(R.id.textViewStudentGoalInfo);
-        //currLevel = (TextView)v.findViewById(R.id.textViewStudentCurrLevelInfo);
+        textViewCurrLevel = (TextView)v.findViewById(R.id.textViewCurrLevelData);
+        textViewGoal = (TextView)v.findViewById(R.id.textViewGoalData);
+        textViewCurrLevelHeader = (TextView)v.findViewById(R.id.textViewCurrLevelHeader);
+        textViewGoalHeader = (TextView)v.findViewById(R.id.textViewGoalHeader);
+        buttonExport = (Button)v.findViewById(R.id.buttonExportToMail);
 
         if(getArguments() != null)
         {
             mTeacher = getArguments().getParcelable("user");
         }
-        //getStudents(scrollViewDetails, relativeLayoutDetails, spinnerLevel, spinnerWord);
         getStudents();
 
+        buttonExport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exportChosenStudentDetailsToTeachersMail();
+            }
+        });
         return v;
     }
 
     private List<String> setStudents()
     {
-        boolean isNeedToAddChooseStudent = true;
         String id = " ";
         String studentName = " ";
         JSONObject jsonObject = null;
@@ -138,8 +138,6 @@ public class ViewStudentsDataFragment extends Fragment {
         iSpinnerWord.setSelection(0);
     }
 
-//    private void getStudents(final ScrollView iScrollViewDetails, final RelativeLayout iRelativeLayoutDetails, final Spinner iSpinnerLevel,
-//                             final Spinner iSpinnerWord)
     private void getStudents()
     {
         String url = "https://speech-rec-server.herokuapp.com/get_students_of_teacher/";
@@ -148,12 +146,12 @@ public class ViewStudentsDataFragment extends Fragment {
             jsonBody.put("user_id", mTeacher.getmId());
             final RequestQueue queue = Volley.newRequestQueue(this.getContext());
             RequestFuture<JSONObject> future = RequestFuture.newFuture();
-            System.out.println("+++++++++++++++++++++++" + jsonBody);
 
             final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            System.out.println("**************************** STUDENTS:");
                             System.out.println("****************************" + response);
                             try {
                                 JSONArray students = response.getJSONArray("students");
@@ -223,14 +221,11 @@ public class ViewStudentsDataFragment extends Fragment {
                 student = new MiniStudent();
                 jsonObject = iStudents.getJSONObject(i);
                 id = jsonObject.getString("user_id");
-                System.out.println("ID FROM JSON: " + id);
                 studentName = jsonObject.getString("first_name") + " " + jsonObject.getString("last_name");
-                System.out.println("@@@@@@@@@@@@@@@ STUDENT NAME: " + studentName);
                 student.Name = studentName;
                 student.Id = id;
-                student.Goal = "1";//jsonObject.getString("goal");
-                student.CurrLevel = "1";//jsonObject.getString("curr_level");
-                System.out.println("NAME FROM JSON: " + studentName);
+                student.Goal = jsonObject.getString("goal");
+                student.CurrLevel = jsonObject.getString("curr_level");
             }
             catch (JSONException e) {
                 e.printStackTrace();
@@ -256,15 +251,18 @@ public class ViewStudentsDataFragment extends Fragment {
                 if(spinnerChooseStudent.getSelectedItemPosition() != 0)
                 {
                     System.out.println("############# IN CONDITION");
-                    setTableTemp();
-                    //getStudentDetails(spinnerChooseStudent.getSelectedItem().toString());
-                    //goalInfo.setText(mStudentIdsToNames.get(spinnerChooseStudent.getSelectedItem()).Goal);
-                    //currLevel.setText(mStudentIdsToNames.get(spinnerChooseStudent.getSelectedItem()).CurrLevel);
-                    //scrollViewDetails.setVisibility(View.VISIBLE);
-                    //relativeLayoutDetails.setVisibility(View.VISIBLE);
-                    //setAllStudentDetailsVisibility(View.VISIBLE, relativeLayoutDetails);
-                    //setSpinnerLevel(spinnerLevel);
-                    //setSpinnerWord(spinnerWord);
+                    chosenStudent = mStudentIdsToNames.get(spinnerChooseStudent.getSelectedItem());
+                    System.out.println("CHOSEN STUDENT LEVEL: " + chosenStudent.CurrLevel);
+                    System.out.println("CHOSEN STUDENT GOAL: " + chosenStudent.Goal);
+                    tableData.removeAllViews();
+                    textViewCurrLevel.setText(chosenStudent.CurrLevel);
+                    textViewGoal.setText(getGoal());
+                    textViewGoal.setVisibility(View.VISIBLE);
+                    textViewCurrLevel.setVisibility(View.VISIBLE);
+                    textViewCurrLevelHeader.setVisibility(View.VISIBLE);
+                    textViewGoalHeader.setVisibility(View.VISIBLE);
+                    buttonExport.setVisibility(View.VISIBLE);
+                    getStudentDetails();
                 }
             }
 
@@ -273,40 +271,14 @@ public class ViewStudentsDataFragment extends Fragment {
 
             }
         });
-
-//        spinnerLevel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-//
-//        spinnerWord.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
     }
-    private void getStudentDetails(String iSelectedStudentName)
+    private void getStudentDetails()
     {
-        String userId = mStudentIdsToNames.get(iSelectedStudentName).Id;
         String url = "https://speech-rec-server.herokuapp.com/get_answers_for_student/";
         try {
             JSONObject jsonBody = new JSONObject();
-            jsonBody.put("user_id", userId);
+            jsonBody.put("user_id", chosenStudent.Id);
             final RequestQueue queue = Volley.newRequestQueue(this.getContext());
-            RequestFuture<JSONObject> future = RequestFuture.newFuture();
             System.out.println("+++++++++++++++++++++++" + jsonBody);
 
             final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
@@ -343,20 +315,23 @@ public class ViewStudentsDataFragment extends Fragment {
         TableRow tableRow = null;
         TextView textView = null;
         JSONObject jsonObject = null;
+        TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f);
+        setTableHeaders(params);
         for(int i=0; i<iAnswers.length(); i++)
         {
             try {
+                System.out.println("IN LOOP, INDEX: " + i);
                 jsonObject = iAnswers.getJSONObject(i);
                 tableRow = new TableRow(currContext);
                 textView = new TextView(currContext);
                 textView.setText(jsonObject.getString("word"));
-                tableRow.addView(textView, 1);
+                tableRow.addView(textView, params);
                 textView = new TextView(currContext);
                 textView.setText(jsonObject.getString("level"));
-                tableRow.addView(textView, 2);
+                tableRow.addView(textView, params);
                 textView = new TextView(currContext);
                 textView.setText(jsonObject.getString("numOfTries"));
-                tableRow.addView(textView, 3);
+                tableRow.addView(textView, params);
                 checkBox = new CheckBox(currContext);
                 isClueUsed = jsonObject.getString("isAudioClueUsed");
                 if(isClueUsed.toLowerCase().equals("true"))
@@ -367,11 +342,10 @@ public class ViewStudentsDataFragment extends Fragment {
                     checkBox.setChecked(false);
                 }
                 checkBox.setEnabled(false);
-                tableRow.addView(checkBox, 4);
-
+                tableRow.addView(checkBox, params);
                 checkBox = new CheckBox(currContext);
-                isClueUsed = jsonObject.getString("answer");
-                if(isClueUsed.toLowerCase().equals("true"))
+                isCompleted = jsonObject.getString("answer");
+                if(isCompleted.toLowerCase().equals("true"))
                 {
                     checkBox.setChecked(true);
                 }
@@ -379,14 +353,13 @@ public class ViewStudentsDataFragment extends Fragment {
                     checkBox.setChecked(false);
                 }
                 checkBox.setEnabled(false);
-                tableRow.addView(checkBox, 5);
-//                textView = new TextView(currContext);
-//                textView.setText(jsonObject.getString("answer")+rightToLeft);
-//                tableRow.addView(textView, 5);
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//                    textView.setTextDirection(View.TEXT_DIRECTION_RTL);
-//                    textView.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-//                }
+                tableRow.addView(checkBox, params);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    tableRow.setBackground(getResources().getDrawable(R.drawable.shape_cell));
+                    tableRow.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+                    tableRow.setTextDirection(View.LAYOUT_DIRECTION_RTL);
+                    tableRow.setMinimumWidth(0);
+                }
                 tableData.addView(tableRow);
             }
             catch (JSONException e) {
@@ -395,70 +368,10 @@ public class ViewStudentsDataFragment extends Fragment {
         }
     }
 
-    private void setTableTemp(){
-        Context currContext = getContext();
-        String isClueUsed;
-        String isCompleted;
-        CheckBox checkBox = null;
-        TableRow tableRow = null;
-        TextView textView = null;
-        JSONObject jsonObject = null;
-        TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f);
-        setTableHeaders(params);
-        for(int i=0; i<10; i++) {
-            tableRow = new TableRow(currContext);
-            textView = new TextView(currContext);
-            textView.setText("בית");
-            System.out.println("~~~~~~~~~~ " + textView.getText());
-            tableRow.addView(textView, params);
-            textView = new TextView(currContext);
-            textView.setText("2");
-            System.out.println("~~~~~~~~~~ " + textView.getText());
-            tableRow.addView(textView, params);
-            textView = new TextView(currContext);
-            textView.setText("3");
-            System.out.println("~~~~~~~~~~ " + textView.getText());
-            tableRow.addView(textView, params);
-            checkBox = new CheckBox(currContext);
-            isClueUsed = "true";
-            if (isClueUsed.toLowerCase().equals("true")) {
-                checkBox.setChecked(true);
-            } else {
-                checkBox.setChecked(false);
-            }
-            checkBox.setEnabled(false);
-            tableRow.addView(checkBox, params);
-
-            checkBox = new CheckBox(currContext);
-            isCompleted = "false";
-            if (isCompleted.toLowerCase().equals("true")) {
-                checkBox.setChecked(true);
-            } else {
-                checkBox.setChecked(false);
-            }
-            checkBox.setEnabled(false);
-            tableRow.addView(checkBox, params);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                tableRow.setBackground(getResources().getDrawable(R.drawable.shape_cell));
-                tableRow.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-                tableRow.setTextDirection(View.LAYOUT_DIRECTION_RTL);
-                tableRow.setMinimumWidth(0);
-            }
-//                textView = new TextView(currContext);
-//                textView.setText(jsonObject.getString("answer")+rightToLeft);
-//                tableRow.addView(textView, 5);
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//                    textView.setTextDirection(View.TEXT_DIRECTION_RTL);
-//                    textView.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-//                }
-            tableData.addView(tableRow);
-        }
-    }
-
     private void setTableHeaders(TableRow.LayoutParams iTableParams)
     {
         TableRow tableRow = new TableRow(getContext());
-        TextView textView = new TextView(getContext());
+        TextView textView;
         List<String> headers = new ArrayList<String>();
 
         headers.add(getResources().getString(R.string.header_word));
@@ -481,5 +394,69 @@ public class ViewStudentsDataFragment extends Fragment {
         }
 
         tableData.addView(tableRow);
+    }
+
+    private String getGoal()
+    {
+        String goalStr = " ";
+        switch (chosenStudent.Goal)
+        {
+            case "1":
+                goalStr = getString(R.string.goal_audio_without_code);
+                break;
+            case "2":
+                goalStr = getString(R.string.goal_picture_without_code);
+                break;
+        }
+
+        return goalStr;
+    }
+
+    private void exportChosenStudentDetailsToTeachersMail()
+    {
+        String url = "https://speech-rec-server.herokuapp.com/send_email_statistics/";
+        try {
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("student_id", chosenStudent.Id);
+            jsonBody.put("teacher_id", mTeacher.getmId());
+            final RequestQueue queue = Volley.newRequestQueue(this.getContext());
+
+            final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            System.out.println("****************************" + response);
+                            try {
+                                if (response.has("body") && response.getString("body").toLowerCase().contains("email sent")) {
+                                    messageToUser("המייל נשלח");
+                                }
+                                else{
+                                    messageToUser("אירעה שגיאה. אנא נסו שנית מאוחר יותר");
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                messageToUser("אירעה שגיאה. אנא נסו שנית מאוחר יותר");
+                            }
+                        }
+                    },  new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println("ERROR!" + error.getMessage());
+                    messageToUser("אירעה שגיאה. אנא נסו שנית מאוחר יותר");
+                }
+            });
+            queue.add(jsonRequest);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void messageToUser(CharSequence text)
+    {
+        Context context = getActivity();
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 }

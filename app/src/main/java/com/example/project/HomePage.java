@@ -60,18 +60,6 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                 getUserFromDatabase(id, url, navigationView);
                 break;
         }
-//        String newScore = intent.getStringExtra("newScore");
-        //currUser = DbUtils.GetUserById(db.makeUserList(), id);
-
-        //when going to home page from game
-//        if (newScore != null){
-//            int score = Integer.parseInt(newScore);
-//            Student student = (Student)currUser;
-//            student.setmScore(score);
-//        }
-//        if (savedInstanceState==null) {
-//            moveToHomePage();
-//        }
     }
 
     @Override
@@ -82,7 +70,12 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                 break;
             case R.id.nav_account:
                 getSupportActionBar().setTitle("פרופיל");
-                getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, new AccountFragment()).commit();
+                AccountFragment accountFragment = new AccountFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("user_id", currUser.getmId());
+                bundle.putString("user_type", currUser.getmType());
+                accountFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, accountFragment).commit();
                 break;
             case R.id.nav_info:
                 getSupportActionBar().setTitle("אודות");

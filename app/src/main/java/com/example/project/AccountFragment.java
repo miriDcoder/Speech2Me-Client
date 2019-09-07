@@ -14,11 +14,33 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class AccountFragment extends Fragment {
-    DataBase tempDb = new DataBase();
     private User mUser;
+    private String userId;
+    private String userType;
+    private String prevFirstName;
+    private String prevLastName;
+    private String prevPassword;
+    private String newPassword;
+    private String newPasswordAgain;
+    private String prevEmail;
+    private EditText editTextFirstName;
+    private EditText editTextLastName;
+    private EditText editTextEmail;
+    private EditText editTextCurrPassword;
+    private EditText editTextNewPassword;
+    private EditText editTextNewPasswordAgain;
+    private Button buttonSaveChanges;
 
     public AccountFragment(){
 
@@ -28,20 +50,13 @@ public class AccountFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_account, container, false);
-        final EditText editTextFirstName = (EditText)v.findViewById(R.id.editTextAccountFirstName);
-        final EditText editTextLastName = (EditText)v.findViewById(R.id.editTextAccountLastName);
-        final EditText editTextEmail = (EditText)v.findViewById(R.id.editTextAccountMail);
-        final EditText editTextCity = (EditText)v.findViewById(R.id.editTextAccountCity);
-        final EditText editTextCurrPassword = (EditText)v.findViewById(R.id.editTextAccountCurrPassword);
-        final EditText editTextNewPassword = (EditText)v.findViewById(R.id.editTextAccountNewPassword);
-        final EditText editTextNewPasswordAgain = (EditText)v.findViewById(R.id.editTextAccountNewPasswordAgain);
-        final Button buttonSaveChanges = (Button)v.findViewById(R.id.buttonSaveChanges);
-        final Button buttonEdit = (Button)v.findViewById(R.id.buttonAccountEditDetails);
-        //-----------------NEED TO CHANGE AFTER CONNECTING REAL DB-------------
-        ArrayList<User> users = tempDb.makeUserList();
-        mUser = users.get(3);
-    //----------------------------------------------------------------------
-        updateFieldsFromDb(editTextFirstName, editTextLastName, editTextEmail, editTextCity);
+        editTextFirstName = (EditText)v.findViewById(R.id.editTextAccountFirstName);
+        editTextLastName = (EditText)v.findViewById(R.id.editTextAccountLastName);
+        editTextEmail = (EditText)v.findViewById(R.id.editTextAccountMail);
+        editTextCurrPassword = (EditText)v.findViewById(R.id.editTextAccountCurrPassword);
+        editTextNewPassword = (EditText)v.findViewById(R.id.editTextAccountNewPassword);
+        editTextNewPasswordAgain = (EditText)v.findViewById(R.id.editTextAccountNewPasswordAgain);
+        buttonSaveChanges = (Button)v.findViewById(R.id.buttonSaveChanges);
         InputFilter filter = new InputFilter() {
             @Override
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
@@ -60,15 +75,16 @@ public class AccountFragment extends Fragment {
         };
         editTextFirstName.setFilters(new InputFilter[] {filter});
         editTextLastName.setFilters(new InputFilter[] {filter});
-        editTextCity.setFilters(new InputFilter[] {filter});
-        editTextFirstName.setEnabled(false);
-        editTextLastName.setEnabled(false);
-        editTextEmail.setEnabled(false);
-        editTextCurrPassword.setEnabled(false);
-        editTextCity.setEnabled(false);
-        editTextNewPassword.setEnabled(false);
-        editTextNewPasswordAgain.setEnabled(false);
-
+        if(getArguments() != null)
+        {
+            userId = getArguments().getString("user_id");
+            userType = getArguments().getString("user_type");
+            System.out.println("USER ID: " + userId);
+            getUserDetails(false);
+        }
+        else{
+            //TODO - something went wrong. maybe move to home page?
+        }
         editTextEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -86,60 +102,11 @@ public class AccountFragment extends Fragment {
         buttonSaveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isChangePassword = false;
-                String currPass = editTextCurrPassword.getText().toString();
-                if(!currPass.isEmpty())
-                {
-                    int compareCurrPass = currPass.compareTo(mUser.getmPassword());
-                    if(compareCurrPass != 0)
-                    {
-                        messageToUser("ססמה נוכחית שגויה.");
-                    }
-                    else {
-                        String newPass = editTextNewPassword.getText().toString();
-                        String newPassAgain = editTextNewPasswordAgain.getText().toString();
-                        int compare = newPass.compareTo(newPassAgain);
-                        if (!newPass.isEmpty() && !newPassAgain.isEmpty() && compare == 0) {
-                            //TODO: update new password in database
-                        } else {
-                            messageToUser("ססמה חדשה שגויה. יש להזין את אותה הססמה בשדות המתאימים.");
-                        }
-                    }
-                }
-
-                //TODO: UPDATE FIELDS IN DB
-            }
-        });
-
-        buttonEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                buttonEdit.setVisibility(View.INVISIBLE);
-                buttonEdit.setEnabled(false);
-                buttonSaveChanges.setVisibility(View.VISIBLE);
-                buttonSaveChanges.setEnabled(true);
-                editTextFirstName.setEnabled(true);
-                editTextLastName.setEnabled(true);
-                editTextEmail.setEnabled(true);
-                editTextCurrPassword.setEnabled(true);
-                editTextCity.setEnabled(true);
-                editTextNewPassword.setEnabled(true);
-                editTextNewPasswordAgain.setEnabled(true);
+                validateAndSendChanges();
             }
         });
 
         return v;
-    }
-
-    private void updateFieldsFromDb(EditText iFirstName, EditText iLastName, EditText iEmail, EditText iCity)
-    {
-        iFirstName.setText(mUser.getmFirstName());
-        iLastName.setText(mUser.getmLastName());
-        iEmail.setText(mUser.getmEmail());
-        if(!mUser.getmCity().isEmpty())
-        {
-            iCity.setText(mUser.getmCity());
-        }
     }
 
     private void messageToUser(CharSequence text)
@@ -148,5 +115,148 @@ public class AccountFragment extends Fragment {
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+    }
+
+    private void getUserDetails(final boolean isNewDetails)
+    {
+        String url = "https://speech-rec-server.herokuapp.com/get_user/";
+        try {
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("user_id", userId);
+            final RequestQueue queue = Volley.newRequestQueue(this.getContext());
+            final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                if(response.has("first_name") &&
+                                    response.has("last_name") &&
+                                    response.has("email"))
+                                {
+                                    System.out.println("In response ok: " + response);
+                                    prevFirstName = response.getString("first_name");
+                                    prevLastName = response.getString("last_name");
+                                    prevEmail = response.getString("email");
+                                    showDetails(isNewDetails);
+                                }
+                                else{
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },  new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println("ERROR!" + error.getMessage());
+                }
+            });
+            queue.add(jsonRequest);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showDetails(boolean iIsNewDetails)
+    {
+        System.out.println("In show details");
+        editTextFirstName.setText(prevFirstName);
+        editTextLastName.setText(prevLastName);
+        editTextEmail.setText(prevEmail);
+        buttonSaveChanges.setEnabled(true);
+        if(iIsNewDetails){
+            messageToUser("הפרטים עודכנו בהצלחה");
+        }
+    }
+
+    private void validateAndSendChanges()
+    {
+        boolean isSendToServer = false;
+        boolean isFirstNameChanged = false;
+        boolean isLastNameChanged = false;
+        boolean isWantToChangePassword = false;
+        String currFirstName = editTextFirstName.getText().toString();
+        String currLastName = editTextLastName.getText().toString();
+
+        prevPassword = editTextCurrPassword.getText().toString();
+        if(!prevFirstName.equals(currFirstName)){
+            isFirstNameChanged = true;
+            isSendToServer = true;
+        }
+
+        if(!prevLastName.equals(currLastName)){
+            isLastNameChanged = true;
+            isSendToServer = true;
+        }
+
+        if(!prevPassword.isEmpty()) {
+            newPassword = editTextNewPassword.getText().toString();
+            newPasswordAgain = editTextNewPasswordAgain.getText().toString();
+            System.out.println("new password: " + newPassword);
+            System.out.println("new password again: " + newPasswordAgain);
+            if (newPassword.isEmpty() || newPasswordAgain.isEmpty() || !newPassword.equals(newPasswordAgain)) {
+                System.out.println("pass no match");
+                messageToUser("אין התאמה בין השדות של הסיסמה החדשה");
+                isSendToServer = false;
+            }
+            else{
+                System.out.println("pass is match");
+                isWantToChangePassword = true;
+                isSendToServer = true;
+            }
+        }
+
+        if(isSendToServer){
+            String url = "https://speech-rec-server.herokuapp.com/user_update/";
+            try {
+                JSONObject jsonBody = new JSONObject();
+                jsonBody.put("user_id", userId);
+                jsonBody.put("user_type", userType);
+                if(isFirstNameChanged){
+                    jsonBody.put("first_name", currFirstName);
+                }
+                if(isLastNameChanged){
+                    jsonBody.put("last_name", currLastName);
+                }
+                if(isWantToChangePassword){
+                    jsonBody.put("old_password", prevPassword);
+                    jsonBody.put("new_password", newPassword);
+                }
+                System.out.println("The change request: " + jsonBody);
+                final RequestQueue queue = Volley.newRequestQueue(this.getContext());
+                final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                System.out.println(response);
+                                buttonSaveChanges.setEnabled(true);
+                                try {
+                                    System.out.println("In change response: " + response);
+                                    if(response.has("body") && response.getString("body").toLowerCase().contains("updated user"))
+                                    {
+                                        getUserDetails(true);
+                                    }
+                                    else{
+                                        messageToUser("אירעה תקלה בשמירת הפרטים. אנא נסו שוב מאוחר יותר.");
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },  new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        messageToUser("אירעה תקלה בשמירת הפרטים. אנא נסו שוב מאוחר יותר.");
+                        System.out.println("ERROR!" + error.getMessage());
+                    }
+                });
+                queue.add(jsonRequest);
+                buttonSaveChanges.setEnabled(false);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

@@ -1,261 +1,228 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView
+<android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background_clean"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layoutDirection="rtl"
+    android:textDirection="rtl">
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="wrap_content"
+        android:layoutDirection="inherit">
 
         <ImageView
             android:id="@+id/imageViewAccountBackground"
-            android:layout_width="319dp"
-            android:layout_height="512dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="36dp"
+            android:layout_width="match_parent"
+            android:layout_height="550dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/shape_rectangle_score"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textViewFirstName"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
-            android:text="שם פרטי"
-            android:textSize="15dp"
-            app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
-            app:layout_constraintTop_toBottomOf="@+id/textViewHeader" />
-
-        <TextView
-            android:id="@+id/textViewLastName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:text="שם משפחה"
-            android:textSize="15dp"
-            app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
-            app:layout_constraintTop_toBottomOf="@+id/textViewFirstName" />
-
-        <TextView
-            android:id="@+id/textViewMail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
-            android:text="מייל"
-            android:textSize="15dp"
-            app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
-            app:layout_constraintTop_toBottomOf="@+id/textViewLastName" />
-
-        <TextView
-            android:id="@+id/textViewCity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
-            android:text="עיר"
-            android:textSize="15dp"
-            app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
-            app:layout_constraintTop_toBottomOf="@+id/textViewMail" />
 
         <TextView
             android:id="@+id/textViewHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="28dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
             android:text="עריכת פרטי חשבון"
             android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="@+id/textViewCurrPassword"
-            app:layout_constraintHorizontal_bias="0.696"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
             app:layout_constraintStart_toStartOf="@+id/imageViewAccountBackground"
             app:layout_constraintTop_toTopOf="@+id/imageViewAccountBackground" />
 
-        <EditText
-            android:id="@+id/editTextAccountFirstName"
-            android:layout_width="90pt"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="28dp"
-            android:layout_marginRight="28dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:textSize="15dp"
-            app:layout_constraintEnd_toStartOf="@+id/textViewFirstName"
+        <TextView
+            android:id="@+id/textViewFirstName"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="40dp"
+            android:layoutDirection="inherit"
+            android:text="שם פרטי"
+            android:textColor="#000"
+            android:textDirection="inherit"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
+            app:layout_constraintHorizontal_bias="0.04"
+            app:layout_constraintStart_toStartOf="@+id/imageViewAccountBackground"
             app:layout_constraintTop_toBottomOf="@+id/textViewHeader" />
 
         <EditText
-            android:id="@+id/editTextAccountLastName"
-            android:layout_width="90pt"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:ems="10"
+            android:id="@+id/editTextAccountFirstName"
+            android:layout_width="180dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="28dp"
             android:inputType="textPersonName"
-            android:textSize="15dp"
+            android:layoutDirection="ltr"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toStartOf="@+id/textViewFirstName"
+            app:layout_constraintHorizontal_bias="0.07"
+            app:layout_constraintStart_toStartOf="@+id/imageViewAccountBackground"
+            app:layout_constraintTop_toBottomOf="@+id/textViewHeader" />
+
+        <TextView
+            android:id="@+id/textViewLastName"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="48dp"
+            android:layoutDirection="inherit"
+            android:text="שם משפחה"
+            android:textColor="#000"
+            android:textDirection="inherit"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
+            app:layout_constraintHorizontal_bias="0.04"
+            app:layout_constraintStart_toStartOf="@+id/imageViewAccountBackground"
+            app:layout_constraintTop_toBottomOf="@+id/textViewFirstName" />
+
+        <EditText
+            android:id="@+id/editTextAccountLastName"
+            android:layout_width="180dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:inputType="textPersonName"
+            android:layoutDirection="ltr"
+            android:textSize="20dp"
             app:layout_constraintEnd_toStartOf="@+id/textViewLastName"
+            app:layout_constraintHorizontal_bias="0.07"
+            app:layout_constraintStart_toStartOf="@+id/imageViewAccountBackground"
             app:layout_constraintTop_toBottomOf="@+id/editTextAccountFirstName" />
+
+        <TextView
+            android:id="@+id/textViewMail"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="40dp"
+            android:layoutDirection="inherit"
+            android:text="אימייל"
+            android:textColor="#000"
+            android:textDirection="inherit"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
+            app:layout_constraintHorizontal_bias="0.04"
+            app:layout_constraintStart_toStartOf="@+id/imageViewAccountBackground"
+            app:layout_constraintTop_toBottomOf="@+id/textViewLastName" />
 
         <EditText
             android:id="@+id/editTextAccountMail"
-            android:layout_width="90pt"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="60dp"
-            android:layout_marginRight="60dp"
-            android:ems="10"
+            android:layout_width="180dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
             android:inputType="textEmailAddress"
-            android:textSize="15dp"
+            android:layoutDirection="ltr"
+            android:textDirection="ltr"
+            android:enabled="false"
+            android:textSize="20dp"
             app:layout_constraintEnd_toStartOf="@+id/textViewMail"
+            app:layout_constraintHorizontal_bias="0.07"
+            app:layout_constraintStart_toStartOf="@+id/imageViewAccountBackground"
             app:layout_constraintTop_toBottomOf="@+id/editTextAccountLastName" />
-
-        <EditText
-            android:id="@+id/editTextAccountCity"
-            android:layout_width="90pt"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="68dp"
-            android:layout_marginRight="68dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:textSize="15dp"
-            app:layout_constraintEnd_toStartOf="@+id/textViewCity"
-            app:layout_constraintTop_toBottomOf="@+id/editTextAccountMail" />
 
         <TextView
             android:id="@+id/textViewCurrPassword"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="40dp"
+            android:layoutDirection="inherit"
             android:text="סיסמה נוכחית"
+            android:textColor="#000"
+            android:textDirection="inherit"
+            android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
-            app:layout_constraintTop_toBottomOf="@+id/textViewCity" />
+            app:layout_constraintHorizontal_bias="0.04"
+            app:layout_constraintStart_toStartOf="@+id/imageViewAccountBackground"
+            app:layout_constraintTop_toBottomOf="@+id/textViewMail" />
 
         <EditText
             android:id="@+id/editTextAccountCurrPassword"
-            android:layout_width="90pt"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:ems="10"
-            android:gravity="right"
-            android:hint="אם ברצונך לשנות סיסמה"
+            android:layout_width="180dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
             android:inputType="textPassword"
-            android:textDirection="rtl"
-            android:textSize="15dp"
+            android:layoutDirection="ltr"
+            android:textSize="20dp"
             app:layout_constraintEnd_toStartOf="@+id/textViewCurrPassword"
-            app:layout_constraintTop_toBottomOf="@+id/editTextAccountCity" />
+            app:layout_constraintHorizontal_bias="0.07"
+            app:layout_constraintStart_toStartOf="@+id/imageViewAccountBackground"
+            app:layout_constraintTop_toBottomOf="@+id/editTextAccountMail" />
 
         <TextView
             android:id="@+id/textViewNewPassword"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="40dp"
+            android:layoutDirection="inherit"
             android:text="סיסמה חדשה"
+            android:textColor="#000"
+            android:textDirection="inherit"
+            android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
+            app:layout_constraintHorizontal_bias="0.04"
+            app:layout_constraintStart_toStartOf="@+id/imageViewAccountBackground"
             app:layout_constraintTop_toBottomOf="@+id/textViewCurrPassword" />
 
         <EditText
             android:id="@+id/editTextAccountNewPassword"
-            android:layout_width="90pt"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:layout_marginRight="12dp"
-            android:ems="10"
-            android:gravity="right"
-            android:hint="הקלד סיסמה חדשה"
+            android:layout_width="180dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
             android:inputType="textPassword"
-            android:textDirection="rtl"
-            android:textSize="15dp"
-            app:layout_constraintEnd_toStartOf="@+id/textViewNewPassword"
+            android:layoutDirection="ltr"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toStartOf="@+id/textViewCurrPassword"
+            app:layout_constraintHorizontal_bias="0.07"
+            app:layout_constraintStart_toStartOf="@+id/imageViewAccountBackground"
             app:layout_constraintTop_toBottomOf="@+id/editTextAccountCurrPassword" />
-
-        <EditText
-            android:id="@+id/editTextAccountNewPasswordAgain"
-            android:layout_width="90pt"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginRight="12dp"
-            android:ems="10"
-            android:gravity="right"
-            android:hint="הקלד ססמה חדשה בשנית"
-            android:inputType="textPassword"
-            android:textDirection="rtl"
-            android:textSize="15dp"
-            app:layout_constraintEnd_toStartOf="@+id/textViewNewPasswordAgain"
-            app:layout_constraintTop_toBottomOf="@+id/editTextAccountNewPassword" />
 
         <TextView
             android:id="@+id/textViewNewPasswordAgain"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="40dp"
+            android:layoutDirection="inherit"
             android:text="סיסמה חדשה"
+            android:textColor="#000"
+            android:textDirection="inherit"
+            android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
+            app:layout_constraintHorizontal_bias="0.04"
+            app:layout_constraintStart_toStartOf="@+id/imageViewAccountBackground"
             app:layout_constraintTop_toBottomOf="@+id/textViewNewPassword" />
+
+        <EditText
+            android:id="@+id/editTextAccountNewPasswordAgain"
+            android:layout_width="180dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:inputType="textPassword"
+            android:layoutDirection="ltr"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toStartOf="@+id/textViewNewPasswordAgain"
+            app:layout_constraintHorizontal_bias="0.07"
+            app:layout_constraintStart_toStartOf="@+id/imageViewAccountBackground"
+            app:layout_constraintTop_toBottomOf="@+id/editTextAccountNewPassword" />
 
         <Button
             android:id="@+id/buttonSaveChanges"
             android:layout_width="wrap_content"
             android:layout_height="47dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="36dp"
-            android:layout_marginBottom="8dp"
             android:background="@drawable/shape_button"
             android:enabled="false"
             android:text="שמור שינויים"
             android:textColor="#FFFF"
-            android:visibility="invisible"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewAccountBackground"
             app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
-            app:layout_constraintHorizontal_bias="0.478"
             app:layout_constraintStart_toStartOf="@+id/imageViewAccountBackground"
-            app:layout_constraintTop_toBottomOf="@+id/editTextAccountNewPasswordAgain"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <Button
-            android:id="@+id/buttonAccountEditDetails"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="22dp"
-            android:background="@drawable/shape_button"
-            android:text="עריכת פרטים"
-            android:textColor="#FFFF"
-            app:layout_constraintBottom_toBottomOf="@+id/imageViewAccountBackground"
-            app:layout_constraintEnd_toEndOf="@+id/imageViewAccountBackground"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="@+id/imageViewAccountBackground"
-            app:layout_constraintTop_toBottomOf="@+id/editTextAccountNewPasswordAgain"
-            app:layout_constraintVertical_bias="0.675" />
-
-
+            app:layout_constraintTop_toBottomOf="@+id/editTextAccountNewPasswordAgain" />
     </android.support.constraint.ConstraintLayout>
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>
