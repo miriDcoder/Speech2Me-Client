@@ -78,6 +78,7 @@
     <string name="teacher_code_info">זהו קוד הזיהוי שלכם. עליכם למסור אותו למטופלים בטרם ההרשמה, כדי שנוכל לקשר אותם אליכם וכך תוכלו לצפות בהתקדמותם.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="code_explanation_header">מהו קוד זיהוי?</string>
     <string name="error_server">אירעה שגיאה בשרת! אנא נסה שנית</string>
     <string name="server_error_login">email or password are incorrect</string>
     <string name="terms_and_conditions"><b>Terms and conditions\n</b>

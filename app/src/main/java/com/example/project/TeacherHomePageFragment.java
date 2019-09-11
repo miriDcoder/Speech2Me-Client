@@ -2,18 +2,18 @@ package com.example.project;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -54,11 +54,8 @@ public class TeacherHomePageFragment extends Fragment {
         {
             mTeacher = getArguments().getParcelable("user");
         }
-//        setPositions(textViewHello, textViewYourAmountOfStudents, textViewAmountOfStudents, textViewWatchStatistics,
-//                imageViewProgressBackground, radioGame, spinnerLevel, buttonPlay);
+
         displayMyInfo(mTeacher, textViewHello, textViewAmountOfStudents, textViewTeacherCode);
-        setInstructionsDialog(codesDialog, instructionsMsg);
-        setTeacherCodeDialog(teacherCodeDialog, teacherCodeMsg);
         buttonPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,27 +111,53 @@ public class TeacherHomePageFragment extends Fragment {
         textViewCodeList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                codesDialog.show();
+                TextView header = new TextView(getContext());
+                header.setText(getString(R.string.code_explanation_header));
+                header.setTextColor(getResources().getColor(R.color.colorLightBlue));
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage(getString(R.string.teacher_code_info));
+                builder.setCustomTitle(header);
+                builder.setPositiveButton("הבנתי", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
         textViewIdCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                teacherCodeDialog.show();
+                TextView header = new TextView(getContext());
+                header.setText(getString(R.string.teacher_instructions));
+                header.setTextColor(getResources().getColor(R.color.colorLightBlue));
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                String msg = String.format("%s\n%s\n%s", getString(R.string.teacher_instructions),
+                                            getString(R.string.goal_audio_with_code),
+                                            getString(R.string.goal_picture_with_code));
+                builder.setMessage(msg).setCustomTitle(header);
+                builder.setPositiveButton("הבנתי", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
         return v;
     }
 
-    private void setTeacherCodeDialog(Dialog iTeacherCodeDialog, TextView iTeacherCodeMsg) {
-        String msg = " ";
-        iTeacherCodeDialog.setTitle(getResources().getString(R.string.game_instructions_header));
-        iTeacherCodeMsg.setGravity(Gravity.RIGHT);
-        msg = String.format("%s", getResources().getString(R.string.teacher_code_info));
-        iTeacherCodeMsg.setText(msg);
-        iTeacherCodeDialog.setContentView(iTeacherCodeMsg);
-    }
+//    private void setTeacherCodeDialog(Dialog iTeacherCodeDialog, TextView iTeacherCodeMsg) {
+//        String msg = " ";
+//        iTeacherCodeDialog.setTitle(getResources().getString(R.string.game_instructions_header));
+//        iTeacherCodeMsg.setGravity(Gravity.RIGHT);
+//        msg = String.format("%s", getResources().getString(R.string.teacher_code_info));
+//        iTeacherCodeMsg.setText(msg);
+//        iTeacherCodeDialog.setContentView(iTeacherCodeMsg);
+//    }
 
 
     private void displayMyInfo(Teacher iTeacher, TextView iTextViewHeader, TextView iTextViewAmountOfStudents,
@@ -144,49 +167,30 @@ public class TeacherHomePageFragment extends Fragment {
         iTextViewTeacherCode.setText(iTeacher.getmId());
     }
 
-    public void onRadioButtonClicked(View v){
-        // Check which radio button was clicked
-        boolean checked = ((RadioButton)v).isChecked();
-        switch(v.getId()) {
-            case R.id.radioPictureGame:
-                if (checked)
-                    selectedIntent = new Intent(getActivity(), PictureRecognitionLevel.class);
-                    break;
-            case R.id.radioAudioGame:
-                if (checked)
-                    selectedIntent = new Intent(getActivity(), AudioRecognitionLevel.class);
-                    break;
-        }
-    }
+//    public void onRadioButtonClicked(View v){
+//        // Check which radio button was clicked
+//        boolean checked = ((RadioButton)v).isChecked();
+//        switch(v.getId()) {
+//            case R.id.radioPictureGame:
+//                if (checked)
+//                    selectedIntent = new Intent(getActivity(), PictureRecognitionLevel.class);
+//                    break;
+//            case R.id.radioAudioGame:
+//                if (checked)
+//                    selectedIntent = new Intent(getActivity(), AudioRecognitionLevel.class);
+//                    break;
+//        }
+//    }
 
-    private void setPositions(TextView iTextViewHeader, TextView iTextViewYourAmountOfStudents, TextView iTextViewAmountOfStudents, TextView iTextViewWatchStatistics,
-                              ImageView iImageViewProgressBackground, RadioGroup iRadioGame, Spinner iSpinnerLevel, TextView iTextViewPlay){
-        iTextViewHeader.setX(10);
-        iTextViewHeader.setY(50);
-        iTextViewYourAmountOfStudents.setX(10);
-        iTextViewYourAmountOfStudents.setY(400);
-        iTextViewAmountOfStudents.setX(10);
-        iTextViewAmountOfStudents.setY(420);
-        iTextViewWatchStatistics.setX(-200);
-        iTextViewWatchStatistics.setY(600);
-        iImageViewProgressBackground.setY(250);
-        iRadioGame.setX(-40);
-        iRadioGame.setY(1000);
-        iSpinnerLevel.setX(-200);
-        iSpinnerLevel.setY(500);
-//        iButtonPlay.setX(40);
-//        iButtonPlay.setY(250);
-    }
-
-    private void setInstructionsDialog(Dialog iInstructions, TextView iInstructionsMsg) {
-        String msg = " ";
-        iInstructions.setTitle(getResources().getString(R.string.game_instructions_header));
-        iInstructionsMsg.setGravity(Gravity.RIGHT);
-        msg = String.format("%s\n%s\n%s", getResources().getString(R.string.teacher_instructions),
-                getResources().getString(R.string.goal_audio_with_code),
-                getResources().getString(R.string.goal_picture_with_code));
-        iInstructionsMsg.setText(msg);
-        iInstructions.setContentView(iInstructionsMsg);
-    }
+//    private void setInstructionsDialog(Dialog iInstructions, TextView iInstructionsMsg) {
+//        String msg = " ";
+//        iInstructions.setTitle(getResources().getString(R.string.game_instructions_header));
+//        iInstructionsMsg.setGravity(Gravity.RIGHT);
+//        msg = String.format("%s\n%s\n%s", getResources().getString(R.string.teacher_instructions),
+//                getResources().getString(R.string.goal_audio_with_code),
+//                getResources().getString(R.string.goal_picture_with_code));
+//        iInstructionsMsg.setText(msg);
+//        iInstructions.setContentView(iInstructionsMsg);
+//    }
 
 }
