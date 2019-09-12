@@ -1,6 +1,5 @@
 package com.example.project;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -11,11 +10,11 @@ import android.view.View;
 import android.widget.ImageView;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.UUID;
 
+//This is the Audio recognition game
 public class PictureRecognitionLevel extends GameLevel{
     private ImageView imgWord;
     private MediaPlayer mAudioCluePlayer;
@@ -47,7 +46,7 @@ public class PictureRecognitionLevel extends GameLevel{
         getNextQuestion(imgWord, false);
         mAudioCluePlayer = MediaPlayer.create(PictureRecognitionLevel.this, currQuestion.GetmAudioRecording());
         mIsAudioResourcesFree = true;
-
+        //If the user is recording - need to setup the recorder
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +90,7 @@ public class PictureRecognitionLevel extends GameLevel{
                 }
             }
         });
-
+        //The clue is an audio so need to setup the audio player
         textClue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -187,161 +186,4 @@ public class PictureRecognitionLevel extends GameLevel{
             }
         });
     }
-
-//    private void isCorrectAnswer(MediaRecorder iRecorder, final Button iButton)  {
-//        String url = "https://speech-rec-server.herokuapp.com/check_talking/";
-//        File file = new File(mPathSave);
-//        InputStream inFile = null;
-//        try {
-//            inFile = new FileInputStream(mPathSave);
-//            byte[] bytes = fileToBytes();//inputStreamToByteArray(inFile);
-//            //new String(bytes, "UTF-8");
-//            String stringBytes = null;
-//            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
-//                stringBytes = Base64.getMimeEncoder().encodeToString(bytes);
-//
-//            } else {
-//                System.out.println("low API");
-//            }
-//            System.out.println("!!!!!!OFER!!!!!");
-//            System.out.println(stringBytes);
-//            System.out.println("!!!!!!DONE!!!!!");
-//            writeToFile(stringBytes, PictureRecognitionLevel.this);
-//
-//            try {
-//                JSONObject jsonBody = new JSONObject();
-//                jsonBody.put("original_text", mQuestion.GetmAnswer());
-//                jsonBody.put("id", mId);
-//                jsonBody.put("audio_file", stringBytes);
-//                final RequestQueue queue = Volley.newRequestQueue(this);
-//                RequestFuture<JSONObject> future = RequestFuture.newFuture();
-//                //final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, future, future);
-//                System.out.println("+++++++++++++++++++++++" + jsonBody);
-//
-//                final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
-//                        new Response.Listener<JSONObject>() {
-//                            @Override
-//                            public void onResponse(JSONObject response) {
-//                                System.out.println("****************************" + response);
-//                                //iButton.setText(response.toString());
-//                                try {
-//                                    if(response.getString("answer").toLowerCase() == "true")
-//                                    {
-//                                        System.out.println("$$$$$$$$$$$$$$ is correct");
-//                                        setBirdAnswerVisibility(imageGoodJob, textGoodJob, imgWord);
-//                                        questionStatistics.add((PictureRegocnitionQuestion) mQuestion);
-//                                        questionNumber++;
-//                                        succeededQuestions++;
-//                                        mQuestion.IncreasemScore();
-//                                        getNextQuestion(imgWord, false);
-//                                    }
-//                                    else
-//                                    {
-//                                        System.out.println("$$$$$$$$$$$$$$ is not correct");
-//                                        setBirdAnswerVisibility(imageTryAgain, textTryAgain, imgWord);
-//                                        mQuestion.IncreasemNumOfTries();
-//                                    }
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//                        },  new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        System.out.println("ERROR!" + error.getMessage());
-//                    }
-//                });
-//                queue.add(jsonRequest);
-//                System.out.println("###############SENT");
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private byte[] fileToBytes() {
-//        byte[] bytes = null;
-//        File audioFile = new File(mPathSave);
-//        try {
-//            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
-//
-//                bytes = Files.readAllBytes(audioFile.toPath());
-//
-//            } else {
-//            }
-//            ///This part is for debug - checks if the convertion to bytes
-//            ///was ok by converting the bytes to file
-//            //String str = new String(bytes);
-////            System.out.println("*****************************" + str);
-////            writeToFile(str, PictureRecognitionLevel.this);
-////            File root
-////            = new File(Environment.getExternalStorageDirectory(), "Decodes");
-////            if (!root.exists()) {
-////                root.mkdirs();
-////            }
-////            File gpxfile = new File(root, "audio_decode.mp3");
-////            try (FileOutputStream fos = new FileOutputStream(gpxfile.getAbsolutePath())) {
-////                fos.write(bytes);
-////            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return bytes;
-//    }
-
-//    private byte[] getBytes(File iAudioFile) throws IOException, FileNotFoundException {
-//        byte[] buffer = new byte[1024];
-//        ByteArrayOutputStream os = new ByteArrayOutputStream();
-//        FileInputStream fis = new FileInputStream(iAudioFile);
-//        int read;
-//
-//        while((read = fis.read(buffer)) != -1)
-//        {
-//            os.write(buffer, 0, read);
-//        }
-//
-//        fis.close();
-//        os.close();
-//
-//        return os.toByteArray();
-//    }
-
-    private void writeToFile(String data, Context context) {
-        try {
-            File root = new File(Environment.getExternalStorageDirectory(), "Notes");
-            if (!root.exists()) {
-                root.mkdirs();
-            }
-            File gpxfile = new File(root, "for_ofer.txt");
-            FileWriter writer = new FileWriter(gpxfile);
-            writer.append(data);
-            writer.flush();
-            writer.close();
-            System.out.println("((((((((((((((((((((((" + gpxfile.getAbsolutePath());
-        } catch (IOException e) {
-            System.out.println("------------>EXCEPTION");
-            e.printStackTrace();
-        }
-    }
 }
-
-
-//***********FOR DEBUG**************
-//                    mMediaPlayer = new MediaPlayer();
-//                    try
-//                    {
-//                        mMediaPlayer.setDataSource(mPathSave);
-//                        mMediaPlayer.prepare();
-//                    }
-//                    catch (IOException e)
-//                    {
-//                        e.printStackTrace();
-//                        System.out.println("~~~~~~~~~~~~~~~~~~~MESSAGE:" + e.getMessage());
-//                    }
-//
-//                    mMediaPlayer.start();
-//***********END OF DEBUG***********

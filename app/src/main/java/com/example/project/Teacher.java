@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
+//This class inherits from User, and is used to represent a student
 public class Teacher extends User implements Parcelable {
 
     private ArrayList<Student> mStudents;

@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+//This is a student home page
 public class StudentHomePageFragment extends Fragment {
     private Student mStudent;
     private final String AudioRecognitionGoal = "1";
@@ -36,15 +37,12 @@ public class StudentHomePageFragment extends Fragment {
         ImageView imageViewScoreBackground = (ImageView)v.findViewById(R.id.imageViewScoreBackground);
         Button buttonPlay = (Button)v.findViewById(R.id.buttonPlay);
         Button buttonInstructions = (Button)v.findViewById(R.id.buttonGameInstructions);
-        //final AlertDialog instructions = new AlertDialog(getContext());
-        //TextView instructionsMsg = new TextView(getContext());
         if(getArguments() != null)
         {
             mStudent = getArguments().getParcelable("user");
         }
         displayMyInfo(mStudent, textViewHello, textViewYourScore, textViewScore ,textViewLevel);
-        //setInstructionsDialog(instructions, instructionsMsg);
-
+        //Setting up the play button to match the game to the student's goal
         buttonPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +68,7 @@ public class StudentHomePageFragment extends Fragment {
                 }
             }
         });
-
+        //Showing instructions for the student, in accordance to the goal
         buttonInstructions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +99,7 @@ public class StudentHomePageFragment extends Fragment {
         return v;
     }
 
+    //Display student info in home page
     private void displayMyInfo(Student iStudent, TextView iTextViewHeader, TextView iTextViewYourScore, TextView iTextViewScore, TextView iTextViewLevel) {
         iTextViewHeader.setText(String.format("שלום, %s!", iStudent.getmFirstName()));
         iTextViewYourScore.setText(String.format("הניקוד שלך"));

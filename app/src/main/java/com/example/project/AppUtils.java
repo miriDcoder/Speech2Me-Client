@@ -3,6 +3,8 @@ package com.example.project;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//General class that can be used from all pages.
+//usually for validation
 public class AppUtils {
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =

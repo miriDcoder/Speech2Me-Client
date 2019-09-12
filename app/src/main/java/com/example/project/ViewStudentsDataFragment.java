@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -26,7 +25,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -37,9 +35,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+//This is the page where the teacher can see the data about his students progress
 public class ViewStudentsDataFragment extends Fragment {
     private Teacher mTeacher;
-    private HashMap<String, MiniStudent> mStudentIdsToNames = null;
+    private HashMap<String, MiniStudent> mStudentNamesToIds = null;
     private List<String> mStudentNames = null;
     private Spinner spinnerLevel;
     private TextView textViewCurrLevel;
@@ -94,52 +93,29 @@ public class ViewStudentsDataFragment extends Fragment {
         return v;
     }
 
+    //This method creates an array list of student names for the drop down list
     private List<String> setStudents()
     {
         String id = " ";
         String studentName = " ";
         JSONObject jsonObject = null;
         ArrayList<String> studentNames = new ArrayList<String>();
-        List<String> ids = new ArrayList<String>(mStudentIdsToNames.keySet());
-        System.out.println("SIZE OF ids: " + mStudentIdsToNames.keySet().size());
+        List<String> ids = new ArrayList<String>(mStudentNamesToIds.keySet());
+        System.out.println("SIZE OF ids: " + mStudentNamesToIds.keySet().size());
         studentNames.add("בחר תלמיד");
-        for(int i=0; i<mStudentIdsToNames.size(); i++)
+        for(int i=0; i<mStudentNamesToIds.size(); i++)
         {
             id = ids.get(i);
-            System.out.println("############## ID: " + mStudentIdsToNames.get(id));
-            studentName = mStudentIdsToNames.get(id).Name;
-            System.out.println("######### goal: " + mStudentIdsToNames.get(id).Goal);
+            System.out.println("############## ID: " + mStudentNamesToIds.get(id));
+            studentName = mStudentNamesToIds.get(id).Name;
+            System.out.println("######### goal: " + mStudentNamesToIds.get(id).Goal);
             studentNames.add(studentName);
         }
 
         return studentNames;
     }
 
-    private void setAllStudentDetailsVisibility(int iVisibility, RelativeLayout oRelativeLayout)
-    {
-        int detailsInfoCount = oRelativeLayout.getChildCount();
-        for(int i=0; i<detailsInfoCount; i++)
-        {
-            oRelativeLayout.getChildAt(i).setVisibility(iVisibility);
-        }
-    }
-
-    private void setSpinnerLevel(Spinner iSpinnerLevel)
-    {
-        String[] levels = {"1", "2"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, levels);
-        iSpinnerLevel.setAdapter(adapter);
-        iSpinnerLevel.setSelection(0);
-    }
-
-    private void setSpinnerWord(Spinner iSpinnerWord)
-    {
-        String[] levels = {"אבטיח", "בית"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, levels);
-        iSpinnerWord.setAdapter(adapter);
-        iSpinnerWord.setSelection(0);
-    }
-
+    //Sending request to the server to get the students of the current teacher
     private void getStudents()
     {
         String url = "https://speech-rec-server.herokuapp.com/get_students_of_teacher/";
@@ -147,8 +123,6 @@ public class ViewStudentsDataFragment extends Fragment {
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("user_id", mTeacher.getmId());
             final RequestQueue queue = Volley.newRequestQueue(this.getContext());
-            RequestFuture<JSONObject> future = RequestFuture.newFuture();
-
             final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -178,45 +152,14 @@ public class ViewStudentsDataFragment extends Fragment {
         }
     }
 
-    private void getLevelWords(String iLevel, String iStudentId) {
-        String url = "";//TODO
-        try {
-            JSONObject jsonBody = new JSONObject();
-            jsonBody.put("level", iLevel);
-            jsonBody.put("student_id", iStudentId);
-            final RequestQueue queue = Volley.newRequestQueue(this.getContext());
-            RequestFuture<JSONObject> future = RequestFuture.newFuture();
-            //final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, future, future);
-            System.out.println("+++++++++++++++++++++++" + jsonBody);
-
-            final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            System.out.println("****************************" + response);
-                            //DO SOMETHING
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    System.out.println("ERROR!" + error.getMessage());
-                }
-            });
-            queue.add(jsonRequest);
-            System.out.println("###############SENT");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+    //Matching the studnt id's to names, to use the relevant student id when needed
     private void setIdToStudents(JSONArray iStudents)
     {
         String id = " ";
         String studentName = " ";
         JSONObject jsonObject = null;
         MiniStudent student = null;
-        mStudentIdsToNames = new HashMap<>();
+        mStudentNamesToIds = new HashMap<>();
         for(int i=0; i<mTeacher.getmNumOfStudents(); i++)
         {
             try {
@@ -233,12 +176,14 @@ public class ViewStudentsDataFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            mStudentIdsToNames.put(studentName, student);
+            mStudentNamesToIds.put(studentName, student);
         }
 
-        System.out.println("NUM OF STUDENTS IN HASH MAP: " + mStudentIdsToNames.size());
+        System.out.println("NUM OF STUDENTS IN HASH MAP: " + mStudentNamesToIds.size());
     }
 
+
+    //Setting the drop down list after we have all the students
     private void setSpinners()
     {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, mStudentNames);
@@ -253,7 +198,7 @@ public class ViewStudentsDataFragment extends Fragment {
                 if(spinnerChooseStudent.getSelectedItemPosition() != 0)
                 {
                     System.out.println("############# IN CONDITION");
-                    chosenStudent = mStudentIdsToNames.get(spinnerChooseStudent.getSelectedItem());
+                    chosenStudent = mStudentNamesToIds.get(spinnerChooseStudent.getSelectedItem());
                     System.out.println("CHOSEN STUDENT LEVEL: " + chosenStudent.CurrLevel);
                     System.out.println("CHOSEN STUDENT GOAL: " + chosenStudent.Goal);
                     tableData.removeAllViews();
@@ -273,6 +218,9 @@ public class ViewStudentsDataFragment extends Fragment {
             }
         });
     }
+
+    //After the teacher chose a student, we send a request to the server to get all the data we have
+    //about the chosen student's progress
     private void getStudentDetails()
     {
         String url = "https://speech-rec-server.herokuapp.com/get_answers_for_student/";
@@ -307,6 +255,7 @@ public class ViewStudentsDataFragment extends Fragment {
         }
     }
 
+    //Setting the table in which the student data is presented
     private void setTable(JSONArray iAnswers)
     {
         Context currContext = getContext();
@@ -372,6 +321,7 @@ public class ViewStudentsDataFragment extends Fragment {
         }
     }
 
+    //Setting up the headers to the table
     private void setTableHeaders(TableRow.LayoutParams iTableParams)
     {
         TableRow tableRow = new TableRow(getContext());
@@ -400,6 +350,7 @@ public class ViewStudentsDataFragment extends Fragment {
         tableData.addView(tableRow);
     }
 
+    //Get goal name in accordance to the goal id
     private String getGoal()
     {
         String goalStr = " ";
@@ -416,6 +367,10 @@ public class ViewStudentsDataFragment extends Fragment {
         return goalStr;
     }
 
+    //If the teacher chose to, the app sends a request to the server to send the presented data as a .csv file
+    //to the teachers mail.
+    //Currently, since we used random email addresses to signup to the app, the server sends those files
+    //to Miri's email.
     private void exportChosenStudentDetailsToTeachersMail()
     {
         String url = "https://speech-rec-server.herokuapp.com/send_email_statistics/";
@@ -429,24 +384,24 @@ public class ViewStudentsDataFragment extends Fragment {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            System.out.println("****************************" + response);
                             try {
                                 if (response.has("body") && response.getString("body").toLowerCase().contains("email sent")) {
                                     messageToUser("המייל נשלח");
                                 }
                                 else{
-                                    messageToUser("אירעה שגיאה. אנא נסו שנית מאוחר יותר");
+                                    messageToUser(getString(R.string.error_server_try_later));
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                messageToUser("אירעה שגיאה. אנא נסו שנית מאוחר יותר");
+                                messageToUser(getString(R.string.error_server_try_later));
+
                             }
                         }
                     },  new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     System.out.println("ERROR!" + error.getMessage());
-                    messageToUser("אירעה שגיאה. אנא נסו שנית מאוחר יותר");
+                    messageToUser(getString(R.string.error_server_try_later));
                 }
             });
             queue.add(jsonRequest);
@@ -456,6 +411,7 @@ public class ViewStudentsDataFragment extends Fragment {
         }
     }
 
+    //Displaying message to the user
     private void messageToUser(CharSequence text)
     {
         Context context = getActivity();

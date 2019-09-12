@@ -1,5 +1,7 @@
 package com.example.project;
 
+//This is an abstract class for the types of users (currently - student and teacher) to inherit from.
+//It assembles the common members and methods to all users.
 public abstract class User {
     private String mEmail;
     private String mPassword;

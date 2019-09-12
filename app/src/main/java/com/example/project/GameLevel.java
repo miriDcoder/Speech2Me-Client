@@ -175,6 +175,7 @@ public abstract class GameLevel extends AppCompatActivity {
                                     }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
+
                                     System.out.println("ERROR!" + error.getMessage());
                                 }
                             });
@@ -251,7 +252,6 @@ public abstract class GameLevel extends AppCompatActivity {
                 jsonBody.put("audio_file", stringBytes);
                 final RequestQueue queue = Volley.newRequestQueue(this);
                 RequestFuture<JSONObject> future = RequestFuture.newFuture();
-                System.out.println("+++++++++++++++++++++++" + jsonBody);
 
                 final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
                         new Response.Listener<JSONObject>() {
@@ -281,12 +281,14 @@ public abstract class GameLevel extends AppCompatActivity {
                                         mQuestion.IncreasemNumOfTries();
                                     }
                                 } catch (JSONException e) {
+                                    messageToUser(getString(R.string.error_server));
                                     e.printStackTrace();
                                 }
                             }
                         },  new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        messageToUser(getString(R.string.error_server));
                         System.out.println("ERROR!" + error.getMessage());
                     }
                 });

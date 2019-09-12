@@ -1,5 +1,8 @@
 package com.example.project;
 
+//This class is the parent of AudioRecognitionQuestion and PictureRecognitionQuestion,
+//it assembles all the methods and members that are common in both.
+//This way, in the future if we choose to incorporate another type of game - it will be easier.
 public class Question {
     private final String mAnswer;
     private final String mImageUrl;

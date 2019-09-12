@@ -1,19 +1,12 @@
 package com.example.project;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 ;
-
+//This activity starts the app, redirecting to login page
 public class MainActivity extends AppCompatActivity {
 
     public static int SPLASH_TIME_OUT = 2000;

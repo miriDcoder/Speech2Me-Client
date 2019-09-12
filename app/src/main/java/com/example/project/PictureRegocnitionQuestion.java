@@ -1,7 +1,6 @@
 package com.example.project;
 
-import android.graphics.Picture;
-
+//this class handles an audio recognition game single question
 public class PictureRegocnitionQuestion extends Question{
     private String mImgPath;
     private int mAudioClue;

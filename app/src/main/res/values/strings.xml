@@ -29,8 +29,9 @@
 האפליקציה נכתבה בשפת Java בסביבת Android Studio,
 עם שימוש בממשק Google Speech to Text.
 נתוני האפליקציה נשמרים בשרת ייעודי שנכתב בשפת Python המאוחסן ורץ בשירות Heroku.
-        <t>עיצוב: אבישי רם</t>
-        <r>ייעוץ מקצועי: קלינאית תקשורת</r>
+        \nתודות:\n
+        אבישי רם, מעצב גרפי.\n
+        יערה מופז, קלינאית תקשורת.
     </string>
     <string name="contact"><u>צור קשר</u></string>
     <string name="conditions"><u>תנאי שימוש</u></string>
@@ -76,7 +77,6 @@
     <string name="header_is_completed">מילה הושלמה</string>
     <string name="no_data_to_show">אין נתונים להצגה</string>
     <string name="teacher_code_info">זהו קוד הזיהוי שלכם. עליכם למסור אותו למטופלים בטרם ההרשמה, כדי שנוכל לקשר אותם אליכם וכך תוכלו לצפות בהתקדמותם.</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="code_explanation_header">מהו קוד זיהוי?</string>
     <string name="error_server">אירעה שגיאה בשרת! אנא נסה שנית</string>
@@ -121,5 +121,14 @@ Contacting us
 If you would like to contact us to understand more about this Agreement or wish to contact us concerning any matter relating to it, you may send an email to speech2me.app@gmail.com
 
 This document was last updated on August 31, 2019</string>
+    <string name="error_email_exists">האימייל שהוכנס קיים במערכת</string>
+    <string name="error_user_type">לא נבחר סוג משתמש</string>
+    <string name="error_teacher_id">אנא הכנס קוד מורה</string>
+    <string name="msg_after_signup">ההרשמה בוצעה בהצלחה. אנא התחבר למערכת</string>
+    <string name="msg_please_wait">אנא המתן</string>
+    <string name="signup">הירשם</string>
+    <string name="logging_in">מתחבר...</string>
+    <string name="login">התחבר</string>
+    <string name="error_server_try_later">אירעה שגיאה בשרת. אנא נסה שנית מאוחר יותר</string>
 </resources><!--speech2me-->
 

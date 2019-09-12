@@ -19,9 +19,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+//This is a teacher home page
 public class TeacherHomePageFragment extends Fragment {
     private Teacher mTeacher;
-    public DataBase db = new DataBase();
     private Intent selectedIntent = null;
     public TeacherHomePageFragment(){
 
@@ -48,7 +48,6 @@ public class TeacherHomePageFragment extends Fragment {
         final Spinner spinnerLevel = (Spinner)v.findViewById(R.id.spinner);
         String[] items = new String[]{"שלב", "1", "2", "3"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
-        //set the spinners adapter to the previously created one.
         spinnerLevel.setAdapter(adapter);
         if(getArguments() != null)
         {
@@ -56,6 +55,7 @@ public class TeacherHomePageFragment extends Fragment {
         }
 
         displayMyInfo(mTeacher, textViewHello, textViewAmountOfStudents, textViewTeacherCode);
+        //Setting up the demonstration game to the teacher, by the parameters that they chose
         buttonPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +82,7 @@ public class TeacherHomePageFragment extends Fragment {
             }
         });
 
+        //Transferring to the statistics page
         textViewWatchStatistics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,6 +109,7 @@ public class TeacherHomePageFragment extends Fragment {
             }
         });
 
+        //Shows explanation about the teacher id code
         textViewCodeList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,6 +129,7 @@ public class TeacherHomePageFragment extends Fragment {
             }
         });
 
+        //Shows explenation about the goal code
         textViewIdCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,47 +153,11 @@ public class TeacherHomePageFragment extends Fragment {
         return v;
     }
 
-//    private void setTeacherCodeDialog(Dialog iTeacherCodeDialog, TextView iTeacherCodeMsg) {
-//        String msg = " ";
-//        iTeacherCodeDialog.setTitle(getResources().getString(R.string.game_instructions_header));
-//        iTeacherCodeMsg.setGravity(Gravity.RIGHT);
-//        msg = String.format("%s", getResources().getString(R.string.teacher_code_info));
-//        iTeacherCodeMsg.setText(msg);
-//        iTeacherCodeDialog.setContentView(iTeacherCodeMsg);
-//    }
-
-
+    //Displays teacher info
     private void displayMyInfo(Teacher iTeacher, TextView iTextViewHeader, TextView iTextViewAmountOfStudents,
                                TextView iTextViewTeacherCode) {
         iTextViewHeader.setText(String.format("שלום, %s!", iTeacher.getmFirstName()));
         iTextViewAmountOfStudents.setText(String.format("%d", iTeacher.getmNumOfStudents()));
         iTextViewTeacherCode.setText(iTeacher.getmId());
     }
-
-//    public void onRadioButtonClicked(View v){
-//        // Check which radio button was clicked
-//        boolean checked = ((RadioButton)v).isChecked();
-//        switch(v.getId()) {
-//            case R.id.radioPictureGame:
-//                if (checked)
-//                    selectedIntent = new Intent(getActivity(), PictureRecognitionLevel.class);
-//                    break;
-//            case R.id.radioAudioGame:
-//                if (checked)
-//                    selectedIntent = new Intent(getActivity(), AudioRecognitionLevel.class);
-//                    break;
-//        }
-//    }
-
-//    private void setInstructionsDialog(Dialog iInstructions, TextView iInstructionsMsg) {
-//        String msg = " ";
-//        iInstructions.setTitle(getResources().getString(R.string.game_instructions_header));
-//        iInstructionsMsg.setGravity(Gravity.RIGHT);
-//        msg = String.format("%s\n%s\n%s", getResources().getString(R.string.teacher_instructions),
-//                getResources().getString(R.string.goal_audio_with_code),
-//                getResources().getString(R.string.goal_picture_with_code));
-//        iInstructionsMsg.setText(msg);
-//        iInstructions.setContentView(iInstructionsMsg);
-//    }
-
 }

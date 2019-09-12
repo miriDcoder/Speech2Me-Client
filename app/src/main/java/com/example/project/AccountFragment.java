@@ -24,6 +24,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+//This page shows the user's details and allows editing those details
 public class AccountFragment extends Fragment {
     private User mUser;
     private String userId;
@@ -65,7 +66,6 @@ public class AccountFragment extends Fragment {
                             !Character.toString(source.charAt(i)).equals("-") &&
                             !Character.toString(source.charAt(i)).matches("[\\u0590-\\u05ff]"))
                     {
-                        //display toast
                         return "";
                     }
                 }
@@ -82,9 +82,7 @@ public class AccountFragment extends Fragment {
             System.out.println("USER ID: " + userId);
             getUserDetails(false);
         }
-        else{
-            //TODO - something went wrong. maybe move to home page?
-        }
+
         editTextEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -109,6 +107,7 @@ public class AccountFragment extends Fragment {
         return v;
     }
 
+    //this function shows the user a message
     private void messageToUser(CharSequence text)
     {
         Context context = getActivity();
@@ -117,6 +116,7 @@ public class AccountFragment extends Fragment {
         toast.show();
     }
 
+    //when entering the fragment, we get the relevant user details to display
     private void getUserDetails(final boolean isNewDetails)
     {
         String url = "https://speech-rec-server.herokuapp.com/get_user/";
@@ -158,6 +158,7 @@ public class AccountFragment extends Fragment {
         }
     }
 
+    //displaying the details we've received from the server
     private void showDetails(boolean iIsNewDetails)
     {
         System.out.println("In show details");
@@ -170,6 +171,10 @@ public class AccountFragment extends Fragment {
         }
     }
 
+    //in case the user wants to change some of his info, we need to validate some details-
+    //if he wants to change the password - need to make sure that the new password he entered twice matches
+    //and need to check what fields he wanted to update.
+    //then we send the request to the server.
     private void validateAndSendChanges()
     {
         boolean isSendToServer = false;

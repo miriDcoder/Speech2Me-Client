@@ -24,6 +24,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+//This is the Signup page, for the user to signup to the app
 public class SignUp extends AppCompatActivity {
     Button btnSignUp;
     @Override
@@ -32,7 +33,6 @@ public class SignUp extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         btnSignUp = (Button)findViewById(R.id.buttonSignup);
-        //final EditText textViewRequest = (EditText) findViewById(R.id.editTextRequest);
         ImageView imageViewArrowBack = (ImageView) findViewById(R.id.imgArrowBack);
         final EditText editTextFirstName = (EditText) findViewById(R.id.editTextFirstName);
         final EditText editTextLastName = (EditText) findViewById(R.id.editTextLastName);
@@ -42,10 +42,13 @@ public class SignUp extends AppCompatActivity {
         final EditText editTextTeacherId = (EditText)findViewById(R.id.editTextTeacherId);
         final EditText editTextGoalCode = (EditText)findViewById(R.id.editTextGoalCode);
 
-
+        //After the user clicks the signup button, we validate some of the info that the user entered, and if
+        //we found them valid - we send a request to the server.
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnSignUp.setEnabled(false);
+                btnSignUp.setText(getString(R.string.msg_please_wait));
                 if(validateUserDetails(editTextFirstName, editTextLastName, editTextEmail,
                                     editTextPassword, switchIsStudent.isChecked(), editTextTeacherId,
                                     editTextGoalCode)){
@@ -104,8 +107,8 @@ public class SignUp extends AppCompatActivity {
         });
     }
 
-
-
+    //Validating the details - names only in hebrew, valid email address (in a right email format),
+    //making sure that in case that it's a student - that a teacher id and goal code were entered
     private boolean validateUserDetails(EditText iFirstName, EditText iLastName, EditText iEmail,
                                         EditText iPassword, boolean iIsStudent, EditText iTeacherID,
                                         EditText iGoal){
@@ -116,6 +119,8 @@ public class SignUp extends AppCompatActivity {
                                     validateGoal(iGoal, iIsStudent);
     }
 
+
+    //validate that a student entered a code goal and that it's a number
     private boolean validateGoal(EditText iGoal, boolean iIsStudent) {
         boolean isValid = false;
         if(iGoal.getText().toString() != "" && iGoal.getText().toString() != " "){
@@ -137,6 +142,7 @@ public class SignUp extends AppCompatActivity {
         return isValid;
     }
 
+    //Validate name
     private boolean validateName(EditText iName){
         boolean isValidName = false;
 
@@ -152,6 +158,7 @@ public class SignUp extends AppCompatActivity {
         return isValidName;
     }
 
+    //Validate mail
     private boolean validateMail(EditText iEmail){
         boolean isValid = false;
 
@@ -170,6 +177,7 @@ public class SignUp extends AppCompatActivity {
         return isValid;
     }
 
+    //Validate password (up to 8 chars)
     private boolean validatePassword(EditText iPassword){
         boolean isValid = false;
 
@@ -191,11 +199,12 @@ public class SignUp extends AppCompatActivity {
         return isValid;
     }
 
+    //Creating a request to insert a new user to the server
+    //If the request has the right details - new user is being created and redirected to the login page
+    //Else, the user has to insert correct details in accordance to the error that was returned
     private void InsertNewUserToDatabase(User iUser, String iType, String iGoal, String iTeacherId)
     {
         try {
-            System.out.println("In insert New User, type: " + iType);
-            System.out.println("In insert New User, goal: " + iGoal);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("first_name", iUser.getmFirstName());
             jsonBody.put("last_name", iUser.getmLastName());
@@ -213,10 +222,35 @@ public class SignUp extends AppCompatActivity {
                             System.out.print(response);
                             Intent intent = null;
                             try {
-                                System.out.println(response.getString("id"));
-                                intent = new Intent(SignUp.this, LoginPage.class);
-                                intent.putExtra("id", response.getString("id"));
-                                startActivity(intent);
+                                if(!response.has("error") && response.has("id"))
+                                {
+                                    System.out.println(response.getString("id"));
+                                    intent = new Intent(SignUp.this, LoginPage.class);
+                                    intent.putExtra("id", response.getString("id"));
+                                    intent.putExtra("isAfterSignUp", "true");
+                                    startActivity(intent);
+                                }
+                                else if(response.has("error"))
+                                {
+                                    btnSignUp.setText(getString(R.string.signup));
+                                    btnSignUp.setEnabled(true);
+                                    String errorMsg = "";
+                                    switch(response.getString("error").toLowerCase())
+                                    {
+                                        case "email already exists":
+                                            errorMsg = getString(R.string.error_email_exists);
+                                            break;
+                                        case "no user type":
+                                            errorMsg = getString(R.string.error_user_type);
+                                            break;
+                                        case "no teacher id":
+                                            errorMsg = getString(R.string.error_teacher_id);
+                                            break;
+                                        default:
+                                            errorMsg = getString(R.string.error_server);
+                                            break;
+                                    }
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 setButtons(true);
@@ -236,7 +270,7 @@ public class SignUp extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
+    //Showing a message to the user
     private void messageToUser(CharSequence text)
     {
         Context context = getApplicationContext();
@@ -245,6 +279,7 @@ public class SignUp extends AppCompatActivity {
         toast.show();
     }
 
+    //Enables or disables the buttons
     private void setButtons(boolean iVal)
     {
         btnSignUp.setEnabled(iVal);

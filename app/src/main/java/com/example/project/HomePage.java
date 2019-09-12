@@ -16,13 +16,13 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
+//This is the home page activity, that setting up the home page for both student and teacher, and navigate to the relevant display,
+//according to the user type
 public class HomePage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
     public User currUser;
@@ -36,7 +36,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        //setting up the menu:
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -49,6 +49,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
         String userType = intent.getStringExtra("user_type");
+        //get the relevant user info
         switch (userType)
         {
             case "student":
@@ -91,7 +92,7 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
+    //navigates to the relevant home page fragment, according to the user type
     public void moveToHomePage(){
         System.out.println("IN HOME PAGE");
         Bundle bundle = new Bundle();
@@ -123,24 +124,18 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         }
     }
 
+    //Sends request to the server to get the user details
     private void getUserFromDatabase(final String id, final String iUrl, final NavigationView iNav) {
-        eUserValidation validation = eUserValidation.invalidUser;
         try {
-            //TODO: encript password?
             System.out.println("MAKING JSON REQUEST");
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("user_id", id);
             final RequestQueue queue = Volley.newRequestQueue(this);
             String url = iUrl;
-            RequestFuture<JSONObject> future = RequestFuture.newFuture();
             final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-//                            System.out.print(response);
-//                            EditText responseLogin = (EditText) findViewById(R.id.responseLogin);
-//                            responseLogin.setText(response.toString());
-                            //mResponse = response;
                             try {
                                 System.out.println("IN ON RESPONSE");
                                 String firstName = response.getString("first_name");
@@ -169,7 +164,6 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                                                 numOfStudents, true);
                                         System.out.println("~~~~~~ Created teacher user: " + currUser.getmId());
                                         break;
-
                                 }
 
                                 moveToHomePage();
@@ -182,7 +176,9 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                     },  new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.print("ERROR!");
+                    Intent intent = new Intent(HomePage.this, LoginPage.class);
+                    intent.putExtra("isServerFailed", "true");
+                    startActivity(intent);
                 }
             });
             queue.add(jsonRequest);

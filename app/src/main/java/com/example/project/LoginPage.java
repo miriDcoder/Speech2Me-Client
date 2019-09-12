@@ -14,18 +14,17 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+//This is the login page for the app
 public class LoginPage extends AppCompatActivity {
     EditText email, password;
     Button loginBtn;
     Button signupBtn;
 
-    //DataBase db = new DataBase();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +44,31 @@ public class LoginPage extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                loginBtn.setEnabled(false);
+                loginBtn.setClickable(false);
+                loginBtn.setText(getString(R.string.logging_in));
                 getUserFromDatabase(email.getText().toString(), password.getText().toString());
             }
         });
+        //Checking if we we're transferred to this page from signup or from a server failure,
+        //and showing a corresponding message to the user
+        Intent intent = getIntent();
+        if(intent.hasExtra("isAfterSignUp")){
+            String isAfterSignup = intent.getStringExtra("isAfterSignUp");
+            if(isAfterSignup.equals("true")){
+                messageToUser(getString(R.string.msg_after_signup));
+            }
+        }
+        else if(intent.hasExtra("isServerFailed")){
+            String isServerFaild = intent.getStringExtra("isServerFailed");
+            if(isServerFaild.equals("true"))
+            {
+                messageToUser(getString(R.string.error_server_try_later));
+            }
+        }
     }
 
+    //Sending a request to the server to log in, and check if the values entered are a match
     private void getUserFromDatabase(String iEmail, String iPassword) {
         try {
             JSONObject jsonBody = new JSONObject();
@@ -57,30 +76,31 @@ public class LoginPage extends AppCompatActivity {
             jsonBody.put("email", iEmail.toLowerCase());
             final RequestQueue queue = Volley.newRequestQueue(this);
             String url = "https://speech-rec-server.herokuapp.com/user_login/";
-            RequestFuture<JSONObject> future = RequestFuture.newFuture();
             final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             System.out.print(response);
-                            EditText responseLogin = (EditText) findViewById(R.id.responseLogin);
                             if(response.has("error"))
                             {
                                 try {
                                     if(response.getString("error").toLowerCase().equals(getResources().getString(R.string.server_error_login)))
-                                    messageToUser("האימייל או הסיסמה שהוזנו אינם נכונים. אנא נסו שוב");
+                                    {
+                                        messageToUser("האימייל או הסיסמה שהוזנו אינם נכונים. אנא נסו שוב");
+                                    }
+                                    loginBtn.setText(getString(R.string.login));
                                     setButtons(true);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             }
-                            responseLogin.setText(response.toString());
-                            try {
-                                moveToHomePage(response.getString("id"), response.getString("user_type"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                            else {
+                                try {
+                                    moveToHomePage(response.getString("id"), response.getString("user_type"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
-
                         }
                     },  new Response.ErrorListener() {
                 @Override
@@ -97,6 +117,7 @@ public class LoginPage extends AppCompatActivity {
         }
     }
 
+    //In case that the details the user entered are a match - moving to Home Page
     private void moveToHomePage(String iCurrUserId, String iUserType)
     {
         Intent intent = new Intent(LoginPage.this, HomePage.class);
@@ -105,6 +126,7 @@ public class LoginPage extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //Presenting a message to the user
     private void messageToUser(CharSequence text)
     {
         Context context = getApplicationContext();
@@ -113,6 +135,7 @@ public class LoginPage extends AppCompatActivity {
         toast.show();
     }
 
+    //Enabling or disabling the buttons
     private void setButtons(boolean iVal)
     {
         loginBtn.setEnabled(iVal);
@@ -121,6 +144,7 @@ public class LoginPage extends AppCompatActivity {
         signupBtn.setClickable(iVal);
     }
 
+    //Disabling the back key
     public void onBackPressed(){
     }
 }

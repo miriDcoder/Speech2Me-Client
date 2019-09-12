@@ -1,15 +1,11 @@
 package com.example.project;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
+//About fragment - contains explanation about the app, credits, terms of agreement and contect.
 public class AboutFragment extends Fragment {
 
     private TextView conditions;
@@ -99,8 +95,6 @@ public class AboutFragment extends Fragment {
         msgText.setVisibility(visibilty);
         backButton.setVisibility(visibilty);
     }
-
-
 
     private void setContactUs(String subject, String msg){
 

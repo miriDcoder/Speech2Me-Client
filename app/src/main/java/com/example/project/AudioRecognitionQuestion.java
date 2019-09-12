@@ -1,5 +1,6 @@
 package com.example.project;
 
+//this class handles an audio recognition game single question
 public class AudioRecognitionQuestion extends Question{
 
     private int mAudioPath;

@@ -2,6 +2,11 @@ package com.example.project;
 
 import java.util.ArrayList;
 
+//This class has the questions in the game.
+//We chose to save this data in the app because since its a 1.0 version of the game,
+//saving the question in the app won't make it heavier or slower, and we didn't want to heavy the server with many request, since
+// it's a free server and has limited resources and space.
+//In the future, if we'll choose to add more questions/level/games, we won't save the questions in the app, but on the server.
 public class QuestionsData {
     ArrayList<ArrayList<Question>> questionsData = new ArrayList<ArrayList<Question>>();
     private ArrayList<Question> questionsLevel1 = new ArrayList<Question>();

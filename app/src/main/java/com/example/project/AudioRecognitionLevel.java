@@ -15,10 +15,9 @@ import java.io.IOException;
 import java.util.UUID;
 //MISSING:
 //handle get currUser ?
-//send statistics to server (to teacher)
-//audio clues: add audios to library and change with switch case/url
 //handle returning answer from requset if answered false/ requset failed
 
+//This is the Audio recognition game
 public class AudioRecognitionLevel extends GameLevel {
     private ImageView imageClue;
     private ImageView play;
@@ -55,6 +54,7 @@ public class AudioRecognitionLevel extends GameLevel {
         answeredQuestions = new int [questions.getSizeOfLevel(mLevel)];
         getNextQuestion(imageClue, true);
 
+        //if the user is recording - need to make the other button disabled and setup the recorder
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,6 +105,7 @@ public class AudioRecognitionLevel extends GameLevel {
             }
         });
 
+        //if the user is listening to the audio - need to make record button disabled and setup the player
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

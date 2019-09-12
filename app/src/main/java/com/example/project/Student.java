@@ -3,6 +3,7 @@ package com.example.project;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+//This class inherits from User, and is used to represent a student
 public class Student extends User implements Parcelable {
     private int mLevel;
     private String mAge;
