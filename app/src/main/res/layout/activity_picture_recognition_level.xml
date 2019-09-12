@@ -4,8 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PictureRecognitionLevel"
-    android:exported="true">
+    android:exported="true"
+    tools:context=".PictureRecognitionLevel">
+
+    <ImageView
+        android:id="@+id/imagePlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <Button
         android:id="@+id/buttonHomePage"
@@ -42,8 +51,8 @@
 
     <ImageView
         android:id="@+id/imageViewWord"
-        android:layout_width="316dp"
-        android:layout_height="260dp"
+        android:layout_width="256dp"
+        android:layout_height="229dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="80dp"
@@ -61,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="@drawable/shape_button"
@@ -74,8 +83,8 @@
 
     <TextView
         android:id="@+id/buttonClue"
-        android:layout_width="1500dp"
-        android:layout_height="37dp"
+        android:layout_width="195dp"
+        android:layout_height="33dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
@@ -83,13 +92,14 @@
         android:text="@string/clue"
         android:textAlignment="center"
         android:textColor="@color/colorText"
+        android:textDirection="rtl"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonAnswerWordRecognition"
-        app:layout_constraintVertical_bias="0.502" />
+        app:layout_constraintVertical_bias="0.461" />
 
     <TextView
         android:id="@+id/textViewGoodJob"
@@ -109,27 +119,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textViewTryAgain"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewBirdGoodJob"
+        app:layout_constraintVertical_bias="0.371" />
 
     <ImageView
         android:id="@+id/imageViewBirdGoodJob"
         android:layout_width="256dp"
         android:layout_height="256dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="@drawable/shape_circle_bird"
         android:shadowDx="5"
         android:shadowDy="5"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/textViewTryAgain"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.634"
         app:srcCompat="@drawable/bird_good_job2" />
 
     <TextView
@@ -138,6 +147,7 @@
         android:layout_height="28dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="116dp"
         android:text="@string/try_again"
@@ -147,8 +157,10 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewBirdTryAgain"
+        app:layout_constraintVertical_bias="0.514" />
 
     <ImageView
         android:id="@+id/imageViewBirdTryAgain"
@@ -156,19 +168,17 @@
         android:layout_height="256dp"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="84dp"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
         android:background="@drawable/shape_circle_bird"
         android:shadowDx="5"
         android:shadowDy="5"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/textViewTryAgain"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.617"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.638"
         app:srcCompat="@drawable/bird_try_again4" />
 
     <TextView
@@ -177,18 +187,16 @@
         android:layout_height="38dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:text="לחץ/י להמשך"
         android:textAlignment="center"
         android:textColor="@color/colorText"
         android:textSize="15sp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/play_fragment_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTryAgain"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTryAgain" />
 
 </android.support.constraint.ConstraintLayout>

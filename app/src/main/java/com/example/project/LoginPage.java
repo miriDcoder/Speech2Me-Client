@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -23,7 +24,7 @@ import org.json.JSONObject;
 public class LoginPage extends AppCompatActivity {
     EditText email, password;
     Button loginBtn;
-    Button signupBtn;
+    TextView signupBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,7 @@ public class LoginPage extends AppCompatActivity {
         loginBtn = (Button) findViewById(R.id.loginBtn);
         email = (EditText) findViewById(R.id.emailEditText);
         password = (EditText) findViewById(R.id.passwordEditText);
-        signupBtn = (Button)findViewById(R.id.signUpBtn);
+        signupBtn = (TextView) findViewById(R.id.signUpBtn);
         signupBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){

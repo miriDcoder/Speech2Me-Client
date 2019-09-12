@@ -4,6 +4,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="clue"><u>רוצה רמז?</u></string>
     <string name="good_job"><b>מצויין!</b></string>
+    <string name="sign_up"><u>משתמש חדש?</u></string>
     <string name="student_goal_header"><b>מטרה:</b></string>
     <string name="student_curr_level_header"><b>שלב נוכחי:</b></string>
     <string name="student_extra_details_level_header"><b>פרטים על שלב:</b></string>

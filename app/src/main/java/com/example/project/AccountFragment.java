@@ -1,6 +1,7 @@
 package com.example.project;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -26,7 +28,6 @@ import org.json.JSONObject;
 
 //This page shows the user's details and allows editing those details
 public class AccountFragment extends Fragment {
-    private User mUser;
     private String userId;
     private String userType;
     private String prevFirstName;
@@ -79,7 +80,6 @@ public class AccountFragment extends Fragment {
         {
             userId = getArguments().getString("user_id");
             userType = getArguments().getString("user_type");
-            System.out.println("USER ID: " + userId);
             getUserDetails(false);
         }
 
@@ -133,7 +133,6 @@ public class AccountFragment extends Fragment {
                                     response.has("last_name") &&
                                     response.has("email"))
                                 {
-                                    System.out.println("In response ok: " + response);
                                     prevFirstName = response.getString("first_name");
                                     prevLastName = response.getString("last_name");
                                     prevEmail = response.getString("email");
@@ -148,7 +147,6 @@ public class AccountFragment extends Fragment {
                     },  new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.println("ERROR!" + error.getMessage());
                 }
             });
             queue.add(jsonRequest);
@@ -161,7 +159,6 @@ public class AccountFragment extends Fragment {
     //displaying the details we've received from the server
     private void showDetails(boolean iIsNewDetails)
     {
-        System.out.println("In show details");
         editTextFirstName.setText(prevFirstName);
         editTextLastName.setText(prevLastName);
         editTextEmail.setText(prevEmail);
@@ -198,15 +195,11 @@ public class AccountFragment extends Fragment {
         if(!prevPassword.isEmpty()) {
             newPassword = editTextNewPassword.getText().toString();
             newPasswordAgain = editTextNewPasswordAgain.getText().toString();
-            System.out.println("new password: " + newPassword);
-            System.out.println("new password again: " + newPasswordAgain);
             if (newPassword.isEmpty() || newPasswordAgain.isEmpty() || !newPassword.equals(newPasswordAgain)) {
-                System.out.println("pass no match");
                 messageToUser("אין התאמה בין השדות של הסיסמה החדשה");
                 isSendToServer = false;
             }
             else{
-                System.out.println("pass is match");
                 isWantToChangePassword = true;
                 isSendToServer = true;
             }
@@ -228,16 +221,13 @@ public class AccountFragment extends Fragment {
                     jsonBody.put("old_password", prevPassword);
                     jsonBody.put("new_password", newPassword);
                 }
-                System.out.println("The change request: " + jsonBody);
                 final RequestQueue queue = Volley.newRequestQueue(this.getContext());
                 final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                System.out.println(response);
                                 buttonSaveChanges.setEnabled(true);
                                 try {
-                                    System.out.println("In change response: " + response);
                                     if(response.has("body") && response.getString("body").toLowerCase().contains("updated user"))
                                     {
                                         getUserDetails(true);
@@ -253,7 +243,6 @@ public class AccountFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         messageToUser("אירעה תקלה בשמירת הפרטים. אנא נסו שוב מאוחר יותר.");
-                        System.out.println("ERROR!" + error.getMessage());
                     }
                 });
                 queue.add(jsonRequest);

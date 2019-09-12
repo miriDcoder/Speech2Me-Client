@@ -28,6 +28,9 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     public User currUser;
     private DrawerLayout drawer;
     private NavigationView navigationView;
+    private String id;
+    private String userType;
+    private String url = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,33 +47,22 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         ActionBarDrawerToggle toggle= new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
-        String url = null;
         toggle.syncState();
-        Intent intent = getIntent();
-        String id = intent.getStringExtra("id");
-        String userType = intent.getStringExtra("user_type");
         //get the relevant user info
-        switch (userType)
-        {
-            case "student":
-                url = "https://speech-rec-server.herokuapp.com/get_student/";
-                getUserFromDatabase(id, url, navigationView);
-                break;
-            case "teacher":
-                url = "https://speech-rec-server.herokuapp.com/get_teacher/";
-                getUserFromDatabase(id, url, navigationView);
-                break;
-        }
+        Intent intent = getIntent();
+        id = intent.getStringExtra("id");
+        userType = intent.getStringExtra("user_type");
+        getUserFromDatabase(id, navigationView);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch(menuItem.getItemId()){
             case R.id.nav_home_page:
-                moveToHomePage();
+                getUserFromDatabase(id, navigationView);
                 break;
             case R.id.nav_account:
-                getSupportActionBar().setTitle("פרופיל");
+                getSupportActionBar().setTitle("פרטי חשבון");
                 AccountFragment accountFragment = new AccountFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("user_id", currUser.getmId());
@@ -86,24 +78,21 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                 getSupportActionBar().setTitle("התנתק/י");
                 startActivity(new Intent(HomePage.this, LoginPage.class));
                 break;
-
-
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
     //navigates to the relevant home page fragment, according to the user type
     public void moveToHomePage(){
-        System.out.println("IN HOME PAGE");
         Bundle bundle = new Bundle();
         getSupportActionBar().setTitle("בית");
         switch (currUser.getmType())
         {
             case "student":
-            bundle.putParcelable("user",(Student)currUser);
-            StudentHomePageFragment studentPage = new StudentHomePageFragment();
-            studentPage.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, studentPage).commit();
+                bundle.putParcelable("user",(Student)currUser);
+                StudentHomePageFragment studentPage = new StudentHomePageFragment();
+                studentPage.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, studentPage).commit();
             break;
             case "teacher":
                 bundle.putParcelable("user", (Teacher)currUser);
@@ -120,31 +109,34 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         }
         else {
             navigationView.setCheckedItem(R.id.nav_home_page);
-            moveToHomePage();
+            getUserFromDatabase(id, navigationView);
         }
     }
 
     //Sends request to the server to get the user details
-    private void getUserFromDatabase(final String id, final String iUrl, final NavigationView iNav) {
+    private void getUserFromDatabase(final String id, final NavigationView iNav) {
+        switch (userType)
+        {
+            case "student":
+                url = "https://speech-rec-server.herokuapp.com/get_student/";
+                break;
+            case "teacher":
+                url = "https://speech-rec-server.herokuapp.com/get_teacher/";
+                break;
+        }
         try {
-            System.out.println("MAKING JSON REQUEST");
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("user_id", id);
             final RequestQueue queue = Volley.newRequestQueue(this);
-            String url = iUrl;
             final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
-                                System.out.println("IN ON RESPONSE");
                                 String firstName = response.getString("first_name");
                                 String lastName = response.getString("last_name");
                                 String userType = response.getString("user_type");
                                 String idDb = response.getString("id");
-                                System.out.println("ID : " + idDb);
-                                System.out.println("USER TYPE : " + userType);
-
                                 switch (userType)
                                 {
                                     case "student":
@@ -155,14 +147,11 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                                         currUser = new Student(firstName, lastName, idDb,
                                                 userType, level, goal,
                                                 score);
-                                        System.out.println("~~~~~~ Created user: " + currUser.getmId());
                                         break;
                                     case "teacher":
-                                        System.out.println("~~~~~~~BEFORE TEACHER");
                                         String numOfStudents = response.getString("number_of_students");
                                         currUser = new Teacher(firstName, lastName, idDb,
                                                 numOfStudents, true);
-                                        System.out.println("~~~~~~ Created teacher user: " + currUser.getmId());
                                         break;
                                 }
 

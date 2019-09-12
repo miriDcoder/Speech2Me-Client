@@ -13,9 +13,6 @@ import android.widget.ImageView;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
-//MISSING:
-//handle get currUser ?
-//handle returning answer from requset if answered false/ requset failed
 
 //This is the Audio recognition game
 public class AudioRecognitionLevel extends GameLevel {
@@ -64,7 +61,6 @@ public class AudioRecognitionLevel extends GameLevel {
                 }
                 else if(!mMediaPlayerListen.isPlaying())
                 {
-                    System.out.println("...........RECORDING. MEDIA PLAYER: " + mMediaPlayerListen.isPlaying());
                     if (!mIsRecording) //start recording
                     {
                         answer.setText("עצור הקלטה");
@@ -84,15 +80,14 @@ public class AudioRecognitionLevel extends GameLevel {
                     } else {
                         answer.setText("אנא המתן");
                         mMediaRecorder.stop();
+//                        answer.setVisibility(View.INVISIBLE);
+//                        play.setVisibility(View.INVISIBLE);
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                isCorrectAnswer(mMediaRecorder, answer, imageClue, true);
+                                isCorrectAnswer(mMediaRecorder, answer, imageClue, play, true);
                                 File recording = new File(mPathSave);
                                 boolean isDeleted = recording.delete();
-                                if (!isDeleted) {
-                                    System.out.println("Couldn't delete file");
-                                }
                             }
                         });
                         thread.start();
@@ -119,7 +114,6 @@ public class AudioRecognitionLevel extends GameLevel {
                             mMediaPlayerListen.stop();
                             pause.setVisibility(View.INVISIBLE);
                             play.setVisibility(View.VISIBLE);
-                            int score = ((Question)mQuestion).GetmScore();
                         }
                     });
                     mMediaPlayerListen.start();

@@ -21,7 +21,7 @@
         <item
             android:id="@+id/nav_account"
             android:icon="@drawable/ic_account"
-            android:title="פרופיל"
+            android:title="פרטי חשבון"
             android:layoutDirection="rtl"
             android:layout_gravity="right"
             android:gravity="right"/>

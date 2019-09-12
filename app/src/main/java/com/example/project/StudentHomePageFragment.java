@@ -46,25 +46,38 @@ public class StudentHomePageFragment extends Fragment {
         buttonPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = null;
-                switch(mStudent.getmGoal())
-                {
-                    case "1":
-                        intent = new Intent(getActivity(), AudioRecognitionLevel.class);
-                        intent.putExtra("level", Integer.toString(mStudent.getmLevel()));
-                        intent.putExtra("id", mStudent.getmId());
-                        intent.putExtra("user_type", mStudent.getmType());
-                        startActivity(intent);
-                        ((Activity) getActivity()).overridePendingTransition(0, 0);
-                        break;
-                    case "2":
-                        intent = new Intent(getActivity(), PictureRecognitionLevel.class);
-                        intent.putExtra("level", Integer.toString(mStudent.getmLevel()));
-                        intent.putExtra("id", mStudent.getmId());
-                        intent.putExtra("user_type", mStudent.getmType());
-                        startActivity(intent);
-                        ((Activity) getActivity()).overridePendingTransition(0, 0);
-                        break;
+                if (mStudent.getmLevel() <= 3) {    // Can play only untill level 3 in this version
+                    Intent intent = null;
+                    switch (mStudent.getmGoal()) {
+                        case "1":
+                            intent = new Intent(getActivity(), AudioRecognitionLevel.class);
+                            intent.putExtra("level", Integer.toString(mStudent.getmLevel()));
+                            intent.putExtra("id", mStudent.getmId());
+                            intent.putExtra("user_type", mStudent.getmType());
+                            startActivity(intent);
+                            ((Activity) getActivity()).overridePendingTransition(0, 0);
+                            break;
+                        case "2":
+                            intent = new Intent(getActivity(), PictureRecognitionLevel.class);
+                            intent.putExtra("level", Integer.toString(mStudent.getmLevel()));
+                            intent.putExtra("id", mStudent.getmId());
+                            intent.putExtra("user_type", mStudent.getmType());
+                            startActivity(intent);
+                            ((Activity) getActivity()).overridePendingTransition(0, 0);
+                            break;
+                    }
+                }
+                else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    String msg = "כל הכבוד, סיימת את כל השלבים! אנחנו עובדים על שלבים נוספים שיגיעו בהמשך... בהצלחה! ";
+                    builder.setMessage(msg);
+                    builder.setPositiveButton("הבנתי", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
             }
         });

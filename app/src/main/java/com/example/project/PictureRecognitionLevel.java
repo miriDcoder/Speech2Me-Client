@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -19,6 +20,7 @@ public class PictureRecognitionLevel extends GameLevel{
     private ImageView imgWord;
     private MediaPlayer mAudioCluePlayer;
     private static final Charset UTF_8 = Charset.forName("UTF-8");
+    private ImageView play;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,10 +44,11 @@ public class PictureRecognitionLevel extends GameLevel{
         mUserType = intent.getStringExtra("user_type");
         questions.makeQuestionList();
         answeredQuestions = new int [questions.getSizeOfLevel(mLevel)];
-        sizeOfLevel = 3;// questions.getSizeOfLevel(mLevel);
+        sizeOfLevel = questions.getSizeOfLevel(mLevel);
         getNextQuestion(imgWord, false);
         mAudioCluePlayer = MediaPlayer.create(PictureRecognitionLevel.this, currQuestion.GetmAudioRecording());
         mIsAudioResourcesFree = true;
+        play = findViewById(R.id.imagePlay);
         //If the user is recording - need to setup the recorder
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +76,7 @@ public class PictureRecognitionLevel extends GameLevel{
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                isCorrectAnswer(mMediaRecorder, answer, imgWord, false);
+                                isCorrectAnswer(mMediaRecorder, answer, imgWord, play, false);
                                 File recording = new File(mPathSave);
                                 boolean isDeleted = recording.delete();
                                 if (!isDeleted) {

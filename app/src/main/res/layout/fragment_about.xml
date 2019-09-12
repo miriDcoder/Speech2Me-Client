@@ -45,16 +45,15 @@
 
     <TextView
         android:id="@+id/textViewAbout"
-        android:layout_width="258dp"
-        android:layout_height="306dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="261dp"
+        android:layout_height="334dp"
         android:text="@string/aboutText"
         android:textAlignment="center"
         android:textColor="@color/colorText"
         android:textDirection="rtl"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="@+id/imageViewAboutBackground"
-        app:layout_constraintHorizontal_bias="0.563"
+        app:layout_constraintHorizontal_bias="0.424"
         app:layout_constraintStart_toStartOf="@+id/imageViewAboutBackground"
         app:layout_constraintTop_toBottomOf="@+id/textViewAboutHeadline"
         app:srcCompat="?attr/colorBackgroundFloating" />
@@ -75,7 +74,7 @@
         android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/textCopyRights"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintHorizontal_bias="0.109"
         app:layout_constraintStart_toEndOf="@+id/textViewContact"
         app:layout_constraintTop_toBottomOf="@+id/textViewAbout"
         app:layout_constraintVertical_bias="0.0" />
@@ -84,8 +83,8 @@
         android:id="@+id/textViewContact"
         android:layout_width="82dp"
         android:layout_height="31dp"
-        android:layout_marginStart="96dp"
-        android:layout_marginLeft="96dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginLeft="92dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="64dp"
         android:text="@string/contact"
@@ -142,8 +141,8 @@
 
     <Button
         android:id="@+id/btnOK"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_width="108dp"
+        android:layout_height="40dp"
         android:layout_gravity="end"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="64dp"
@@ -156,8 +155,7 @@
         app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="@+id/imageViewAboutBackground"
         app:layout_constraintTop_toBottomOf="@+id/txtMessage"
-        app:layout_constraintVertical_bias="1.0"
-        />
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
         android:id="@+id/buttonBack"

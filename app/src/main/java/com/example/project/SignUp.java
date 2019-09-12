@@ -52,7 +52,6 @@ public class SignUp extends AppCompatActivity {
                 if(validateUserDetails(editTextFirstName, editTextLastName, editTextEmail,
                                     editTextPassword, switchIsStudent.isChecked(), editTextTeacherId,
                                     editTextGoalCode)){
-                    System.out.println("!!!!!!!!!!! HERE 1");
                     String firstName = editTextFirstName.getText().toString();
                     String lastName = editTextLastName.getText().toString();
                     String email = editTextEmail.getText().toString();
@@ -73,7 +72,6 @@ public class SignUp extends AppCompatActivity {
                     else
                     {
                         teacherId = null;
-                        System.out.println("In teacher case");
                         currUser = new Teacher(email, password, firstName, lastName);
                         type = "teacher";
                         goal = "0";
@@ -82,7 +80,6 @@ public class SignUp extends AppCompatActivity {
                 }
                 else
                 {
-                    System.out.println("!!!!!!!!! HERE 2");
                     Context context = getApplicationContext();
                     CharSequence text = "Some details were invalid";
                     int duration = Toast.LENGTH_SHORT;
@@ -219,12 +216,10 @@ public class SignUp extends AppCompatActivity {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            System.out.print(response);
                             Intent intent = null;
                             try {
                                 if(!response.has("error") && response.has("id"))
                                 {
-                                    System.out.println(response.getString("id"));
                                     intent = new Intent(SignUp.this, LoginPage.class);
                                     intent.putExtra("id", response.getString("id"));
                                     intent.putExtra("isAfterSignUp", "true");
@@ -259,7 +254,6 @@ public class SignUp extends AppCompatActivity {
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.print("ERROR!");
                     messageToUser(getResources().getString(R.string.error_server));
                     setButtons(true);
                 }
