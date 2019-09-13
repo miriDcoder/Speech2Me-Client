@@ -1,7 +1,6 @@
 package com.example.project;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -232,8 +230,8 @@ public class AccountFragment extends Fragment {
                                     {
                                         getUserDetails(true);
                                     }
-                                    else{
-                                        messageToUser("אירעה תקלה בשמירת הפרטים. אנא נסו שוב מאוחר יותר.");
+                                    else if(response.has("error")){
+                                        messageToUser(getString(R.string.server_error_saving_details));
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -242,7 +240,7 @@ public class AccountFragment extends Fragment {
                         },  new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        messageToUser("אירעה תקלה בשמירת הפרטים. אנא נסו שוב מאוחר יותר.");
+                        messageToUser(getString(R.string.server_error_saving_details));
                     }
                 });
                 queue.add(jsonRequest);
@@ -250,6 +248,7 @@ public class AccountFragment extends Fragment {
 
             } catch (Exception e) {
                 e.printStackTrace();
+                messageToUser(getString(R.string.server_error_saving_details));
             }
         }
     }

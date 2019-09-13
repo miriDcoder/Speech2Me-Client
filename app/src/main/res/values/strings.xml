@@ -82,6 +82,13 @@
     <string name="code_explanation_header">מהו קוד זיהוי?</string>
     <string name="error_server">אירעה שגיאה בשרת! אנא נסה שנית</string>
     <string name="server_error_login">email or password are incorrect</string>
+    <string name="server_error_saving_details">אירעה שגיאה בשמירת הפרטים. אנא נסו שוב מאוחר יותר</string>
+    <string name="server_error_get_students">אירעה שגיאה בקבלת הנתונים. אנא נסו שוב מאוחר יותר</string>
+    <string name="server_error_update_score">אירעה שגיאה בעדכון התוצאה. אנא חזרו שנית על השלב</string>
+    <string name="server_error_update_level">אירעה שגיאה בעדכון השלב. אנא חזרו שנית על השלב</string>
+    <string name="server_error_finish_level">אירעה שגיאה בעדכון הפרטים. הנכם מועברים לעמוד הבית. אנא חזרו שנית על השלב</string>
+    <string name="server_error_get_user">אירעה שגיאה בטעינת הפרטים. הנכם מועברים לעמוד ההתחברות. אנא נסו להתחבר שנית</string>
+    <string name="msg_press_img_to_cont">(לחצו על התמונה להמשך)</string>
     <string name="terms_and_conditions"><b>Terms and conditions\n</b>
 These terms and conditions ("Terms", "Agreement") are an agreement between Mobile Application Developer ("Mobile Application Developer", "us", "we" or "our") and you ("User", "you" or "your"). This Agreement sets forth the general terms and conditions of your use of the speech2me mobile application and any of its products or services (collectively, "Mobile Application" or "Services").
 

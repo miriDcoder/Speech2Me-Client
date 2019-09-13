@@ -245,8 +245,11 @@ public class SignUp extends AppCompatActivity {
                                             errorMsg = getString(R.string.error_server);
                                             break;
                                     }
+
+                                    messageToUser(errorMsg);
                                 }
                             } catch (JSONException e) {
+                                messageToUser(getString(R.string.error_server));
                                 e.printStackTrace();
                                 setButtons(true);
                             }
@@ -262,6 +265,7 @@ public class SignUp extends AppCompatActivity {
             setButtons(false);
         } catch (Exception e) {
             e.printStackTrace();
+            messageToUser(getString(R.string.error_server));
         }
     }
     //Showing a message to the user

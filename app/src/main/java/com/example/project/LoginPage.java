@@ -92,6 +92,9 @@ public class LoginPage extends AppCompatActivity {
                                     loginBtn.setText(getString(R.string.login));
                                     setButtons(true);
                                 } catch (JSONException e) {
+                                    loginBtn.setText(getString(R.string.login));
+                                    setButtons(true);
+                                    messageToUser(getString(R.string.error_server));
                                     e.printStackTrace();
                                 }
                             }
@@ -106,7 +109,7 @@ public class LoginPage extends AppCompatActivity {
                     },  new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.print("ERROR!");
+                    loginBtn.setText(getString(R.string.login));
                     setButtons(true);
                     messageToUser(getResources().getString(R.string.error_server));
                 }
@@ -114,6 +117,9 @@ public class LoginPage extends AppCompatActivity {
             queue.add(jsonRequest);
             setButtons(false);
         } catch (Exception e) {
+            loginBtn.setText(getString(R.string.login));
+            setButtons(true);
+            messageToUser(getResources().getString(R.string.error_server));
             e.printStackTrace();
         }
     }

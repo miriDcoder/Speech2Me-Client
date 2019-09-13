@@ -127,28 +127,27 @@ public class ViewStudentsDataFragment extends Fragment {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            System.out.println("**************************** STUDENTS:");
-                            System.out.println("****************************" + response);
                             try {
                                 JSONArray students = response.getJSONArray("students");
                                 setIdToStudents(students);
                                 mStudentNames = setStudents();
                                 setSpinners();
                             } catch (JSONException e) {
+                                messageToUser(getString(R.string.server_error_get_students));
                                 e.printStackTrace();
                             }
                         }
                     },  new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.println("ERROR!" + error.getMessage());
+                    messageToUser(getString(R.string.server_error_get_students));
                 }
             });
             queue.add(jsonRequest);
-            System.out.println("###############SENT");
 
         } catch (Exception e) {
             e.printStackTrace();
+            messageToUser(getString(R.string.server_error_get_students));
         }
     }
 
@@ -228,30 +227,30 @@ public class ViewStudentsDataFragment extends Fragment {
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("user_id", chosenStudent.Id);
             final RequestQueue queue = Volley.newRequestQueue(this.getContext());
-            System.out.println("+++++++++++++++++++++++" + jsonBody);
 
             final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            System.out.println("****************************" + response);
                             try {
                                 JSONArray answers = response.getJSONArray("answers");
                                 setTable(answers);
                             } catch (JSONException e) {
+                                messageToUser(getString(R.string.server_error_get_students));
                                 e.printStackTrace();
                             }
                         }
                     },  new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.println("ERROR!" + error.getMessage());
+                    messageToUser(getString(R.string.server_error_get_students));
                 }
             });
             queue.add(jsonRequest);
 
         } catch (Exception e) {
             e.printStackTrace();
+            messageToUser(getString(R.string.server_error_get_students));
         }
     }
 
@@ -388,7 +387,7 @@ public class ViewStudentsDataFragment extends Fragment {
                                 if (response.has("body") && response.getString("body").toLowerCase().contains("email sent")) {
                                     messageToUser("המייל נשלח");
                                 }
-                                else{
+                                else if (response.has("error")){
                                     messageToUser(getString(R.string.error_server_try_later));
                                 }
                             } catch (JSONException e) {
@@ -407,6 +406,7 @@ public class ViewStudentsDataFragment extends Fragment {
             queue.add(jsonRequest);
 
         } catch (Exception e) {
+            messageToUser(getString(R.string.error_server_try_later));
             e.printStackTrace();
         }
     }

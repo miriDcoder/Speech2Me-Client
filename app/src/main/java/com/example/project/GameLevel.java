@@ -2,13 +2,14 @@ package com.example.project;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.Image;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +22,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
@@ -170,17 +170,32 @@ public abstract class GameLevel extends AppCompatActivity {
                                 new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
-                                        updateLevel();
+                                        if(response.has("body"))
+                                        {
+                                            updateLevel();
+                                        }
+                                        else if(response.has("error"))
+                                        {
+                                            //if there was an error with updating the progress data -
+                                            //we're showing the user a dialog that explaing the situation and
+                                            //redirecting to the user home page, to do the level again
+                                            showErrorDialog();
+                                        }
+
                                         moveToHomePage(mId, mUserType);
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                                showErrorDialog();
+                                moveToHomePage(mId, mUserType);
                             }
                         });
                         queue.add(jsonRequest);
                     } catch (Exception e) {
                         e.printStackTrace();
+                        showErrorDialog();
+                        moveToHomePage(mId, mUserType);
                     }
                 }
                 messageToUser(textToUser);
@@ -289,9 +304,11 @@ public abstract class GameLevel extends AppCompatActivity {
                 queue.add(jsonRequest);
 
             } catch (Exception e) {
+                messageToUser(getString(R.string.error_server));
                 e.printStackTrace();
             }
         } catch (IOException e) {
+            messageToUser(getString(R.string.error_server));
             e.printStackTrace();
         }
     }
@@ -315,40 +332,38 @@ public abstract class GameLevel extends AppCompatActivity {
     }
 
     private void updateScore(){
-        String url = "https://speech-rec-server.herokuapp.com/update_score/";// TODO
+        String url = "https://speech-rec-server.herokuapp.com/update_score/";
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("user_id", mId);
             jsonBody.put("add_to_score", succeededQuestions);
             final RequestQueue queue = Volley.newRequestQueue(this);
-            System.out.println("+++++++++++++++++++++++" + jsonBody);
             final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
-                                if(response.getString("body").toLowerCase().equals("updated score to user user_id")){
-                                    //GOOD
+                                if(response.getString("body").toLowerCase().contains("updated score to user")){
                                 }
-                                else{
-                                    //SOMETHING WENT WRONG
+                                else if(response.has("error")){
+                                    messageToUser(getString(R.string.server_error_update_score));
                                 }
                             } catch (JSONException e) {
+                                messageToUser(getString(R.string.server_error_update_score));
                                 e.printStackTrace();
                             }
-                            System.out.println("@@@@@@@@@@@@@@@@@@@ " + response);
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.println("ERROR!" + error.getMessage());
+                    messageToUser(getString(R.string.server_error_update_score));
                 }
             });
             queue.add(jsonRequest);
-            System.out.println("###############SENT");
 
         } catch (Exception e) {
             e.printStackTrace();
+            messageToUser(getString(R.string.server_error_update_score));
         }
     }
 
@@ -362,16 +377,21 @@ public abstract class GameLevel extends AppCompatActivity {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            if(response.has("error"))
+                            {
+                                messageToUser(getString(R.string.server_error_update_level));
+                            }
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.println("ERROR!" + error.getMessage());
+                    messageToUser(getString(R.string.server_error_update_level));
                 }
             });
             queue.add(jsonRequest);
         } catch (Exception e) {
             e.printStackTrace();
+            messageToUser(getString(R.string.server_error_update_level));
         }
     }
 
@@ -386,15 +406,30 @@ public abstract class GameLevel extends AppCompatActivity {
             buf.read(bytes, 0, bytes.length);
             buf.close();
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             bytes = null;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             bytes = null;
         }
 
         return bytes;
+    }
+
+    private void showErrorDialog()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(GameLevel.this);
+
+        builder.setMessage(getString(R.string.server_error_finish_level));
+        // add the buttons
+        builder.setPositiveButton("הבנתי", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        // create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

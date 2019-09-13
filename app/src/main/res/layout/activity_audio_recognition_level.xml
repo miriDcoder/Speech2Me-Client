@@ -215,7 +215,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="לחץ/י להמשך"
+        android:text="@string/msg_press_img_to_cont"
         android:textAlignment="center"
         android:textColor="@color/colorText"
         android:textSize="15sp"

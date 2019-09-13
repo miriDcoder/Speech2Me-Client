@@ -1,5 +1,6 @@
 package com.example.project;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +8,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -157,22 +159,51 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
 
                                 moveToHomePage();
                                 iNav.setCheckedItem(R.id.nav_home_page);
-
+                            //if there was a problem with getting the user initial info -
+                            //we're display a message that explains the situation and redirecting to the login page,
+                            //for the user to try and login again
                             } catch (JSONException e) {
                                 e.printStackTrace();
+                                showErrorDialog();
+                                moveToLoginPage();
                             }
                         }
                     },  new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Intent intent = new Intent(HomePage.this, LoginPage.class);
-                    intent.putExtra("isServerFailed", "true");
-                    startActivity(intent);
+                    showErrorDialog();
+                    moveToLoginPage();
                 }
             });
             queue.add(jsonRequest);
         } catch (Exception e) {
             e.printStackTrace();
+            showErrorDialog();
+            moveToLoginPage();
         }
+    }
+
+    private void showErrorDialog()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomePage.this);
+
+        builder.setMessage(getString(R.string.server_error_get_user));
+        // add the buttons
+        builder.setPositiveButton("הבנתי", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        // create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void moveToLoginPage()
+    {
+        Intent intent = new Intent(HomePage.this, LoginPage.class);
+        intent.putExtra("isServerFailed", "true");
+        startActivity(intent);
     }
 }
