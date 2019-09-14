@@ -27,48 +27,49 @@ import org.json.JSONObject;
 //according to the user type
 public class HomePage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
-    public User currUser;
-    private DrawerLayout drawer;
-    private NavigationView navigationView;
-    private String id;
-    private String userType;
-    private String url = null;
+    public User mCurrUser;
+    private DrawerLayout mDrawer;
+    private NavigationView mNavigationView;
+    private String mId;
+    private String mUserType;
+    private String mUrl = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //setting up the menu:
-        drawer = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
-        ActionBarDrawerToggle toggle= new ActionBarDrawerToggle(this, drawer, toolbar,
+        //setting up the menu:
+        mDrawer = findViewById(R.id.drawer_layout);
+        mNavigationView = findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+
+        ActionBarDrawerToggle toggle= new ActionBarDrawerToggle(this, mDrawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+        mDrawer.addDrawerListener(toggle);
         toggle.syncState();
-        //get the relevant user info
+
+        //get the relevant user info from login page
         Intent intent = getIntent();
-        id = intent.getStringExtra("id");
-        userType = intent.getStringExtra("user_type");
-        getUserFromDatabase(id, navigationView);
+        mId = intent.getStringExtra("id");
+        mUserType = intent.getStringExtra("user_type");
+        getUserFromDatabase(mId, mNavigationView);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch(menuItem.getItemId()){
             case R.id.nav_home_page:
-                getUserFromDatabase(id, navigationView);
+                getUserFromDatabase(mId, mNavigationView);
                 break;
             case R.id.nav_account:
                 getSupportActionBar().setTitle("פרטי חשבון");
                 AccountFragment accountFragment = new AccountFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString("user_id", currUser.getmId());
-                bundle.putString("user_type", currUser.getmType());
+                bundle.putString("user_id", mCurrUser.getmId());
+                bundle.putString("user_type", mCurrUser.getmType());
                 accountFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, accountFragment).commit();
                 break;
@@ -81,23 +82,23 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                 startActivity(new Intent(HomePage.this, LoginPage.class));
                 break;
         }
-        drawer.closeDrawer(GravityCompat.START);
+        mDrawer.closeDrawer(GravityCompat.START);
         return true;
     }
     //navigates to the relevant home page fragment, according to the user type
     public void moveToHomePage(){
         Bundle bundle = new Bundle();
         getSupportActionBar().setTitle("בית");
-        switch (currUser.getmType())
+        switch (mCurrUser.getmType())
         {
             case "student":
-                bundle.putParcelable("user",(Student)currUser);
+                bundle.putParcelable("user",(Student) mCurrUser);
                 StudentHomePageFragment studentPage = new StudentHomePageFragment();
                 studentPage.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, studentPage).commit();
-            break;
+                break;
             case "teacher":
-                bundle.putParcelable("user", (Teacher)currUser);
+                bundle.putParcelable("user", (Teacher) mCurrUser);
                 TeacherHomePageFragment teacherPage = new TeacherHomePageFragment();
                 teacherPage.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.student_fragment_container, teacherPage).commit();
@@ -106,31 +107,31 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     }
 
     public void onBackPressed(){
-        if (drawer.isDrawerOpen(GravityCompat.START)){
-            drawer.closeDrawer(GravityCompat.START);
+        if (mDrawer.isDrawerOpen(GravityCompat.START)){
+            mDrawer.closeDrawer(GravityCompat.START);
         }
         else {
-            navigationView.setCheckedItem(R.id.nav_home_page);
-            getUserFromDatabase(id, navigationView);
+            mNavigationView.setCheckedItem(R.id.nav_home_page);
+            getUserFromDatabase(mId, mNavigationView);
         }
     }
 
     //Sends request to the server to get the user details
     private void getUserFromDatabase(final String id, final NavigationView iNav) {
-        switch (userType)
+        switch (mUserType)
         {
             case "student":
-                url = "https://speech-rec-server.herokuapp.com/get_student/";
+                mUrl = "https://speech-rec-server.herokuapp.com/get_student/";
                 break;
             case "teacher":
-                url = "https://speech-rec-server.herokuapp.com/get_teacher/";
+                mUrl = "https://speech-rec-server.herokuapp.com/get_teacher/";
                 break;
         }
         try {
             JSONObject jsonBody = new JSONObject();
-            jsonBody.put("user_id", id);
+            jsonBody.put("user_id", mId);
             final RequestQueue queue = Volley.newRequestQueue(this);
-            final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
+            final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, mUrl, jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
@@ -146,13 +147,13 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                                         String goal = response.getString("goal");
                                         String score = response.getString("score");
 
-                                        currUser = new Student(firstName, lastName, idDb,
+                                        mCurrUser = new Student(firstName, lastName, idDb,
                                                 userType, level, goal,
                                                 score);
                                         break;
                                     case "teacher":
                                         String numOfStudents = response.getString("number_of_students");
-                                        currUser = new Teacher(firstName, lastName, idDb,
+                                        mCurrUser = new Teacher(firstName, lastName, idDb,
                                                 numOfStudents, true);
                                         break;
                                 }

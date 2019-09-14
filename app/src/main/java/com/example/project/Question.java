@@ -9,9 +9,9 @@ public class Question {
     private final int mAudioRecording;
     private final int mLevel;
     private final int mId;
-    private boolean mIsClueUsed = false;
     private int mNumOfTries = 1;
     private int mScore = 0;
+    private boolean mIsClueUsed = false;
     private boolean mSucceeded = false;
 
     public Question(String iAnswer, String iImageUrl, int iAudioRecording, int iLevel, int iId){

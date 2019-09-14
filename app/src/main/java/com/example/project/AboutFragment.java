@@ -14,44 +14,46 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-//About fragment - contains explanation about the app, credits, terms of agreement and contect.
+//About fragment - contains explanation about the app, credits, terms of agreement and contact.
 public class AboutFragment extends Fragment {
 
-    private TextView conditions;
-    private TextView contactUs;
-    private TextView aboutHeader;
-    private TextView aboutText;
-    private ImageView backButton;
-    private EditText msgHeader;
-    private EditText msgText;
-    private Button btnSend;
+    private TextView textConditions;
+    private TextView textContactUs;
+    private TextView textAboutHeader;
+    private TextView textAbout;
+    private ImageView imageBack;
+    private EditText editTextMsgHeader;
+    private EditText editTextMsgText;
+    private Button buttonSend;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_about, container, false);
-        conditions = (TextView)v.findViewById(R.id.textViewConditions);
-        contactUs = (TextView)v.findViewById(R.id.textViewContact);
-        aboutHeader = (TextView)v.findViewById(R.id.textViewAboutHeadline);
-        aboutText = (TextView)v.findViewById(R.id.textViewAbout);
-        backButton = (ImageView)v.findViewById(R.id.buttonBack);
-        msgHeader = (EditText) v.findViewById(R.id.txtSubject);
-        msgText = (EditText) v.findViewById(R.id.txtMessage);
-        btnSend = (Button)v.findViewById(R.id.btnOK);
+
+        //set XML elements
+        textConditions = (TextView)v.findViewById(R.id.textViewConditions);
+        textContactUs = (TextView)v.findViewById(R.id.textViewContact);
+        textAboutHeader = (TextView)v.findViewById(R.id.textViewAboutHeadline);
+        textAbout = (TextView)v.findViewById(R.id.textViewAbout);
+        imageBack = (ImageView)v.findViewById(R.id.buttonBack);
+        buttonSend = (Button)v.findViewById(R.id.btnOK);
+        editTextMsgHeader = (EditText) v.findViewById(R.id.txtSubject);
+        editTextMsgText = (EditText) v.findViewById(R.id.txtMessage);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.conditions);
         builder.setMessage(R.string.terms_and_conditions);
         final AlertDialog conditionsDialog = builder.create();
 
-        conditions.setOnClickListener(new View.OnClickListener() {
+        textConditions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 conditionsDialog.show();
             }
         });
 
-        contactUs.setOnClickListener(new View.OnClickListener() {
+        textContactUs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setPageVisibility(View.INVISIBLE);
@@ -59,18 +61,7 @@ public class AboutFragment extends Fragment {
             }
         });
 
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String subject = msgHeader.getText().toString();
-                String msg = msgText.getText().toString();
-                if (subject != null && msg != null) {
-                    setContactUs(subject, msg);
-                }
-            }
-        });
-
-        backButton.setOnClickListener(new View.OnClickListener() {
+        imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setPageVisibility(View.VISIBLE);
@@ -78,22 +69,32 @@ public class AboutFragment extends Fragment {
             }
         });
 
+        buttonSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String subject = editTextMsgHeader.getText().toString();
+                String msg = editTextMsgText.getText().toString();
+                if (subject != null && msg != null) {
+                    setContactUs(subject, msg);
+                }
+            }
+        });
 
         return v;
     }
 
     private void setPageVisibility(int visibilty){
-        conditions.setVisibility(visibilty);
-        contactUs.setVisibility(visibilty);
-        aboutHeader.setVisibility(visibilty);
-        aboutText.setVisibility(visibilty);
+        textConditions.setVisibility(visibilty);
+        textContactUs.setVisibility(visibilty);
+        textAboutHeader.setVisibility(visibilty);
+        textAbout.setVisibility(visibilty);
     }
 
     private void setContactVisibilty(int visibilty){
-        btnSend.setVisibility(visibilty);
-        msgHeader.setVisibility(visibilty);
-        msgText.setVisibility(visibilty);
-        backButton.setVisibility(visibilty);
+        buttonSend.setVisibility(visibilty);
+        editTextMsgHeader.setVisibility(visibilty);
+        editTextMsgText.setVisibility(visibilty);
+        imageBack.setVisibility(visibilty);
     }
 
     private void setContactUs(String subject, String msg){

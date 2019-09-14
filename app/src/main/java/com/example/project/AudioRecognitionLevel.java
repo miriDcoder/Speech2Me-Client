@@ -31,19 +31,23 @@ public class AudioRecognitionLevel extends GameLevel {
         if(!checkPermissionFromDevice()) {
             requestPermission();
         }
+
+        //set XML elements
         imageClue = findViewById(R.id.imageViewClue);
-        answer = (Button)findViewById(R.id.buttonAnswerRecordingRecognition);
         play = findViewById(R.id.imageViewPlay);
         pause = findViewById(R.id.imageViewPause);
         imageTryAgain = findViewById(R.id.imageViewBirdTryAgain);
-        textTryAgain= findViewById(R.id.textViewTryAgain);
         imageGoodJob = findViewById(R.id.imageViewBirdGoodJob);
+        textTryAgain= findViewById(R.id.textViewTryAgain);
         textGoodJob =  findViewById(R.id.textViewGoodJob);
         textClue = findViewById(R.id.buttonClue);
-        homePage = findViewById(R.id.buttonHomePage);
-        goToNextQuestion = findViewById(R.id.buttonNextQuestion);
         textPressToContinue = findViewById(R.id.textViewPressToContinue);
         textQuestionNumber = findViewById(R.id.textViewQuestionNumber);
+        answer = findViewById(R.id.buttonAnswerRecordingRecognition);
+        goToNextQuestion = findViewById(R.id.buttonNextQuestion);
+        homePage = findViewById(R.id.buttonHomePage);
+
+        //set class members
         Intent intent = getIntent();
         mLevel = Integer.parseInt(intent.getStringExtra("level"));
         mId = intent.getStringExtra("id");
@@ -57,7 +61,6 @@ public class AudioRecognitionLevel extends GameLevel {
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //if(mMediaPlayerListen == null || !isAtLeaseOncePlayed)
                 if(mMediaPlayerListen == null)
                 {
                     messageToUser("השמע את ההקלטה טרם מתן תשובה");
@@ -83,8 +86,6 @@ public class AudioRecognitionLevel extends GameLevel {
                     } else {
                         answer.setText("אנא המתן");
                         mMediaRecorder.stop();
-//                        answer.setVisibility(View.INVISIBLE);
-//                        play.setVisibility(View.INVISIBLE);
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -97,7 +98,6 @@ public class AudioRecognitionLevel extends GameLevel {
                         mMediaRecorder.reset();
                         mMediaRecorder.release();
                         mMediaRecorder = null;
-                        //isAtLeaseOncePlayed = false;
                     }
                     mIsRecording = !mIsRecording;
                 }
@@ -123,7 +123,6 @@ public class AudioRecognitionLevel extends GameLevel {
                     mMediaPlayerListen.start();
                     play.setVisibility(View.INVISIBLE);
                     pause.setVisibility(View.VISIBLE);
-                    //isAtLeaseOncePlayed = true;
                 }
             }
         });

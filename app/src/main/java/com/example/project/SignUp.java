@@ -28,29 +28,29 @@ import java.io.UnsupportedEncodingException;
 
 //This is the Signup page, for the user to signup to the app
 public class SignUp extends AppCompatActivity {
-    Button btnSignUp;
+    Button buttonSignUp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        btnSignUp = (Button)findViewById(R.id.buttonSignup);
-        ImageView imageViewArrowBack = (ImageView) findViewById(R.id.imgArrowBack);
-        final EditText editTextFirstName = (EditText) findViewById(R.id.editTextFirstName);
-        final EditText editTextLastName = (EditText) findViewById(R.id.editTextLastName);
-        final EditText editTextEmail = (EditText) findViewById(R.id.editTextEmail);
-        final EditText editTextPassword = (EditText)findViewById(R.id.editTextPassword);
-        final Switch switchIsStudent = (Switch) findViewById(R.id.switchSignupAsStudent);
-        final EditText editTextTeacherId = (EditText)findViewById(R.id.editTextTeacherId);
-        final EditText editTextGoalCode = (EditText)findViewById(R.id.editTextGoalCode);
+        buttonSignUp = findViewById(R.id.buttonSignup);
+        ImageView imageViewArrowBack = findViewById(R.id.imgArrowBack);
+        final EditText editTextFirstName = findViewById(R.id.editTextFirstName);
+        final EditText editTextLastName = findViewById(R.id.editTextLastName);
+        final EditText editTextEmail = findViewById(R.id.editTextEmail);
+        final EditText editTextPassword = findViewById(R.id.editTextPassword);
+        final EditText editTextTeacherId = findViewById(R.id.editTextTeacherId);
+        final EditText editTextGoalCode = findViewById(R.id.editTextGoalCode);
+        final Switch switchIsStudent = findViewById(R.id.switchSignupAsStudent);
 
         //After the user clicks the signup button, we validate some of the info that the user entered, and if
         //we found them valid - we send a request to the server.
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
+        buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnSignUp.setEnabled(false);
-                btnSignUp.setText(getString(R.string.msg_please_wait));
+                buttonSignUp.setEnabled(false);
+                buttonSignUp.setText(getString(R.string.msg_please_wait));
                 if(validateUserDetails(editTextFirstName, editTextLastName, editTextEmail,
                                     editTextPassword, switchIsStudent.isChecked(), editTextTeacherId,
                                     editTextGoalCode)){
@@ -243,8 +243,8 @@ public class SignUp extends AppCompatActivity {
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    btnSignUp.setText(getString(R.string.signup));
-                    btnSignUp.setEnabled(true);
+                    buttonSignUp.setText(getString(R.string.signup));
+                    buttonSignUp.setEnabled(true);
                     parseVolleyError(error);
                 }
             });
@@ -266,8 +266,8 @@ public class SignUp extends AppCompatActivity {
     //Enables or disables the buttons
     private void setButtons(boolean iVal)
     {
-        btnSignUp.setEnabled(iVal);
-        btnSignUp.setClickable(iVal);
+        buttonSignUp.setEnabled(iVal);
+        buttonSignUp.setClickable(iVal);
     }
 
     private void parseVolleyError(VolleyError error) {

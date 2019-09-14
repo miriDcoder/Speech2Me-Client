@@ -18,9 +18,9 @@ import java.util.UUID;
 //This is the Audio recognition game
 public class PictureRecognitionLevel extends GameLevel{
     private ImageView imgWord;
+    private ImageView play;
     private MediaPlayer mAudioCluePlayer;
     private static final Charset UTF_8 = Charset.forName("UTF-8");
-    private ImageView play;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,17 +28,22 @@ public class PictureRecognitionLevel extends GameLevel{
         if(!checkPermissionFromDevice()) {
             requestPermission();
         }
+
+        //set XML elements
+        play = findViewById(R.id.imagePlay);
         imgWord = findViewById(R.id.imageViewWord);
-        answer = findViewById(R.id.buttonAnswerWordRecognition);
-        textClue = findViewById(R.id.buttonClue);
-        textTryAgain= findViewById(R.id.textViewTryAgain);
         imageTryAgain = findViewById(R.id.imageViewBirdTryAgain);
         imageGoodJob = findViewById(R.id.imageViewBirdGoodJob);
+        textClue = findViewById(R.id.buttonClue);
+        textTryAgain= findViewById(R.id.textViewTryAgain);
         textGoodJob =  findViewById(R.id.textViewGoodJob);
-        homePage = findViewById(R.id.buttonHomePage);
-        goToNextQuestion = findViewById(R.id.buttonNextQuestion);
         textPressToContinue = findViewById(R.id.textViewPressToContinue);
         textQuestionNumber = findViewById(R.id.textViewQuestionNumber);
+        answer = findViewById(R.id.buttonAnswerWordRecognition);
+        goToNextQuestion = findViewById(R.id.buttonNextQuestion);
+        homePage = findViewById(R.id.buttonHomePage);
+
+        //set class members
         Intent intent = getIntent();
         mLevel = Integer.parseInt(intent.getStringExtra("level"));
         mId= intent.getStringExtra("id");
@@ -50,7 +55,6 @@ public class PictureRecognitionLevel extends GameLevel{
         textQuestionNumber.setText(String.format("שאלה %d מתוך %d", questionNumber+1, sizeOfLevel));
         mAudioCluePlayer = MediaPlayer.create(PictureRecognitionLevel.this, currQuestion.GetmAudioRecording());
         mIsAudioResourcesFree = true;
-        play = findViewById(R.id.imagePlay);
         //If the user is recording - need to setup the recorder
         answer.setOnClickListener(new View.OnClickListener() {
             @Override

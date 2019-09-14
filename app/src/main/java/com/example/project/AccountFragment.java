@@ -26,14 +26,14 @@ import org.json.JSONObject;
 
 //This page shows the user's details and allows editing those details
 public class AccountFragment extends Fragment {
-    private String userId;
-    private String userType;
-    private String prevFirstName;
-    private String prevLastName;
-    private String prevPassword;
-    private String newPassword;
-    private String newPasswordAgain;
-    private String prevEmail;
+    private String mUserId;
+    private String mUserType;
+    private String mPrevFirstName;
+    private String mPrevLastName;
+    private String mPrevPassword;
+    private String mNewPassword;
+    private String mNewPasswordAgain;
+    private String mPrevEmail;
     private EditText editTextFirstName;
     private EditText editTextLastName;
     private EditText editTextEmail;
@@ -76,8 +76,8 @@ public class AccountFragment extends Fragment {
         editTextLastName.setFilters(new InputFilter[] {filter});
         if(getArguments() != null)
         {
-            userId = getArguments().getString("user_id");
-            userType = getArguments().getString("user_type");
+            mUserId = getArguments().getString("user_id");
+            mUserType = getArguments().getString("user_type");
             getUserDetails(false);
         }
 
@@ -120,7 +120,7 @@ public class AccountFragment extends Fragment {
         String url = "https://speech-rec-server.herokuapp.com/get_user/";
         try {
             JSONObject jsonBody = new JSONObject();
-            jsonBody.put("user_id", userId);
+            jsonBody.put("user_id", mUserId);
             final RequestQueue queue = Volley.newRequestQueue(this.getContext());
             final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
                     new Response.Listener<JSONObject>() {
@@ -128,12 +128,12 @@ public class AccountFragment extends Fragment {
                         public void onResponse(JSONObject response) {
                             try {
                                 if(response.has("first_name") &&
-                                    response.has("last_name") &&
-                                    response.has("email"))
+                                        response.has("last_name") &&
+                                        response.has("email"))
                                 {
-                                    prevFirstName = response.getString("first_name");
-                                    prevLastName = response.getString("last_name");
-                                    prevEmail = response.getString("email");
+                                    mPrevFirstName = response.getString("first_name");
+                                    mPrevLastName = response.getString("last_name");
+                                    mPrevEmail = response.getString("email");
                                     showDetails(isNewDetails);
                                 }
                                 else{
@@ -157,9 +157,9 @@ public class AccountFragment extends Fragment {
     //displaying the details we've received from the server
     private void showDetails(boolean iIsNewDetails)
     {
-        editTextFirstName.setText(prevFirstName);
-        editTextLastName.setText(prevLastName);
-        editTextEmail.setText(prevEmail);
+        editTextFirstName.setText(mPrevFirstName);
+        editTextLastName.setText(mPrevLastName);
+        editTextEmail.setText(mPrevEmail);
         buttonSaveChanges.setEnabled(true);
         if(iIsNewDetails){
             messageToUser("הפרטים עודכנו בהצלחה");
@@ -179,21 +179,21 @@ public class AccountFragment extends Fragment {
         String currFirstName = editTextFirstName.getText().toString();
         String currLastName = editTextLastName.getText().toString();
 
-        prevPassword = editTextCurrPassword.getText().toString();
-        if(!prevFirstName.equals(currFirstName)){
+        mPrevPassword = editTextCurrPassword.getText().toString();
+        if(!mPrevFirstName.equals(currFirstName)){
             isFirstNameChanged = true;
             isSendToServer = true;
         }
 
-        if(!prevLastName.equals(currLastName)){
+        if(!mPrevLastName.equals(currLastName)){
             isLastNameChanged = true;
             isSendToServer = true;
         }
 
-        if(!prevPassword.isEmpty()) {
-            newPassword = editTextNewPassword.getText().toString();
-            newPasswordAgain = editTextNewPasswordAgain.getText().toString();
-            if (newPassword.isEmpty() || newPasswordAgain.isEmpty() || !newPassword.equals(newPasswordAgain)) {
+        if(!mPrevPassword.isEmpty()) {
+            mNewPassword = editTextNewPassword.getText().toString();
+            mNewPasswordAgain = editTextNewPasswordAgain.getText().toString();
+            if (mNewPassword.isEmpty() || mNewPasswordAgain.isEmpty() || !mNewPassword.equals(mNewPasswordAgain)) {
                 messageToUser("אין התאמה בין השדות של הסיסמה החדשה");
                 isSendToServer = false;
             }
@@ -208,8 +208,8 @@ public class AccountFragment extends Fragment {
             String url = "https://speech-rec-server.herokuapp.com/user_update/";
             try {
                 JSONObject jsonBody = new JSONObject();
-                jsonBody.put("user_id", userId);
-                jsonBody.put("user_type", userType);
+                jsonBody.put("user_id", mUserId);
+                jsonBody.put("user_type", mUserType);
                 if(isFirstNameChanged){
                     jsonBody.put("first_name", currFirstName);
                 }
@@ -217,8 +217,8 @@ public class AccountFragment extends Fragment {
                     jsonBody.put("last_name", currLastName);
                 }
                 if(isWantToChangePassword){
-                    jsonBody.put("old_password", prevPassword);
-                    jsonBody.put("new_password", newPassword);
+                    jsonBody.put("old_password", mPrevPassword);
+                    jsonBody.put("new_password", mNewPassword);
                 }
                 final RequestQueue queue = Volley.newRequestQueue(this.getContext());
                 final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,

@@ -76,9 +76,13 @@ public abstract class GameLevel extends AppCompatActivity {
     }
 
     protected void setBirdAnswerVisibility(ImageView iImageBird, TextView iTextBird, ImageView iImagePlay, ImageView iPlay){
+
+        //set screen with answer from the server
         iImageBird.setVisibility(View.VISIBLE);
         iTextBird.setVisibility(View.VISIBLE);
         textPressToContinue.setVisibility(View.VISIBLE);
+
+        //make game elements invisible
         iImagePlay.setVisibility(View.INVISIBLE);
         iPlay.setVisibility(View.INVISIBLE);
         textQuestionNumber.setVisibility(View.INVISIBLE);
@@ -90,9 +94,13 @@ public abstract class GameLevel extends AppCompatActivity {
 
     protected void setNextLevelVisibility(ImageView iImage, TextView iText, ImageView iImagePlay) {
         if (nextQuestion) {
+
+            //make answer from the server invisible
             iImage.setVisibility(View.INVISIBLE);
             iText.setVisibility(View.INVISIBLE);
             textPressToContinue.setVisibility(View.INVISIBLE);
+
+            //set screen with next question
             iImagePlay.setVisibility(View.VISIBLE);
             textQuestionNumber.setVisibility(View.VISIBLE);
             answer.setVisibility(View.VISIBLE);
@@ -121,9 +129,7 @@ public abstract class GameLevel extends AppCompatActivity {
 
     protected void setupMediaRecorder() {
         mMediaRecorder = new MediaRecorder();
-        //mMediaRecorder.setAudioSamplingRate(16000);
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        //mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_WB);
         mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         mMediaRecorder.setOutputFile(mPathSave);
@@ -131,7 +137,7 @@ public abstract class GameLevel extends AppCompatActivity {
 
     protected void getNextQuestion(ImageView iImage, boolean isAudio){
 
-        //continue to next question
+        //continue to next question on the level
         String imagePath;
         if (questionNumber < sizeOfLevel) {
             do {
@@ -161,8 +167,13 @@ public abstract class GameLevel extends AppCompatActivity {
                     textToUser = String.format("התנסות בשלב %d של המשחק הסתיימה", mLevel);
                     break;
                 case("student"):
+                    //if player didn't succeed all question -
+                    // update score, stay on the same level and go to home page.
                     updateScore();
                     textToUser = String.format("ניסיון יפה! אבל לא עברת את שלב %d, נסה שוב...", mLevel);
+
+                    //if player succeeded all question -
+                    // update level, send questions statistics to server (to teacher) ang go to home page.
                     if (succeededQuestions == sizeOfLevel) {
                         textToUser = String.format("כל הכבוד! סיימת את שלב %d!", mLevel);
                         ArrayList<JSONObject> answers = getAnswers();
@@ -201,14 +212,15 @@ public abstract class GameLevel extends AppCompatActivity {
                     break;
             }
             messageToUser(textToUser);
+
+            //initialize used questions
             for (int i= 0; i< questions.getSizeOfLevel(mLevel);i++){
                 answeredQuestions[i] = 0;
             }
             try
             {
                 Thread.sleep(1000);
-            }
-            catch(InterruptedException ex)
+            }catch(InterruptedException ex)
             {
                 Thread.currentThread().interrupt();
             }
