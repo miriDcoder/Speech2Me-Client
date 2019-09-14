@@ -155,12 +155,13 @@ public abstract class GameLevel extends AppCompatActivity {
         //finished level
         else {
             String textToUser = null;
-            updateScore();
+//            updateScore();
             switch(mUserType){
                 case("teacher"):
                     textToUser = String.format("התנסות בשלב %d של המשחק הסתיימה", mLevel);
                     break;
                 case("student"):
+                    updateScore();
                     textToUser = String.format("ניסיון יפה! אבל לא עברת את שלב %d, נסה שוב...", mLevel);
                     if (succeededQuestions == sizeOfLevel) {
                         textToUser = String.format("כל הכבוד! סיימת את שלב %d!", mLevel);
@@ -297,7 +298,21 @@ public abstract class GameLevel extends AppCompatActivity {
                         },  new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        messageToUser(getString(R.string.error_server));
+                        int statusCode = error.networkResponse.statusCode;
+                        String errorMsgToClient = "";
+                        if(statusCode>= 400 && statusCode <= 499)
+                        {
+                            errorMsgToClient = getString(R.string.error_bad_recording);
+                        }
+                        else if(statusCode >= 500 && statusCode <= 599)
+                        {
+                            errorMsgToClient = getString(R.string.error_server);
+                        }
+                        else{
+                            errorMsgToClient = getString(R.string.error_server);
+                        }
+
+                        messageToUser(errorMsgToClient);
                         iButton.setText("רוצה לענות!");
                     }
                 });
