@@ -114,11 +114,13 @@ public class TeacherHomePageFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 TextView header = new TextView(getContext());
-                header.setText(getString(R.string.code_explanation_header));
+                header.setText(getString(R.string.teacher_instructions));
                 header.setTextColor(getResources().getColor(R.color.colorLightBlue));
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setMessage(getString(R.string.teacher_code_info));
-                builder.setCustomTitle(header);
+                String msg = String.format("%s\n%s\n%s", getString(R.string.teacher_instructions),
+                        getString(R.string.goal_audio_with_code),
+                        getString(R.string.goal_picture_with_code));
+                builder.setMessage(msg).setCustomTitle(header);
                 builder.setPositiveButton("הבנתי", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -134,13 +136,11 @@ public class TeacherHomePageFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 TextView header = new TextView(getContext());
-                header.setText(getString(R.string.teacher_instructions));
+                header.setText(getString(R.string.code_explanation_header));
                 header.setTextColor(getResources().getColor(R.color.colorLightBlue));
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                String msg = String.format("%s\n%s\n%s", getString(R.string.teacher_instructions),
-                                            getString(R.string.goal_audio_with_code),
-                                            getString(R.string.goal_picture_with_code));
-                builder.setMessage(msg).setCustomTitle(header);
+                builder.setMessage(getString(R.string.teacher_code_info));
+                builder.setCustomTitle(header);
                 builder.setPositiveButton("הבנתי", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

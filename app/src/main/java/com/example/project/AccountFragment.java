@@ -230,9 +230,6 @@ public class AccountFragment extends Fragment {
                                     {
                                         getUserDetails(true);
                                     }
-                                    else if(response.has("error")){
-                                        messageToUser(getString(R.string.server_error_saving_details));
-                                    }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }

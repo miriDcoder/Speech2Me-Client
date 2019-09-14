@@ -138,5 +138,6 @@ This document was last updated on August 31, 2019</string>
     <string name="logging_in">מתחבר...</string>
     <string name="login">התחבר</string>
     <string name="error_server_try_later">אירעה שגיאה בשרת. אנא נסה שנית מאוחר יותר</string>
+    <string name="error_login_mail_pass">האימייל או הסיסמה שהוזנו אינם נכונים. אנא נסו שוב</string>
 </resources><!--speech2me-->
 

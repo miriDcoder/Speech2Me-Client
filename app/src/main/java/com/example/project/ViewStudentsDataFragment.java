@@ -151,7 +151,7 @@ public class ViewStudentsDataFragment extends Fragment {
         }
     }
 
-    //Matching the studnt id's to names, to use the relevant student id when needed
+    //Matching the students id's to names, to use the relevant student id when needed
     private void setIdToStudents(JSONArray iStudents)
     {
         String id = " ";
@@ -291,20 +291,20 @@ public class ViewStudentsDataFragment extends Fragment {
                     checkBox = new CheckBox(currContext);
                     isClueUsed = jsonObject.getString("isAudioClueUsed");
                     if (isClueUsed.toLowerCase().equals("true")) {
-                        checkBox.setChecked(true);
+                        checkBox.setButtonDrawable(R.drawable.ic_check);
                     } else {
-                        checkBox.setChecked(false);
+                        checkBox.setButtonDrawable(R.drawable.ic_clear);
                     }
-                    checkBox.setEnabled(false);
+                    checkBox.setClickable(false);
                     tableRow.addView(checkBox, params);
                     checkBox = new CheckBox(currContext);
                     isCompleted = jsonObject.getString("answer");
                     if (isCompleted.toLowerCase().equals("true")) {
-                        checkBox.setChecked(true);
+                        checkBox.setButtonDrawable(R.drawable.ic_check);
                     } else {
-                        checkBox.setChecked(false);
+                        checkBox.setButtonDrawable(R.drawable.ic_clear);
                     }
-                    checkBox.setEnabled(false);
+                    checkBox.setClickable(false);
                     tableRow.addView(checkBox, params);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                         tableRow.setBackground(getResources().getDrawable(R.drawable.shape_cell));
@@ -387,9 +387,6 @@ public class ViewStudentsDataFragment extends Fragment {
                                 if (response.has("body") && response.getString("body").toLowerCase().contains("email sent")) {
                                     messageToUser("המייל נשלח");
                                 }
-                                else if (response.has("error")){
-                                    messageToUser(getString(R.string.error_server_try_later));
-                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 messageToUser(getString(R.string.error_server_try_later));
@@ -399,7 +396,6 @@ public class ViewStudentsDataFragment extends Fragment {
                     },  new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.println("ERROR!" + error.getMessage());
                     messageToUser(getString(R.string.error_server_try_later));
                 }
             });

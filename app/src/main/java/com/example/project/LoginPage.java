@@ -20,6 +20,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+
 //This is the login page for the app
 public class LoginPage extends AppCompatActivity {
     EditText email, password;
@@ -81,29 +83,16 @@ public class LoginPage extends AppCompatActivity {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            System.out.print(response);
-                            if(response.has("error"))
-                            {
-                                try {
-                                    if(response.getString("error").toLowerCase().equals(getResources().getString(R.string.server_error_login)))
-                                    {
-                                        messageToUser("האימייל או הסיסמה שהוזנו אינם נכונים. אנא נסו שוב");
-                                    }
-                                    loginBtn.setText(getString(R.string.login));
-                                    setButtons(true);
-                                } catch (JSONException e) {
-                                    loginBtn.setText(getString(R.string.login));
-                                    setButtons(true);
-                                    messageToUser(getString(R.string.error_server));
-                                    e.printStackTrace();
-                                }
-                            }
-                            else {
-                                try {
+                            System.out.println(response);
+                            try {
+                                if(response.has("id") && response.has("user_type")){
                                     moveToHomePage(response.getString("id"), response.getString("user_type"));
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
                                 }
+                            } catch (JSONException e) {
+                                loginBtn.setText(getString(R.string.login));
+                                setButtons(true);
+                                messageToUser(getResources().getString(R.string.error_server));
+                                e.printStackTrace();
                             }
                         }
                     },  new Response.ErrorListener() {
@@ -111,11 +100,10 @@ public class LoginPage extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
                     loginBtn.setText(getString(R.string.login));
                     setButtons(true);
-                    messageToUser(getResources().getString(R.string.error_server));
+                    parseVolleyError(error);
                 }
             });
             queue.add(jsonRequest);
-            setButtons(false);
         } catch (Exception e) {
             loginBtn.setText(getString(R.string.login));
             setButtons(true);
@@ -153,5 +141,32 @@ public class LoginPage extends AppCompatActivity {
 
     //Disabling the back key
     public void onBackPressed(){
+    }
+
+    private void parseVolleyError(VolleyError error) {
+        try {
+            String responseBody = new String(error.networkResponse.data, "utf-8");
+            JSONObject data = new JSONObject(responseBody);
+            String message = data.getString("error");
+            System.out.println(message);
+            translateErrorToMessageForClient(message);
+        } catch (JSONException e) {
+        } catch (UnsupportedEncodingException exceptionError) {
+        }
+    }
+
+    private void translateErrorToMessageForClient(String iErrorMsg)
+    {
+        String message = "";
+        if(iErrorMsg.toLowerCase().equals(getResources().getString(R.string.server_error_login)))
+        {
+            message = getString(R.string.error_login_mail_pass);
+        }
+        else
+        {
+            message = getString(R.string.error_server);
+        }
+
+        messageToUser(message);
     }
 }

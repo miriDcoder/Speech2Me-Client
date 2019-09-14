@@ -24,6 +24,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+
 //This is the Signup page, for the user to signup to the app
 public class SignUp extends AppCompatActivity {
     Button btnSignUp;
@@ -93,6 +95,8 @@ public class SignUp extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 editTextTeacherId.setText("");
                 editTextTeacherId.setEnabled(isChecked);
+                editTextGoalCode.setText("");
+                editTextGoalCode.setEnabled(isChecked);
             }
         });
 
@@ -109,11 +113,14 @@ public class SignUp extends AppCompatActivity {
     private boolean validateUserDetails(EditText iFirstName, EditText iLastName, EditText iEmail,
                                         EditText iPassword, boolean iIsStudent, EditText iTeacherID,
                                         EditText iGoal){
-        return validateName(iFirstName) &&
-                                    validateName(iLastName) &&
-                                    validateMail(iEmail) &&
-                                    validatePassword(iPassword) &&
-                                    validateGoal(iGoal, iIsStudent);
+//        return validateName(iFirstName) &&
+//                                    validateName(iLastName) &&
+//                                    validateMail(iEmail) &&
+//                                    validatePassword(iPassword) &&
+//                                    validateGoal(iGoal, iIsStudent);
+        return validateMail(iEmail) &&
+                validatePassword(iPassword) &&
+                validateGoal(iGoal, iIsStudent);
     }
 
 
@@ -140,20 +147,20 @@ public class SignUp extends AppCompatActivity {
     }
 
     //Validate name
-    private boolean validateName(EditText iName){
-        boolean isValidName = false;
-
-        if(iName.equals("") || iName == null || !(AppUtils.IsLetters(iName.getText().toString()))) {
-            iName.setBackgroundColor(Color.RED);
-            iName.setText("");
-        }
-        else {
-            isValidName = true;
-            iName.setBackgroundColor(Color.TRANSPARENT);
-        }
-
-        return isValidName;
-    }
+//    private boolean validateName(EditText iName){
+//        boolean isValidName = false;
+//
+//        if(iName.equals("") || iName == null || !(AppUtils.IsLetters(iName.getText().toString()))) {
+//            iName.setBackgroundColor(Color.RED);
+//            iName.setText("");
+//        }
+//        else {
+//            isValidName = true;
+//            iName.setBackgroundColor(Color.TRANSPARENT);
+//        }
+//
+//        return isValidName;
+//    }
 
     //Validate mail
     private boolean validateMail(EditText iEmail){
@@ -208,8 +215,10 @@ public class SignUp extends AppCompatActivity {
             jsonBody.put("password", iUser.getmPassword());
             jsonBody.put("email", iUser.getmEmail());
             jsonBody.put("user_type", iType);
-            jsonBody.put("teacher_id", iTeacherId);
-            jsonBody.put("goal", iGoal);
+            if(iType.toLowerCase() == "student"){
+                jsonBody.put("teacher_id", iTeacherId);
+                jsonBody.put("goal", iGoal);
+            }
             RequestQueue queue = Volley.newRequestQueue(this);
             String url ="https://speech-rec-server.herokuapp.com/user_signup/";
             JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
@@ -218,35 +227,12 @@ public class SignUp extends AppCompatActivity {
                         public void onResponse(JSONObject response) {
                             Intent intent = null;
                             try {
-                                if(!response.has("error") && response.has("id"))
+                                if(response.has("id"))
                                 {
                                     intent = new Intent(SignUp.this, LoginPage.class);
                                     intent.putExtra("id", response.getString("id"));
                                     intent.putExtra("isAfterSignUp", "true");
                                     startActivity(intent);
-                                }
-                                else if(response.has("error"))
-                                {
-                                    btnSignUp.setText(getString(R.string.signup));
-                                    btnSignUp.setEnabled(true);
-                                    String errorMsg = "";
-                                    switch(response.getString("error").toLowerCase())
-                                    {
-                                        case "email already exists":
-                                            errorMsg = getString(R.string.error_email_exists);
-                                            break;
-                                        case "no user type":
-                                            errorMsg = getString(R.string.error_user_type);
-                                            break;
-                                        case "no teacher id":
-                                            errorMsg = getString(R.string.error_teacher_id);
-                                            break;
-                                        default:
-                                            errorMsg = getString(R.string.error_server);
-                                            break;
-                                    }
-
-                                    messageToUser(errorMsg);
                                 }
                             } catch (JSONException e) {
                                 messageToUser(getString(R.string.error_server));
@@ -257,12 +243,12 @@ public class SignUp extends AppCompatActivity {
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    messageToUser(getResources().getString(R.string.error_server));
-                    setButtons(true);
+                    btnSignUp.setText(getString(R.string.signup));
+                    btnSignUp.setEnabled(true);
+                    parseVolleyError(error);
                 }
             });
             queue.add(jsonRequest);
-            setButtons(false);
         } catch (Exception e) {
             e.printStackTrace();
             messageToUser(getString(R.string.error_server));
@@ -284,4 +270,36 @@ public class SignUp extends AppCompatActivity {
         btnSignUp.setClickable(iVal);
     }
 
+    private void parseVolleyError(VolleyError error) {
+        try {
+            String responseBody = new String(error.networkResponse.data, "utf-8");
+            JSONObject data = new JSONObject(responseBody);
+            String message = data.getString("error");
+            translateErrorToMessageForClient(message);
+        } catch (JSONException e) {
+        } catch (UnsupportedEncodingException exceptionError) {
+        }
+    }
+
+    private void translateErrorToMessageForClient(String iErrorMsg)
+    {
+        String message = "";
+        switch(iErrorMsg.toLowerCase())
+        {
+            case "email already exists":
+                message = getString(R.string.error_email_exists);
+                break;
+            case "no user type":
+                message = getString(R.string.error_user_type);
+                break;
+            case "no teacher id":
+                message = getString(R.string.error_teacher_id);
+                break;
+            default:
+                message = getString(R.string.error_server);
+                break;
+        }
+
+        messageToUser(message);
+    }
 }
