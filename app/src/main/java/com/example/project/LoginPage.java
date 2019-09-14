@@ -98,6 +98,7 @@ public class LoginPage extends AppCompatActivity {
                     },  new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    System.out.println("IN ERROR");
                     loginBtn.setText(getString(R.string.login));
                     setButtons(true);
                     parseVolleyError(error);
@@ -151,7 +152,9 @@ public class LoginPage extends AppCompatActivity {
             System.out.println(message);
             translateErrorToMessageForClient(message);
         } catch (JSONException e) {
+            messageToUser(getResources().getString(R.string.error_server));
         } catch (UnsupportedEncodingException exceptionError) {
+            messageToUser(getResources().getString(R.string.error_server));
         }
     }
 

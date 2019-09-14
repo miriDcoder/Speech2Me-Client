@@ -159,9 +159,6 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
 
                                 moveToHomePage();
                                 iNav.setCheckedItem(R.id.nav_home_page);
-                            //if there was a problem with getting the user initial info -
-                            //we're display a message that explains the situation and redirecting to the login page,
-                            //for the user to try and login again
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 showErrorDialog();
@@ -171,6 +168,9 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
                     },  new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    //if there was a problem with getting the user initial info -
+                    //we're display a message that explains the situation and redirecting to the login page,
+                    //for the user to try and login again
                     showErrorDialog();
                     moveToLoginPage();
                 }

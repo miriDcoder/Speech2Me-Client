@@ -204,6 +204,7 @@ public class AccountFragment extends Fragment {
         }
 
         if(isSendToServer){
+            buttonSaveChanges.setEnabled(false);
             String url = "https://speech-rec-server.herokuapp.com/user_update/";
             try {
                 JSONObject jsonBody = new JSONObject();
@@ -231,20 +232,22 @@ public class AccountFragment extends Fragment {
                                         getUserDetails(true);
                                     }
                                 } catch (JSONException e) {
+                                    buttonSaveChanges.setEnabled(true);
+                                    messageToUser(getString(R.string.server_error_saving_details));
                                     e.printStackTrace();
                                 }
                             }
                         },  new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        buttonSaveChanges.setEnabled(true);
                         messageToUser(getString(R.string.server_error_saving_details));
                     }
                 });
                 queue.add(jsonRequest);
-                buttonSaveChanges.setEnabled(false);
-
             } catch (Exception e) {
                 e.printStackTrace();
+                buttonSaveChanges.setEnabled(true);
                 messageToUser(getString(R.string.server_error_saving_details));
             }
         }

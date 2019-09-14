@@ -177,20 +177,15 @@ public abstract class GameLevel extends AppCompatActivity {
                                     new Response.Listener<JSONObject>() {
                                         @Override
                                         public void onResponse(JSONObject response) {
-                                            if (response.has("body")) {
-                                                updateLevel();
-                                            } else if (response.has("error")) {
-                                                //if there was an error with updating the progress data -
-                                                //we're showing the user a dialog that explaing the situation and
-                                                //redirecting to the user home page, to do the level again
-                                                showErrorDialog();
-                                            }
-
+                                            updateLevel();
                                             moveToHomePage(mId, mUserType);
                                         }
                                     }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
+                                    //if there was an error with updating the progress data -
+                                    //we're showing the user a dialog that explaing the situation and
+                                    //redirecting to the user home page, to do the level again
                                     showErrorDialog();
                                     moveToHomePage(mId, mUserType);
                                 }
@@ -350,9 +345,6 @@ public abstract class GameLevel extends AppCompatActivity {
                             try {
                                 if(response.getString("body").toLowerCase().contains("updated score to user")){
                                 }
-                                else if(response.has("error")){
-                                    messageToUser(getString(R.string.server_error_update_score));
-                                }
                             } catch (JSONException e) {
                                 messageToUser(getString(R.string.server_error_update_score));
                                 e.printStackTrace();
@@ -382,10 +374,7 @@ public abstract class GameLevel extends AppCompatActivity {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            if(response.has("error"))
-                            {
-                                messageToUser(getString(R.string.server_error_update_level));
-                            }
+
                         }
                     }, new Response.ErrorListener() {
                 @Override

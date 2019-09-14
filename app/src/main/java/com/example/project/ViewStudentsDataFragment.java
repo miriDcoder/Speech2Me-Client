@@ -159,7 +159,7 @@ public class ViewStudentsDataFragment extends Fragment {
         JSONObject jsonObject = null;
         MiniStudent student = null;
         mStudentNamesToIds = new HashMap<>();
-        for(int i=0; i<mTeacher.getmNumOfStudents(); i++)
+        for(int i=0; i<iStudents.length(); i++)
         {
             try {
                 student = new MiniStudent();
