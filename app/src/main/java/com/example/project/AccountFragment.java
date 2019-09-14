@@ -24,6 +24,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+
 //This page shows the user's details and allows editing those details
 public class AccountFragment extends Fragment {
     private String mUserId;
@@ -76,6 +78,7 @@ public class AccountFragment extends Fragment {
         editTextLastName.setFilters(new InputFilter[] {filter});
         if(getArguments() != null)
         {
+            System.out.println("getArguments not null");
             mUserId = getArguments().getString("user_id");
             mUserType = getArguments().getString("user_type");
             getUserDetails(false);
@@ -127,29 +130,40 @@ public class AccountFragment extends Fragment {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
-                                if(response.has("first_name") &&
-                                        response.has("last_name") &&
-                                        response.has("editTextEmail"))
-                                {
+//                                if(response.has("first_name") &&
+//                                        response.has("last_name") &&
+//                                        response.has("email"))
+//                                {
+                                    System.out.println(response);
                                     mPrevFirstName = response.getString("first_name");
                                     mPrevLastName = response.getString("last_name");
-                                    mPrevEmail = response.getString("editTextEmail");
+                                    mPrevEmail = response.getString("email");
                                     showDetails(isNewDetails);
-                                }
-                                else{
-                                }
+                                //}
                             } catch (JSONException e) {
+                                System.out.println("In exception of on response");
+                                buttonSaveChanges.setText(getString(R.string.save_changes));
+                                buttonSaveChanges.setEnabled(true);
+                                messageToUser(getString(R.string.error_server_try_later));
                                 e.printStackTrace();
                             }
                         }
                     },  new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    System.out.println("In on error response");
+                    buttonSaveChanges.setText(getString(R.string.save_changes));
+                    buttonSaveChanges.setEnabled(true);
+                    parseVolleyError(error);
                 }
             });
             queue.add(jsonRequest);
-
+            System.out.println("Sent request");
         } catch (Exception e) {
+            System.out.println("In general exception");
+            buttonSaveChanges.setText(getString(R.string.save_changes));
+            buttonSaveChanges.setEnabled(true);
+            messageToUser(getString(R.string.error_server_try_later));
             e.printStackTrace();
         }
     }
@@ -161,6 +175,7 @@ public class AccountFragment extends Fragment {
         editTextLastName.setText(mPrevLastName);
         editTextEmail.setText(mPrevEmail);
         buttonSaveChanges.setEnabled(true);
+        buttonSaveChanges.setText(getString(R.string.save_changes));
         if(iIsNewDetails){
             messageToUser("הפרטים עודכנו בהצלחה");
         }
@@ -205,6 +220,7 @@ public class AccountFragment extends Fragment {
 
         if(isSendToServer){
             buttonSaveChanges.setEnabled(false);
+            buttonSaveChanges.setText(getString(R.string.saving));
             String url = "https://speech-rec-server.herokuapp.com/user_update/";
             try {
                 JSONObject jsonBody = new JSONObject();
@@ -232,6 +248,7 @@ public class AccountFragment extends Fragment {
                                         getUserDetails(true);
                                     }
                                 } catch (JSONException e) {
+                                    buttonSaveChanges.setText(getString(R.string.save_changes));
                                     buttonSaveChanges.setEnabled(true);
                                     messageToUser(getString(R.string.server_error_saving_details));
                                     e.printStackTrace();
@@ -240,16 +257,48 @@ public class AccountFragment extends Fragment {
                         },  new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        buttonSaveChanges.setText(getString(R.string.save_changes));
                         buttonSaveChanges.setEnabled(true);
-                        messageToUser(getString(R.string.server_error_saving_details));
+                        parseVolleyError(error);
                     }
                 });
                 queue.add(jsonRequest);
             } catch (Exception e) {
                 e.printStackTrace();
+                buttonSaveChanges.setText(getString(R.string.save_changes));
                 buttonSaveChanges.setEnabled(true);
                 messageToUser(getString(R.string.server_error_saving_details));
             }
         }
+    }
+
+    private void parseVolleyError(VolleyError error) {
+        try {
+            String responseBody = new String(error.networkResponse.data, "utf-8");
+            JSONObject data = new JSONObject(responseBody);
+            String message = data.getString("error");
+            translateErrorToMessageForClient(message);
+        } catch (JSONException e) {
+        } catch (UnsupportedEncodingException exceptionError) {
+        }
+    }
+
+    private void translateErrorToMessageForClient(String iErrorMsg)
+    {
+        String message = "";
+        switch(iErrorMsg.toLowerCase())
+        {
+            case "old password does not match new password":
+                message = getString(R.string.error_old_password);
+                break;
+            case "no user type":
+                message = getString(R.string.error_user_type);
+                break;
+            default:
+                message = getString(R.string.error_server);
+                break;
+        }
+
+        messageToUser(message);
     }
 }
