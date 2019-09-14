@@ -38,6 +38,7 @@ public class PictureRecognitionLevel extends GameLevel{
         homePage = findViewById(R.id.buttonHomePage);
         goToNextQuestion = findViewById(R.id.buttonNextQuestion);
         textPressToContinue = findViewById(R.id.textViewPressToContinue);
+        textQuestionNumber = findViewById(R.id.textViewQuestionNumber);
         Intent intent = getIntent();
         mLevel = Integer.parseInt(intent.getStringExtra("level"));
         mId= intent.getStringExtra("id");
@@ -46,6 +47,7 @@ public class PictureRecognitionLevel extends GameLevel{
         answeredQuestions = new int [questions.getSizeOfLevel(mLevel)];
         sizeOfLevel = questions.getSizeOfLevel(mLevel);
         getNextQuestion(imgWord, false);
+        textQuestionNumber.setText(String.format("שאלה %d מתוך %d", questionNumber+1, sizeOfLevel));
         mAudioCluePlayer = MediaPlayer.create(PictureRecognitionLevel.this, currQuestion.GetmAudioRecording());
         mIsAudioResourcesFree = true;
         play = findViewById(R.id.imagePlay);

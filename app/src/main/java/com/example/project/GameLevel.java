@@ -62,6 +62,7 @@ public abstract class GameLevel extends AppCompatActivity {
     protected TextView textTryAgain;
     protected TextView textGoodJob;
     protected TextView textPressToContinue;
+    protected TextView textQuestionNumber;
     protected MediaRecorder mMediaRecorder;
     protected boolean mIsAudioResourcesFree;
     protected String mUserType;
@@ -80,6 +81,7 @@ public abstract class GameLevel extends AppCompatActivity {
         textPressToContinue.setVisibility(View.VISIBLE);
         iImagePlay.setVisibility(View.INVISIBLE);
         iPlay.setVisibility(View.INVISIBLE);
+        textQuestionNumber.setVisibility(View.INVISIBLE);
         answer.setVisibility(View.INVISIBLE);
         textClue.setVisibility(View.INVISIBLE);
         goToNextQuestion.setVisibility(View.INVISIBLE);
@@ -92,6 +94,7 @@ public abstract class GameLevel extends AppCompatActivity {
             iText.setVisibility(View.INVISIBLE);
             textPressToContinue.setVisibility(View.INVISIBLE);
             iImagePlay.setVisibility(View.VISIBLE);
+            textQuestionNumber.setVisibility(View.VISIBLE);
             answer.setVisibility(View.VISIBLE);
             textClue.setVisibility(View.VISIBLE);
             goToNextQuestion.setVisibility(View.VISIBLE);
@@ -147,59 +150,61 @@ public abstract class GameLevel extends AppCompatActivity {
             }
             Picasso.with(this).load(imagePath).into(iImage);
             answer.setText(R.string.answer);
-
+            textQuestionNumber.setText(String.format("שאלה %d מתוך %d", questionNumber+1, sizeOfLevel));
         }
         //finished level
         else {
-            String textToUser;
+            String textToUser = null;
             updateScore();
-            if (mUserType.equals("student")){
-                textToUser = String.format("ניסיון יפה! אבל לא עברת את שלב %d, נסה שוב...", mLevel);
-                if (succeededQuestions == sizeOfLevel) {
-                    textToUser = String.format("כל הכבוד! סיימת את שלב %d!", mLevel);
-                    ArrayList<JSONObject> answers = getAnswers();
-                    System.out.println(answers);
-                    String url = "https://speech-rec-server.herokuapp.com/finish_level/";
-                    JSONObject jsonBody = new JSONObject();
-                    try {
-                        jsonBody.put("user_id", mId);
-                        jsonBody.put("level", mLevel);
-                        jsonBody.put("answers", answers);
-                        final RequestQueue queue = Volley.newRequestQueue(this);
-                        final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
-                                new Response.Listener<JSONObject>() {
-                                    @Override
-                                    public void onResponse(JSONObject response) {
-                                        if(response.has("body"))
-                                        {
-                                            updateLevel();
-                                        }
-                                        else if(response.has("error"))
-                                        {
-                                            //if there was an error with updating the progress data -
-                                            //we're showing the user a dialog that explaing the situation and
-                                            //redirecting to the user home page, to do the level again
-                                            showErrorDialog();
-                                        }
+            switch(mUserType){
+                case("teacher"):
+                    textToUser = String.format("התנסות בשלב %d של המשחק הסתיימה", mLevel);
+                    break;
+                case("student"):
+                    textToUser = String.format("ניסיון יפה! אבל לא עברת את שלב %d, נסה שוב...", mLevel);
+                    if (succeededQuestions == sizeOfLevel) {
+                        textToUser = String.format("כל הכבוד! סיימת את שלב %d!", mLevel);
+                        ArrayList<JSONObject> answers = getAnswers();
+                        System.out.println(answers);
+                        String url = "https://speech-rec-server.herokuapp.com/finish_level/";
+                        JSONObject jsonBody = new JSONObject();
+                        try {
+                            jsonBody.put("user_id", mId);
+                            jsonBody.put("level", mLevel);
+                            jsonBody.put("answers", answers);
+                            final RequestQueue queue = Volley.newRequestQueue(this);
+                            final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
+                                    new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+                                            if (response.has("body")) {
+                                                updateLevel();
+                                            } else if (response.has("error")) {
+                                                //if there was an error with updating the progress data -
+                                                //we're showing the user a dialog that explaing the situation and
+                                                //redirecting to the user home page, to do the level again
+                                                showErrorDialog();
+                                            }
 
-                                        moveToHomePage(mId, mUserType);
-                                    }
-                                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                showErrorDialog();
-                                moveToHomePage(mId, mUserType);
-                            }
-                        });
-                        queue.add(jsonRequest);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        showErrorDialog();
-                        moveToHomePage(mId, mUserType);
+                                            moveToHomePage(mId, mUserType);
+                                        }
+                                    }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    showErrorDialog();
+                                    moveToHomePage(mId, mUserType);
+                                }
+                            });
+                            queue.add(jsonRequest);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            showErrorDialog();
+                            moveToHomePage(mId, mUserType);
+                        }
                     }
-                }
-                messageToUser(textToUser);
+                    break;
             }
+            messageToUser(textToUser);
             for (int i= 0; i< questions.getSizeOfLevel(mLevel);i++){
                 answeredQuestions[i] = 0;
             }

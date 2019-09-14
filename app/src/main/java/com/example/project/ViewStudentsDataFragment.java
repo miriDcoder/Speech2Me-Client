@@ -291,18 +291,18 @@ public class ViewStudentsDataFragment extends Fragment {
                     checkBox = new CheckBox(currContext);
                     isClueUsed = jsonObject.getString("isAudioClueUsed");
                     if (isClueUsed.toLowerCase().equals("true")) {
-                        checkBox.setButtonDrawable(R.drawable.ic_check);
+//                        checkBox.setButtonDrawable(R.drawable.ic_check);
                     } else {
-                        checkBox.setButtonDrawable(R.drawable.ic_clear);
+//                        checkBox.setButtonDrawable(R.drawable.ic_clear);
                     }
                     checkBox.setClickable(false);
                     tableRow.addView(checkBox, params);
                     checkBox = new CheckBox(currContext);
                     isCompleted = jsonObject.getString("answer");
                     if (isCompleted.toLowerCase().equals("true")) {
-                        checkBox.setButtonDrawable(R.drawable.ic_check);
+//                        checkBox.setButtonDrawable(R.drawable.ic_check);
                     } else {
-                        checkBox.setButtonDrawable(R.drawable.ic_clear);
+//                        checkBox.setButtonDrawable(R.drawable.ic_clear);
                     }
                     checkBox.setClickable(false);
                     tableRow.addView(checkBox, params);

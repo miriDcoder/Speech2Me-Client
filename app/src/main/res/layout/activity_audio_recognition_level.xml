@@ -48,16 +48,16 @@
         android:layout_height="92dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="48dp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewTryAgain"
+        app:layout_constraintBottom_toBottomOf="@+id/play_fragment_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonAnswerRecordingRecognition"
-        app:layout_constraintVertical_bias="0.772"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewBirdGoodJob"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="?attr/colorBackgroundFloating" />
 
     <Button
@@ -66,7 +66,7 @@
         android:layout_height="45dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="@drawable/shape_button"
@@ -226,6 +226,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTryAgain"
         app:layout_constraintVertical_bias="0.2" />
+
+    <TextView
+        android:id="@+id/textViewQuestionNumber"
+        android:layout_width="128dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="שאלה מספר 1 מתוך 10"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewPause"
+        app:layout_constraintEnd_toStartOf="@+id/buttonNextQuestion"
+        app:layout_constraintHorizontal_bias="0.413"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.731" />
 
     <FrameLayout
         android:id="@+id/play_fragment_container"

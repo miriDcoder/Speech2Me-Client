@@ -20,6 +20,7 @@ public class AudioRecognitionLevel extends GameLevel {
     private ImageView play;
     private ImageView pause;
     private MediaPlayer mMediaPlayerListen = null;
+
     //private boolean isAtLeaseOncePlayed = false;
 
     @Override
@@ -42,6 +43,7 @@ public class AudioRecognitionLevel extends GameLevel {
         homePage = findViewById(R.id.buttonHomePage);
         goToNextQuestion = findViewById(R.id.buttonNextQuestion);
         textPressToContinue = findViewById(R.id.textViewPressToContinue);
+        textQuestionNumber = findViewById(R.id.textViewQuestionNumber);
         Intent intent = getIntent();
         mLevel = Integer.parseInt(intent.getStringExtra("level"));
         mId = intent.getStringExtra("id");
@@ -50,7 +52,7 @@ public class AudioRecognitionLevel extends GameLevel {
         sizeOfLevel = questions.getSizeOfLevel(mLevel);
         answeredQuestions = new int [questions.getSizeOfLevel(mLevel)];
         getNextQuestion(imageClue, true);
-
+        textQuestionNumber.setText(String.format("שאלה %d מתוך %d", questionNumber+1, sizeOfLevel));
         //if the user is recording - need to make the other button disabled and setup the recorder
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
