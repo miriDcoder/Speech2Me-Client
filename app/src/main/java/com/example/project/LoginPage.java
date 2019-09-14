@@ -24,35 +24,39 @@ import java.io.UnsupportedEncodingException;
 
 //This is the login page for the app
 public class LoginPage extends AppCompatActivity {
-    EditText email, password;
-    Button loginBtn;
-    TextView signupBtn;
+    EditText editTextEmail;
+    EditText editTextPassword;
+    Button buttonLogin;
+    TextView buttonSignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
-        loginBtn = (Button) findViewById(R.id.loginBtn);
-        email = (EditText) findViewById(R.id.emailEditText);
-        password = (EditText) findViewById(R.id.passwordEditText);
-        signupBtn = (TextView) findViewById(R.id.signUpBtn);
-        signupBtn.setOnClickListener(new View.OnClickListener(){
+
+        //set XML elements
+        buttonLogin = findViewById(R.id.loginBtn);
+        editTextEmail = findViewById(R.id.emailEditText);
+        editTextPassword = findViewById(R.id.passwordEditText);
+        buttonSignup = findViewById(R.id.signUpBtn);
+        buttonSignup.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                email = (EditText) findViewById(R.id.emailEditText);
+                editTextEmail = findViewById(R.id.emailEditText);
                 startActivity(new Intent(LoginPage.this, SignUp.class));
             }
         });
 
-        loginBtn.setOnClickListener(new View.OnClickListener(){
+        buttonLogin.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                loginBtn.setEnabled(false);
-                loginBtn.setClickable(false);
-                loginBtn.setText(getString(R.string.logging_in));
-                getUserFromDatabase(email.getText().toString(), password.getText().toString());
+                buttonLogin.setEnabled(false);
+                buttonLogin.setClickable(false);
+                buttonLogin.setText(getString(R.string.logging_in));
+                getUserFromDatabase(editTextEmail.getText().toString(), editTextPassword.getText().toString());
             }
         });
+        
         //Checking if we we're transferred to this page from signup or from a server failure,
         //and showing a corresponding message to the user
         Intent intent = getIntent();
@@ -83,13 +87,12 @@ public class LoginPage extends AppCompatActivity {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            System.out.println(response);
                             try {
                                 if(response.has("id") && response.has("user_type")){
                                     moveToHomePage(response.getString("id"), response.getString("user_type"));
                                 }
                             } catch (JSONException e) {
-                                loginBtn.setText(getString(R.string.login));
+                                buttonLogin.setText(getString(R.string.login));
                                 setButtons(true);
                                 messageToUser(getResources().getString(R.string.error_server));
                                 e.printStackTrace();
@@ -98,15 +101,14 @@ public class LoginPage extends AppCompatActivity {
                     },  new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.println("IN ERROR");
-                    loginBtn.setText(getString(R.string.login));
+                    buttonLogin.setText(getString(R.string.login));
                     setButtons(true);
                     parseVolleyError(error);
                 }
             });
             queue.add(jsonRequest);
         } catch (Exception e) {
-            loginBtn.setText(getString(R.string.login));
+            buttonLogin.setText(getString(R.string.login));
             setButtons(true);
             messageToUser(getResources().getString(R.string.error_server));
             e.printStackTrace();
@@ -134,10 +136,10 @@ public class LoginPage extends AppCompatActivity {
     //Enabling or disabling the buttons
     private void setButtons(boolean iVal)
     {
-        loginBtn.setEnabled(iVal);
-        loginBtn.setClickable(iVal);
-        signupBtn.setEnabled(iVal);
-        signupBtn.setClickable(iVal);
+        buttonLogin.setEnabled(iVal);
+        buttonLogin.setClickable(iVal);
+        buttonSignup.setEnabled(iVal);
+        buttonSignup.setClickable(iVal);
     }
 
     //Disabling the back key
@@ -149,7 +151,6 @@ public class LoginPage extends AppCompatActivity {
             String responseBody = new String(error.networkResponse.data, "utf-8");
             JSONObject data = new JSONObject(responseBody);
             String message = data.getString("error");
-            System.out.println(message);
             translateErrorToMessageForClient(message);
         } catch (JSONException e) {
             messageToUser(getResources().getString(R.string.error_server));

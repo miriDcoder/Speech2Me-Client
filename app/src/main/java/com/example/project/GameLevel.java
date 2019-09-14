@@ -177,7 +177,6 @@ public abstract class GameLevel extends AppCompatActivity {
                     if (succeededQuestions == sizeOfLevel) {
                         textToUser = String.format("כל הכבוד! סיימת את שלב %d!", mLevel);
                         ArrayList<JSONObject> answers = getAnswers();
-                        System.out.println(answers);
                         String url = "https://speech-rec-server.herokuapp.com/finish_level/";
                         JSONObject jsonBody = new JSONObject();
                         try {
@@ -297,9 +296,6 @@ public abstract class GameLevel extends AppCompatActivity {
                                     else
                                     {
                                         setBirdAnswerVisibility(imageTryAgain, textTryAgain, iImgWord, iPlay);
-                                        System.out.println(iImgWord.toString());
-                                        System.out.println(iImgWord.getVisibility());
-
                                         mQuestion.IncreasemNumOfTries();
                                     }
                                 } catch (JSONException e) {

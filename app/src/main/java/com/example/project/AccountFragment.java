@@ -129,11 +129,11 @@ public class AccountFragment extends Fragment {
                             try {
                                 if(response.has("first_name") &&
                                         response.has("last_name") &&
-                                        response.has("email"))
+                                        response.has("editTextEmail"))
                                 {
                                     mPrevFirstName = response.getString("first_name");
                                     mPrevLastName = response.getString("last_name");
-                                    mPrevEmail = response.getString("email");
+                                    mPrevEmail = response.getString("editTextEmail");
                                     showDetails(isNewDetails);
                                 }
                                 else{
@@ -167,7 +167,7 @@ public class AccountFragment extends Fragment {
     }
 
     //in case the user wants to change some of his info, we need to validate some details-
-    //if he wants to change the password - need to make sure that the new password he entered twice matches
+    //if he wants to change the editTextPassword - need to make sure that the new editTextPassword he entered twice matches
     //and need to check what fields he wanted to update.
     //then we send the request to the server.
     private void validateAndSendChanges()

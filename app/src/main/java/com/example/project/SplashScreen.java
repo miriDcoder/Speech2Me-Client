@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 ;
 //This activity starts the app, redirecting to login page
-public class MainActivity extends AppCompatActivity {
+public class SplashScreen extends AppCompatActivity {
 
     public static int SPLASH_TIME_OUT = 2000;
 
@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent homeIntent = new Intent(MainActivity.this, LoginPage.class);
+                Intent homeIntent = new Intent(SplashScreen.this, LoginPage.class);
                 startActivity(homeIntent);
                 finish();
             }

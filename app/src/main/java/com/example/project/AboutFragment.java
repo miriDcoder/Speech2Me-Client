@@ -104,6 +104,6 @@ public class AboutFragment extends Fragment {
         mail.putExtra(Intent.EXTRA_SUBJECT, subject);
         mail.putExtra(Intent.EXTRA_TEXT, msg);
         mail.setType("message/rfc822");
-        startActivity(Intent.createChooser(mail, "Send email via:"));
+        startActivity(Intent.createChooser(mail, "Send editTextEmail via:"));
     }
 }

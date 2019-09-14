@@ -18,8 +18,6 @@ import android.widget.TextView;
 //This is a student home page
 public class StudentHomePageFragment extends Fragment {
     private Student mStudent;
-    private final String AudioRecognitionGoal = "1";
-    private final String PictureRecognitionGoal = "2";
 
     public StudentHomePageFragment(){
 
@@ -29,12 +27,10 @@ public class StudentHomePageFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_student_home_page, container, false);
-        TextView textViewHello = (TextView)v.findViewById(R.id.textViewHeader);
-        TextView textViewYourScore = (TextView)v.findViewById(R.id.textViewYourScore);
-        TextView textViewScore = (TextView)v.findViewById(R.id.textViewScore);
-        TextView textViewLevel = (TextView)v.findViewById(R.id.textViewLevel);
-        ImageView imageViewBirdWelcome = (ImageView)v.findViewById(R.id.imageViewBirdWelcome);
-        ImageView imageViewScoreBackground = (ImageView)v.findViewById(R.id.imageViewScoreBackground);
+        TextView textViewHello = v.findViewById(R.id.textViewHeader);
+        TextView textViewYourScore = v.findViewById(R.id.textViewYourScore);
+        TextView textViewScore = v.findViewById(R.id.textViewScore);
+        TextView textViewLevel = v.findViewById(R.id.textViewLevel);
         Button buttonPlay = (Button)v.findViewById(R.id.buttonPlay);
         Button buttonInstructions = (Button)v.findViewById(R.id.buttonGameInstructions);
         if(getArguments() != null)
@@ -42,6 +38,7 @@ public class StudentHomePageFragment extends Fragment {
             mStudent = getArguments().getParcelable("user");
         }
         displayMyInfo(mStudent, textViewHello, textViewYourScore, textViewScore ,textViewLevel);
+
         //Setting up the play button to match the game to the student's goal
         buttonPlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +78,7 @@ public class StudentHomePageFragment extends Fragment {
                 }
             }
         });
+
         //Showing instructions for the student, in accordance to the goal
         buttonInstructions.setOnClickListener(new View.OnClickListener() {
             @Override

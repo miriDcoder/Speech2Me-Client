@@ -6,10 +6,10 @@ import android.os.Parcelable;
 //This class inherits from User, and is used to represent a student
 public class Student extends User implements Parcelable {
     private int mLevel;
-    private String mAge;
     private int mScore;
-    private String mTeacherId;
     private int mGameType;
+    private String mAge;
+    private String mTeacherId;
     private String mGoal;
 
     public Student(String iEmail, String iPassword, String iFirstName,

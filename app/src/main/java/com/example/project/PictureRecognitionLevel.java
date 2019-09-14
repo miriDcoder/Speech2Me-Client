@@ -85,9 +85,6 @@ public class PictureRecognitionLevel extends GameLevel{
                                 isCorrectAnswer(mMediaRecorder, answer, imgWord, play, false);
                                 File recording = new File(mPathSave);
                                 boolean isDeleted = recording.delete();
-                                if (!isDeleted) {
-                                    System.out.println("Couldn't delete file");
-                                }
                             }
                         });
                         thread.start();
@@ -103,7 +100,6 @@ public class PictureRecognitionLevel extends GameLevel{
         textClue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                System.out.println("+++++++++++++++++++++++++++" + mIsAudioResourcesFree);
                 if (!mIsRecording) {
                     mAudioCluePlayer = MediaPlayer.create(PictureRecognitionLevel.this, currQuestion.GetmAudioRecording());
                     mAudioCluePlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {

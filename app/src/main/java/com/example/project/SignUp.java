@@ -108,7 +108,7 @@ public class SignUp extends AppCompatActivity {
         });
     }
 
-    //Validating the details - names only in hebrew, valid email address (in a right email format),
+    //Validating the details - names only in hebrew, valid editTextEmail address (in a right editTextEmail format),
     //making sure that in case that it's a student - that a teacher id and goal code were entered
     private boolean validateUserDetails(EditText iFirstName, EditText iLastName, EditText iEmail,
                                         EditText iPassword, boolean iIsStudent, EditText iTeacherID,
@@ -181,7 +181,7 @@ public class SignUp extends AppCompatActivity {
         return isValid;
     }
 
-    //Validate password (up to 8 chars)
+    //Validate editTextPassword (up to 8 chars)
     private boolean validatePassword(EditText iPassword){
         boolean isValid = false;
 
@@ -212,8 +212,8 @@ public class SignUp extends AppCompatActivity {
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("first_name", iUser.getmFirstName());
             jsonBody.put("last_name", iUser.getmLastName());
-            jsonBody.put("password", iUser.getmPassword());
-            jsonBody.put("email", iUser.getmEmail());
+            jsonBody.put("editTextPassword", iUser.getmPassword());
+            jsonBody.put("editTextEmail", iUser.getmEmail());
             jsonBody.put("user_type", iType);
             if(iType.toLowerCase() == "student"){
                 jsonBody.put("teacher_id", iTeacherId);
@@ -286,7 +286,7 @@ public class SignUp extends AppCompatActivity {
         String message = "";
         switch(iErrorMsg.toLowerCase())
         {
-            case "email already exists":
+            case "editTextEmail already exists":
                 message = getString(R.string.error_email_exists);
                 break;
             case "no user type":

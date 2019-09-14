@@ -40,16 +40,15 @@ public class ViewStudentsDataFragment extends Fragment {
     private Teacher mTeacher;
     private HashMap<String, MiniStudent> mStudentNamesToIds = null;
     private List<String> mStudentNames = null;
-    private Spinner spinnerLevel;
-    private TextView textViewCurrLevel;
-    private TextView textViewCurrLevelHeader;
-    private TextView textViewGoal;
-    private TextView textViewGoalHeader;
+    private TextView textCurrLevel;
+    private TextView textCurrLevelHeader;
+    private TextView textGoal;
+    private TextView textGoalHeader;
+    private TextView textNoData;
     private Spinner spinnerChooseStudent;
     private TableLayout tableData;
     private MiniStudent chosenStudent;
     private Button buttonExport;
-    private TextView textViewNoData;
 
     public ViewStudentsDataFragment() {
     }
@@ -69,14 +68,14 @@ public class ViewStudentsDataFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_view_students_data, container, false);
-        spinnerChooseStudent = (Spinner)v.findViewById(R.id.spinnerChooseStudent);
-        tableData = (TableLayout)v.findViewById(R.id.tableData);
-        textViewCurrLevel = (TextView)v.findViewById(R.id.textViewCurrLevelData);
-        textViewGoal = (TextView)v.findViewById(R.id.textViewGoalData);
-        textViewCurrLevelHeader = (TextView)v.findViewById(R.id.textViewCurrLevelHeader);
-        textViewGoalHeader = (TextView)v.findViewById(R.id.textViewGoalHeader);
-        buttonExport = (Button)v.findViewById(R.id.buttonExportToMail);
-        textViewNoData = (TextView)v.findViewById(R.id.textViewNoDataToShow);
+        spinnerChooseStudent = v.findViewById(R.id.spinnerChooseStudent);
+        tableData = v.findViewById(R.id.tableData);
+        textCurrLevel = v.findViewById(R.id.textViewCurrLevelData);
+        textGoal = v.findViewById(R.id.textViewGoalData);
+        textCurrLevelHeader = v.findViewById(R.id.textViewCurrLevelHeader);
+        textGoalHeader = v.findViewById(R.id.textViewGoalHeader);
+        buttonExport = v.findViewById(R.id.buttonExportToMail);
+        textNoData = v.findViewById(R.id.textViewNoDataToShow);
 
         if(getArguments() != null)
         {
@@ -101,14 +100,11 @@ public class ViewStudentsDataFragment extends Fragment {
         JSONObject jsonObject = null;
         ArrayList<String> studentNames = new ArrayList<String>();
         List<String> ids = new ArrayList<String>(mStudentNamesToIds.keySet());
-        System.out.println("SIZE OF ids: " + mStudentNamesToIds.keySet().size());
         studentNames.add("בחר תלמיד");
         for(int i=0; i<mStudentNamesToIds.size(); i++)
         {
             id = ids.get(i);
-            System.out.println("############## ID: " + mStudentNamesToIds.get(id));
             studentName = mStudentNamesToIds.get(id).Name;
-            System.out.println("######### goal: " + mStudentNamesToIds.get(id).Goal);
             studentNames.add(studentName);
         }
 
@@ -178,7 +174,6 @@ public class ViewStudentsDataFragment extends Fragment {
             mStudentNamesToIds.put(studentName, student);
         }
 
-        System.out.println("NUM OF STUDENTS IN HASH MAP: " + mStudentNamesToIds.size());
     }
 
 
@@ -192,21 +187,16 @@ public class ViewStudentsDataFragment extends Fragment {
         spinnerChooseStudent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("############# IN ON ITEM SELECTED");
-                System.out.println("#############" + spinnerChooseStudent.getSelectedItem());
                 if(spinnerChooseStudent.getSelectedItemPosition() != 0)
                 {
-                    System.out.println("############# IN CONDITION");
                     chosenStudent = mStudentNamesToIds.get(spinnerChooseStudent.getSelectedItem());
-                    System.out.println("CHOSEN STUDENT LEVEL: " + chosenStudent.CurrLevel);
-                    System.out.println("CHOSEN STUDENT GOAL: " + chosenStudent.Goal);
                     tableData.removeAllViews();
-                    textViewCurrLevel.setText(chosenStudent.CurrLevel);
-                    textViewGoal.setText(getGoal());
-                    textViewGoal.setVisibility(View.VISIBLE);
-                    textViewCurrLevel.setVisibility(View.VISIBLE);
-                    textViewCurrLevelHeader.setVisibility(View.VISIBLE);
-                    textViewGoalHeader.setVisibility(View.VISIBLE);
+                    textCurrLevel.setText(chosenStudent.CurrLevel);
+                    textGoal.setText(getGoal());
+                    textGoal.setVisibility(View.VISIBLE);
+                    textCurrLevel.setVisibility(View.VISIBLE);
+                    textCurrLevelHeader.setVisibility(View.VISIBLE);
+                    textGoalHeader.setVisibility(View.VISIBLE);
                     getStudentDetails();
                 }
             }
@@ -266,17 +256,16 @@ public class ViewStudentsDataFragment extends Fragment {
         JSONObject jsonObject = null;
         if(iAnswers.length() == 0)
         {
-            textViewNoData.setVisibility(View.VISIBLE);
+            textNoData.setVisibility(View.VISIBLE);
             buttonExport.setVisibility(View.INVISIBLE);
         }
         else {
-            textViewNoData.setVisibility(View.INVISIBLE);
+            textNoData.setVisibility(View.INVISIBLE);
             buttonExport.setVisibility(View.VISIBLE);
             TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f);
             setTableHeaders(params);
             for (int i = 0; i < iAnswers.length(); i++) {
                 try {
-                    System.out.println("IN LOOP, INDEX: " + i);
                     jsonObject = iAnswers.getJSONObject(i);
                     tableRow = new TableRow(currContext);
                     textView = new TextView(currContext);
@@ -368,8 +357,8 @@ public class ViewStudentsDataFragment extends Fragment {
 
     //If the teacher chose to, the app sends a request to the server to send the presented data as a .csv file
     //to the teachers mail.
-    //Currently, since we used random email addresses to signup to the app, the server sends those files
-    //to Miri's email.
+    //Currently, since we used random editTextEmail addresses to signup to the app, the server sends those files
+    //to Miri's editTextEmail.
     private void exportChosenStudentDetailsToTeachersMail()
     {
         String url = "https://speech-rec-server.herokuapp.com/send_email_statistics/";
@@ -384,7 +373,7 @@ public class ViewStudentsDataFragment extends Fragment {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
-                                if (response.has("body") && response.getString("body").toLowerCase().contains("email sent")) {
+                                if (response.has("body") && response.getString("body").toLowerCase().contains("editTextEmail sent")) {
                                     messageToUser("המייל נשלח");
                                 }
                             } catch (JSONException e) {

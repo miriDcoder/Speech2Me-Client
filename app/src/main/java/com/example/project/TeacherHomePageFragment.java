@@ -30,22 +30,18 @@ public class TeacherHomePageFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_teacher_home_page, container, false);
-        TextView textViewHello = (TextView)v.findViewById(R.id.textViewHeader);
-        TextView textViewAmountOfStudents= (TextView)v.findViewById(R.id.textViewAmountOfStudents);
-        TextView textViewWatchStatistics = (TextView)v.findViewById(R.id.textViewWatchStatistics);
-        TextView textViewYourAmountOfStudents = (TextView)v.findViewById(R.id.textViewYourAmountOfStudents);
-        ImageView imageViewGameBackground = (ImageView)v.findViewById(R.id.imageViewGameBackground);
-        ImageView imageViewProgressBackground = (ImageView)v.findViewById(R.id.imageViewProgressBackground);
-        TextView textViewTeacherCode = (TextView)v.findViewById(R.id.textViewTeacherCodeData);
-        TextView textViewCodeList = (TextView)v.findViewById(R.id.textViewCodeList);
-        RadioGroup radioGame = (RadioGroup)v.findViewById(R.id.radioGame);
-        TextView buttonPlay = (TextView) v.findViewById(R.id.buttonPlay);
-        TextView textViewIdCode = (TextView)v.findViewById(R.id.textViewTeacherCodeInfo);
-        final Dialog teacherCodeDialog = new Dialog(getContext());
-        TextView teacherCodeMsg = new TextView(getContext());
-        final Dialog codesDialog = new Dialog(getContext());
-        TextView instructionsMsg = new TextView(getContext());
-        final Spinner spinnerLevel = (Spinner)v.findViewById(R.id.spinner);
+        TextView textViewHello = v.findViewById(R.id.textViewHeader);
+        TextView textViewAmountOfStudents= v.findViewById(R.id.textViewAmountOfStudents);
+        TextView textViewWatchStatistics = v.findViewById(R.id.textViewWatchStatistics);
+        TextView textViewYourAmountOfStudents = v.findViewById(R.id.textViewYourAmountOfStudents);
+        ImageView imageViewGameBackground = v.findViewById(R.id.imageViewGameBackground);
+        ImageView imageViewProgressBackground = v.findViewById(R.id.imageViewProgressBackground);
+        TextView textViewTeacherCode = v.findViewById(R.id.textViewTeacherCodeData);
+        TextView textViewCodeList = v.findViewById(R.id.textViewCodeList);
+        RadioGroup radioGame = v.findViewById(R.id.radioGame);
+        TextView buttonPlay = v.findViewById(R.id.buttonPlay);
+        TextView textViewIdCode = v.findViewById(R.id.textViewTeacherCodeInfo);
+        final Spinner spinnerLevel = v.findViewById(R.id.spinner);
         String[] items = new String[]{"שלב", "1", "2", "3"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
         spinnerLevel.setAdapter(adapter);
