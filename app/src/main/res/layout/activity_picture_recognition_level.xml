@@ -82,7 +82,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageViewWord" />
 
     <TextView
-        android:id="@+id/buttonClue"
+        android:id="@+id/textViewClue"
         android:layout_width="146dp"
         android:layout_height="31dp"
         android:layout_marginStart="8dp"

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -17,8 +16,8 @@ import java.util.UUID;
 
 //This is the Audio recognition game
 public class PictureRecognitionLevel extends GameLevel{
-    private ImageView imgWord;
-    private ImageView play;
+    private ImageView imageWord;
+    private ImageView imagePlay;
     private MediaPlayer mAudioCluePlayer;
     private static final Charset UTF_8 = Charset.forName("UTF-8");
     @Override
@@ -30,39 +29,39 @@ public class PictureRecognitionLevel extends GameLevel{
         }
 
         //set XML elements
-        play = findViewById(R.id.imagePlay);
-        imgWord = findViewById(R.id.imageViewWord);
+        imagePlay = findViewById(R.id.imagePlay);
+        imageWord = findViewById(R.id.imageViewWord);
         imageTryAgain = findViewById(R.id.imageViewBirdTryAgain);
         imageGoodJob = findViewById(R.id.imageViewBirdGoodJob);
-        textClue = findViewById(R.id.buttonClue);
+        textClue = findViewById(R.id.textViewClue);
         textTryAgain= findViewById(R.id.textViewTryAgain);
         textGoodJob =  findViewById(R.id.textViewGoodJob);
         textPressToContinue = findViewById(R.id.textViewPressToContinue);
         textQuestionNumber = findViewById(R.id.textViewQuestionNumber);
-        answer = findViewById(R.id.buttonAnswerWordRecognition);
-        goToNextQuestion = findViewById(R.id.buttonNextQuestion);
-        homePage = findViewById(R.id.buttonHomePage);
+        buttonAnswer = findViewById(R.id.buttonAnswerWordRecognition);
+        buttonGoToNextQuestion = findViewById(R.id.buttonNextQuestion);
+        buttonHomePage = findViewById(R.id.buttonHomePage);
 
         //set class members
         Intent intent = getIntent();
         mLevel = Integer.parseInt(intent.getStringExtra("level"));
         mId= intent.getStringExtra("id");
         mUserType = intent.getStringExtra("user_type");
-        questions.makeQuestionList();
-        answeredQuestions = new int [questions.getSizeOfLevel(mLevel)];
-        sizeOfLevel = questions.getSizeOfLevel(mLevel);
-        getNextQuestion(imgWord, false);
-        textQuestionNumber.setText(String.format("שאלה %d מתוך %d", questionNumber+1, sizeOfLevel));
-        mAudioCluePlayer = MediaPlayer.create(PictureRecognitionLevel.this, currQuestion.GetmAudioRecording());
+        mQuestions.makeQuestionList();
+        mAnsweredQuestions = new int [mQuestions.getSizeOfLevel(mLevel)];
+        mSizeOfLevel = mQuestions.getSizeOfLevel(mLevel);
+        getNextQuestion(imageWord, false);
+        textQuestionNumber.setText(String.format("שאלה %d מתוך %d", mQuestionNumber +1, mSizeOfLevel));
+        mAudioCluePlayer = MediaPlayer.create(PictureRecognitionLevel.this, mCurrQuestion.GetmAudioRecording());
         mIsAudioResourcesFree = true;
         //If the user is recording - need to setup the recorder
-        answer.setOnClickListener(new View.OnClickListener() {
+        buttonAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!mAudioCluePlayer.isPlaying()) {
                     if (!mIsRecording) //start recording
                     {
-                        answer.setText("עצור הקלטה");
+                        buttonAnswer.setText("עצור הקלטה");
                         if (checkPermissionFromDevice()) {
                             mPathSave = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
                                     UUID.randomUUID().toString() + "audio_record.mp3";
@@ -77,12 +76,12 @@ public class PictureRecognitionLevel extends GameLevel{
                             requestPermission();
                         }
                     } else {
-                        answer.setText("אנא המתן");
+                        buttonAnswer.setText("אנא המתן");
                         mMediaRecorder.stop();
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                isCorrectAnswer(mMediaRecorder, answer, imgWord, play, false);
+                                isCorrectAnswer(mMediaRecorder, buttonAnswer, imageWord, imagePlay, false);
                                 File recording = new File(mPathSave);
                                 boolean isDeleted = recording.delete();
                             }
@@ -101,7 +100,7 @@ public class PictureRecognitionLevel extends GameLevel{
             @Override
             public void onClick(View v){
                 if (!mIsRecording) {
-                    mAudioCluePlayer = MediaPlayer.create(PictureRecognitionLevel.this, currQuestion.GetmAudioRecording());
+                    mAudioCluePlayer = MediaPlayer.create(PictureRecognitionLevel.this, mCurrQuestion.GetmAudioRecording());
                     mAudioCluePlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
@@ -119,31 +118,31 @@ public class PictureRecognitionLevel extends GameLevel{
 
         imageGoodJob.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                setNextLevelVisibility(imageGoodJob, textGoodJob, imgWord);
+                setNextLevelVisibility(imageGoodJob, textGoodJob, imageWord);
             }
         });
 
         imageTryAgain.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                setNextLevelVisibility(imageTryAgain, textTryAgain, imgWord);
+                setNextLevelVisibility(imageTryAgain, textTryAgain, imageWord);
             }
         });
 
         textGoodJob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setNextLevelVisibility(imageGoodJob, textGoodJob, imgWord);
+                setNextLevelVisibility(imageGoodJob, textGoodJob, imageWord);
             }
         });
 
         textTryAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setNextLevelVisibility(imageTryAgain, textTryAgain, imgWord);
+                setNextLevelVisibility(imageTryAgain, textTryAgain, imageWord);
             }
         });
 
-        homePage.setOnClickListener(new View.OnClickListener(){
+        buttonHomePage.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 AlertDialog.Builder builder = new AlertDialog.Builder(PictureRecognitionLevel.this);
                 builder.setMessage("האם לצאת מהמשחק?");
@@ -166,7 +165,7 @@ public class PictureRecognitionLevel extends GameLevel{
             }
         });
 
-        goToNextQuestion.setOnClickListener(new View.OnClickListener(){
+        buttonGoToNextQuestion.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 AlertDialog.Builder builder = new AlertDialog.Builder(PictureRecognitionLevel.this);
                 builder.setMessage("האם לעבור לשאלה הבאה?");
@@ -179,8 +178,8 @@ public class PictureRecognitionLevel extends GameLevel{
                 });
                 builder.setNegativeButton("כן", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        questionNumber++;
-                        getNextQuestion(imgWord, false);
+                        mQuestionNumber++;
+                        getNextQuestion(imageWord, false);
                         textClue.setVisibility(View.VISIBLE);
                     }
                 });

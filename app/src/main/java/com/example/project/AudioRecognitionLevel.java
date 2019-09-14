@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -17,8 +16,8 @@ import java.util.UUID;
 //This is the Audio recognition game
 public class AudioRecognitionLevel extends GameLevel {
     private ImageView imageClue;
-    private ImageView play;
-    private ImageView pause;
+    private ImageView imagePlay;
+    private ImageView imagePause;
     private MediaPlayer mMediaPlayerListen = null;
 
     //private boolean isAtLeaseOncePlayed = false;
@@ -34,31 +33,31 @@ public class AudioRecognitionLevel extends GameLevel {
 
         //set XML elements
         imageClue = findViewById(R.id.imageViewClue);
-        play = findViewById(R.id.imageViewPlay);
-        pause = findViewById(R.id.imageViewPause);
+        imagePlay = findViewById(R.id.imageViewPlay);
+        imagePause = findViewById(R.id.imageViewPause);
         imageTryAgain = findViewById(R.id.imageViewBirdTryAgain);
         imageGoodJob = findViewById(R.id.imageViewBirdGoodJob);
         textTryAgain= findViewById(R.id.textViewTryAgain);
         textGoodJob =  findViewById(R.id.textViewGoodJob);
-        textClue = findViewById(R.id.buttonClue);
+        textClue = findViewById(R.id.textViewClue);
         textPressToContinue = findViewById(R.id.textViewPressToContinue);
         textQuestionNumber = findViewById(R.id.textViewQuestionNumber);
-        answer = findViewById(R.id.buttonAnswerRecordingRecognition);
-        goToNextQuestion = findViewById(R.id.buttonNextQuestion);
-        homePage = findViewById(R.id.buttonHomePage);
+        buttonAnswer = findViewById(R.id.buttonAnswerRecordingRecognition);
+        buttonGoToNextQuestion = findViewById(R.id.buttonNextQuestion);
+        buttonHomePage = findViewById(R.id.buttonHomePage);
 
         //set class members
         Intent intent = getIntent();
         mLevel = Integer.parseInt(intent.getStringExtra("level"));
         mId = intent.getStringExtra("id");
         mUserType = intent.getStringExtra("user_type");
-        questions.makeQuestionList();
-        sizeOfLevel = questions.getSizeOfLevel(mLevel);
-        answeredQuestions = new int [questions.getSizeOfLevel(mLevel)];
+        mQuestions.makeQuestionList();
+        mSizeOfLevel = mQuestions.getSizeOfLevel(mLevel);
+        mAnsweredQuestions = new int [mQuestions.getSizeOfLevel(mLevel)];
         getNextQuestion(imageClue, true);
-        textQuestionNumber.setText(String.format("שאלה %d מתוך %d", questionNumber+1, sizeOfLevel));
+        textQuestionNumber.setText(String.format("שאלה %d מתוך %d", mQuestionNumber +1, mSizeOfLevel));
         //if the user is recording - need to make the other button disabled and setup the recorder
-        answer.setOnClickListener(new View.OnClickListener() {
+        buttonAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mMediaPlayerListen == null)
@@ -69,7 +68,7 @@ public class AudioRecognitionLevel extends GameLevel {
                 {
                     if (!mIsRecording) //start recording
                     {
-                        answer.setText("עצור הקלטה");
+                        buttonAnswer.setText("עצור הקלטה");
                         if (checkPermissionFromDevice()) {
                             mPathSave = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
                                     UUID.randomUUID().toString() + "_audio_record.mp3";
@@ -84,12 +83,12 @@ public class AudioRecognitionLevel extends GameLevel {
                             requestPermission();
                         }
                     } else {
-                        answer.setText("אנא המתן");
+                        buttonAnswer.setText("אנא המתן");
                         mMediaRecorder.stop();
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                isCorrectAnswer(mMediaRecorder, answer, imageClue, play, true);
+                                isCorrectAnswer(mMediaRecorder, buttonAnswer, imageClue, imagePlay, true);
                                 File recording = new File(mPathSave);
                                 boolean isDeleted = recording.delete();
                             }
@@ -105,7 +104,7 @@ public class AudioRecognitionLevel extends GameLevel {
         });
 
         //if the user is listening to the audio - need to make record button disabled and setup the player
-        play.setOnClickListener(new View.OnClickListener() {
+        imagePlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!mIsRecording)
@@ -116,13 +115,13 @@ public class AudioRecognitionLevel extends GameLevel {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
                             mMediaPlayerListen.stop();
-                            pause.setVisibility(View.INVISIBLE);
-                            play.setVisibility(View.VISIBLE);
+                            imagePause.setVisibility(View.INVISIBLE);
+                            imagePlay.setVisibility(View.VISIBLE);
                         }
                     });
                     mMediaPlayerListen.start();
-                    play.setVisibility(View.INVISIBLE);
-                    pause.setVisibility(View.VISIBLE);
+                    imagePlay.setVisibility(View.INVISIBLE);
+                    imagePause.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -138,17 +137,17 @@ public class AudioRecognitionLevel extends GameLevel {
 
         imageGoodJob.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                setNextLevelVisibility(imageGoodJob, textGoodJob, play);
+                setNextLevelVisibility(imageGoodJob, textGoodJob, imagePlay);
             }
         });
 
         imageTryAgain.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                setNextLevelVisibility(imageTryAgain, textTryAgain, play);
+                setNextLevelVisibility(imageTryAgain, textTryAgain, imagePlay);
             }
         });
 
-        homePage.setOnClickListener(new View.OnClickListener(){
+        buttonHomePage.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 AlertDialog.Builder builder = new AlertDialog.Builder(AudioRecognitionLevel.this);
                 builder.setMessage("האם לצאת מהמשחק?");
@@ -171,7 +170,7 @@ public class AudioRecognitionLevel extends GameLevel {
             }
         });
 
-        goToNextQuestion.setOnClickListener(new View.OnClickListener(){
+        buttonGoToNextQuestion.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 AlertDialog.Builder builder = new AlertDialog.Builder(AudioRecognitionLevel.this);
                 builder.setMessage("האם לעבור לשאלה הבאה?");
@@ -183,7 +182,7 @@ public class AudioRecognitionLevel extends GameLevel {
                 });
                 builder.setNegativeButton("כן", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        questionNumber++;
+                        mQuestionNumber++;
                         textClue.setVisibility(View.VISIBLE);
                         imageClue.setVisibility(View.INVISIBLE);
                         getNextQuestion(imageClue, true);

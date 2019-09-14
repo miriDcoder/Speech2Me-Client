@@ -39,23 +39,26 @@ import java.util.ArrayList;
 import java.util.Base64;
 
 public abstract class GameLevel extends AppCompatActivity {
-    public QuestionsData questions = new QuestionsData();
-    private ArrayList<Question> questionStatistics = new ArrayList<Question>();
+    public QuestionsData mQuestions = new QuestionsData();
+    private ArrayList<Question> mQuestionStatistics = new ArrayList<Question>();
     protected Question mQuestion;
-    protected int sizeOfLevel;
-    protected int questionNumber = 0;
+    protected Question mCurrQuestion;
+    protected int mSizeOfLevel;
+    protected int mQuestionNumber = 0;
     protected int mLevel;
-    protected int succeededQuestions = 0;
+    protected int mSucceededQuestions = 0;
     protected final int REQUEST_PREMISSION_CODE = 1000;
-    protected int[] answeredQuestions;
+    protected int[] mAnsweredQuestions;
     protected String mId;
     protected String mPathSave = "";
+    protected String mUserType;
     protected boolean mIsRecording = false;
-    protected boolean nextQuestion = false;
-    protected Question currQuestion;
-    protected Button answer;
-    protected Button homePage;
-    protected Button goToNextQuestion;
+    protected boolean mIsAudioResourcesFree;
+    protected boolean mNextQuestion = false;
+    protected MediaRecorder mMediaRecorder;
+    protected Button buttonAnswer;
+    protected Button buttonHomePage;
+    protected Button buttonGoToNextQuestion;
     protected ImageView imageTryAgain;
     protected ImageView imageGoodJob;
     protected TextView textClue;
@@ -63,9 +66,6 @@ public abstract class GameLevel extends AppCompatActivity {
     protected TextView textGoodJob;
     protected TextView textPressToContinue;
     protected TextView textQuestionNumber;
-    protected MediaRecorder mMediaRecorder;
-    protected boolean mIsAudioResourcesFree;
-    protected String mUserType;
 
     protected void moveToHomePage(String iCurrUserId, String iUserType)
     {
@@ -86,14 +86,14 @@ public abstract class GameLevel extends AppCompatActivity {
         iImagePlay.setVisibility(View.INVISIBLE);
         iPlay.setVisibility(View.INVISIBLE);
         textQuestionNumber.setVisibility(View.INVISIBLE);
-        answer.setVisibility(View.INVISIBLE);
+        buttonAnswer.setVisibility(View.INVISIBLE);
         textClue.setVisibility(View.INVISIBLE);
-        goToNextQuestion.setVisibility(View.INVISIBLE);
-        nextQuestion = true;
+        buttonGoToNextQuestion.setVisibility(View.INVISIBLE);
+        mNextQuestion = true;
     }
 
     protected void setNextLevelVisibility(ImageView iImage, TextView iText, ImageView iImagePlay) {
-        if (nextQuestion) {
+        if (mNextQuestion) {
 
             //make answer from the server invisible
             iImage.setVisibility(View.INVISIBLE);
@@ -103,12 +103,12 @@ public abstract class GameLevel extends AppCompatActivity {
             //set screen with next question
             iImagePlay.setVisibility(View.VISIBLE);
             textQuestionNumber.setVisibility(View.VISIBLE);
-            answer.setVisibility(View.VISIBLE);
+            buttonAnswer.setVisibility(View.VISIBLE);
             textClue.setVisibility(View.VISIBLE);
-            goToNextQuestion.setVisibility(View.VISIBLE);
-            nextQuestion = false;
+            buttonGoToNextQuestion.setVisibility(View.VISIBLE);
+            mNextQuestion = false;
         }
-        answer.setText(R.string.answer);
+        buttonAnswer.setText(R.string.answer);
     }
 
     protected boolean checkPermissionFromDevice()
@@ -139,24 +139,24 @@ public abstract class GameLevel extends AppCompatActivity {
 
         //continue to next question on the level
         String imagePath;
-        if (questionNumber < sizeOfLevel) {
+        if (mQuestionNumber < mSizeOfLevel) {
             do {
-                currQuestion = questions.getRandomQuestion(mLevel);
-            } while (answeredQuestions[currQuestion.GetmId()] == 1);
-            answeredQuestions[currQuestion.GetmId()] = 1;
+                mCurrQuestion = mQuestions.getRandomQuestion(mLevel);
+            } while (mAnsweredQuestions[mCurrQuestion.GetmId()] == 1);
+            mAnsweredQuestions[mCurrQuestion.GetmId()] = 1;
             if (isAudio){
-                mQuestion = new AudioRecognitionQuestion(currQuestion);
+                mQuestion = new AudioRecognitionQuestion(mCurrQuestion);
                 imagePath = ((AudioRecognitionQuestion) mQuestion).GetmImageClue();
-                answer.setText(R.string.answer_audio);
+                buttonAnswer.setText(R.string.answer_audio);
             }
             else{
-                mQuestion = new PictureRegocnitionQuestion(currQuestion);
+                mQuestion = new PictureRegocnitionQuestion(mCurrQuestion);
                 imagePath = ((PictureRegocnitionQuestion) mQuestion).getmImgPath();
-                answer.setText(R.string.answer_picture);
+                buttonAnswer.setText(R.string.answer_picture);
             }
             Picasso.with(this).load(imagePath).into(iImage);
-            answer.setText(R.string.answer);
-            textQuestionNumber.setText(String.format("שאלה %d מתוך %d", questionNumber+1, sizeOfLevel));
+            buttonAnswer.setText(R.string.answer);
+            textQuestionNumber.setText(String.format("שאלה %d מתוך %d", mQuestionNumber +1, mSizeOfLevel));
         }
         //finished level
         else {
@@ -173,8 +173,8 @@ public abstract class GameLevel extends AppCompatActivity {
                     textToUser = String.format("ניסיון יפה! אבל לא עברת את שלב %d, נסה שוב...", mLevel);
 
                     //if player succeeded all question -
-                    // update level, send questions statistics to server (to teacher) ang go to home page.
-                    if (succeededQuestions == sizeOfLevel) {
+                    // update level, send mQuestions statistics to server (to teacher) ang go to home page.
+                    if (mSucceededQuestions == mSizeOfLevel) {
                         textToUser = String.format("כל הכבוד! סיימת את שלב %d!", mLevel);
                         ArrayList<JSONObject> answers = getAnswers();
                         String url = "https://speech-rec-server.herokuapp.com/finish_level/";
@@ -212,9 +212,9 @@ public abstract class GameLevel extends AppCompatActivity {
             }
             messageToUser(textToUser);
 
-            //initialize used questions
-            for (int i= 0; i< questions.getSizeOfLevel(mLevel);i++){
-                answeredQuestions[i] = 0;
+            //initialize used mQuestions
+            for (int i = 0; i< mQuestions.getSizeOfLevel(mLevel); i++){
+                mAnsweredQuestions[i] = 0;
             }
             try
             {
@@ -230,7 +230,7 @@ public abstract class GameLevel extends AppCompatActivity {
     private ArrayList<JSONObject> getAnswers(){
         JSONObject answer = null;
         ArrayList<JSONObject> answers = new ArrayList<JSONObject>();
-        for(Question question : questionStatistics){
+        for(Question question : mQuestionStatistics){
             try {
                 answer = new JSONObject();
                 answer.put("isAudioClueUsed", question.IsClueUsed());
@@ -282,14 +282,14 @@ public abstract class GameLevel extends AppCompatActivity {
                                     if(response.getString("answer").toLowerCase() == "true")
                                     {
                                         setBirdAnswerVisibility(imageGoodJob, textGoodJob, iImgWord, iPlay);
-                                        questionNumber++;
-                                        succeededQuestions++;
+                                        mQuestionNumber++;
+                                        mSucceededQuestions++;
                                         mQuestion.SetmSucceeded();
                                         if (isAudio){
-                                            questionStatistics.add((AudioRecognitionQuestion)mQuestion);
+                                            mQuestionStatistics.add((AudioRecognitionQuestion)mQuestion);
                                         }
                                         else{
-                                            questionStatistics.add((PictureRegocnitionQuestion)mQuestion);
+                                            mQuestionStatistics.add((PictureRegocnitionQuestion)mQuestion);
                                         }
                                         getNextQuestion(iImgWord, isAudio);
                                     }
@@ -359,7 +359,7 @@ public abstract class GameLevel extends AppCompatActivity {
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("user_id", mId);
-            jsonBody.put("add_to_score", succeededQuestions);
+            jsonBody.put("add_to_score", mSucceededQuestions);
             final RequestQueue queue = Volley.newRequestQueue(this);
             final JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody,
                     new Response.Listener<JSONObject>() {

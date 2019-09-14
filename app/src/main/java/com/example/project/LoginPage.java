@@ -56,7 +56,7 @@ public class LoginPage extends AppCompatActivity {
                 getUserFromDatabase(editTextEmail.getText().toString(), editTextPassword.getText().toString());
             }
         });
-        
+
         //Checking if we we're transferred to this page from signup or from a server failure,
         //and showing a corresponding message to the user
         Intent intent = getIntent();
