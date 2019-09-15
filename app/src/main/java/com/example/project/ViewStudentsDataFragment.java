@@ -270,6 +270,7 @@ public class ViewStudentsDataFragment extends Fragment {
                     tableRow = new TableRow(currContext);
                     textView = new TextView(currContext);
                     textView.setText(jsonObject.getString("word"));
+                    textView.setPadding(0, 0 ,10, 0);
                     tableRow.addView(textView, params);
                     textView = new TextView(currContext);
                     textView.setText(jsonObject.getString("level"));
@@ -324,8 +325,12 @@ public class ViewStudentsDataFragment extends Fragment {
 
         for(String header : headers)
         {
+
             textView = new TextView(getContext());
             textView.setText(header);
+            if(header.equals("מילה")) {
+                textView.setPadding(0, 0, 10, 0);
+            }
             textView.setTypeface(Typeface.DEFAULT_BOLD);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 textView.setTextDirection(View.TEXT_DIRECTION_FIRST_STRONG_RTL);

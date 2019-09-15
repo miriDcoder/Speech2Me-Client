@@ -101,26 +101,7 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonAnswerWordRecognition"
         app:layout_constraintVertical_bias="0.454" />
 
-    <TextView
-        android:id="@+id/textViewGoodJob"
-        android:layout_width="100dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/good_job"
-        android:textAlignment="center"
-        android:textColor="@color/colorText"
-        android:textSize="24sp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewBirdGoodJob"
-        app:layout_constraintVertical_bias="0.371" />
+
 
     <ImageView
         android:id="@+id/imageViewBirdGoodJob"
@@ -142,25 +123,25 @@
         app:srcCompat="@drawable/bird_good_job2" />
 
     <TextView
-        android:id="@+id/textViewTryAgain"
-        android:layout_width="156dp"
-        android:layout_height="28dp"
+        android:id="@+id/textViewGoodJob"
+        android:layout_width="212dp"
+        android:layout_height="86dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="116dp"
-        android:text="@string/try_again"
+        android:layout_marginBottom="8dp"
+        android:text="@string/good_job"
         android:textAlignment="center"
-        android:textColor="@color/colorText"
-        android:textSize="24sp"
+        android:textColor="@color/colorLightBlue"
+        android:textSize="40sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewBirdTryAgain"
-        app:layout_constraintVertical_bias="0.514" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewBirdGoodJob"
+        app:layout_constraintVertical_bias="0.173" />
 
     <ImageView
         android:id="@+id/imageViewBirdTryAgain"
@@ -180,6 +161,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/bird_try_again4" />
+
+    <TextView
+        android:id="@+id/textViewTryAgain"
+        android:layout_width="224dp"
+        android:layout_height="76dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="116dp"
+        android:text="@string/try_again"
+        android:textAlignment="center"
+        android:textColor="@color/colorLightBlue"
+        android:textSize="40sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewBirdTryAgain"
+        app:layout_constraintVertical_bias="0.314" />
 
     <TextView
         android:id="@+id/textViewPressToContinue"
