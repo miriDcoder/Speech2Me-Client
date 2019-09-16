@@ -88,10 +88,13 @@ public class LoginPage extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
+                                System.out.println("IN LOGIN RESPONSE BEFORE");
                                 if(response.has("id") && response.has("user_type")){
+                                    System.out.println("IN LOGIN RESPONSE MOVE TO HOME PAGE");
                                     moveToHomePage(response.getString("id"), response.getString("user_type"));
                                 }
                             } catch (JSONException e) {
+                                System.out.println("IN LOGIN RESPONSE EXCEPTION");
                                 buttonLogin.setText(getString(R.string.login));
                                 setButtons(true);
                                 messageToUser(getResources().getString(R.string.error_server));
@@ -101,6 +104,7 @@ public class LoginPage extends AppCompatActivity {
                     },  new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    System.out.println("IN LOGIN ERROR RESPONSE");
                     buttonLogin.setText(getString(R.string.login));
                     setButtons(true);
                     parseVolleyError(error);
@@ -108,6 +112,7 @@ public class LoginPage extends AppCompatActivity {
             });
             queue.add(jsonRequest);
         } catch (Exception e) {
+            System.out.println("IN LOGIN GENERAL EXCEPTION");
             buttonLogin.setText(getString(R.string.login));
             setButtons(true);
             messageToUser(getResources().getString(R.string.error_server));
@@ -148,19 +153,29 @@ public class LoginPage extends AppCompatActivity {
 
     private void parseVolleyError(VolleyError error) {
         try {
+            System.out.println("IN TRY PARSE");
+
             String responseBody = new String(error.networkResponse.data, "utf-8");
             JSONObject data = new JSONObject(responseBody);
             String message = data.getString("error");
             translateErrorToMessageForClient(message);
         } catch (JSONException e) {
+            System.out.println("IN TRY PARSE EXCEPTION JSON");
+
             messageToUser(getResources().getString(R.string.error_server));
         } catch (UnsupportedEncodingException exceptionError) {
+            System.out.println("IN TRY PARSE EXCEPTION UNSUPPORTED");
+            messageToUser(getResources().getString(R.string.error_server));
+        } catch(Exception ex){
+            System.out.println("IN TRY PARSE EXCEPTION");
             messageToUser(getResources().getString(R.string.error_server));
         }
     }
 
     private void translateErrorToMessageForClient(String iErrorMsg)
     {
+        System.out.println("IN TRANSLATE");
+
         String message = "";
         if(iErrorMsg.toLowerCase().equals(getResources().getString(R.string.server_error_login)))
         {
