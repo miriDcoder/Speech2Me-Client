@@ -277,7 +277,11 @@ public class SignUp extends AppCompatActivity {
             String message = data.getString("error");
             translateErrorToMessageForClient(message);
         } catch (JSONException e) {
+            messageToUser(getResources().getString(R.string.error_server));
         } catch (UnsupportedEncodingException exceptionError) {
+            messageToUser(getResources().getString(R.string.error_server));
+        } catch(Exception ex){
+            messageToUser(getResources().getString(R.string.error_server));
         }
     }
 
