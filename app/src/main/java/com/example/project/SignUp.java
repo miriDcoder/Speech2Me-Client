@@ -212,8 +212,8 @@ public class SignUp extends AppCompatActivity {
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("first_name", iUser.getmFirstName());
             jsonBody.put("last_name", iUser.getmLastName());
-            jsonBody.put("editTextPassword", iUser.getmPassword());
-            jsonBody.put("editTextEmail", iUser.getmEmail());
+            jsonBody.put("password", iUser.getmPassword());
+            jsonBody.put("email", iUser.getmEmail());
             jsonBody.put("user_type", iType);
             if(iType.toLowerCase() == "student"){
                 jsonBody.put("teacher_id", iTeacherId);
@@ -290,7 +290,7 @@ public class SignUp extends AppCompatActivity {
         String message = "";
         switch(iErrorMsg.toLowerCase())
         {
-            case "editTextEmail already exists":
+            case "email already exists":
                 message = getString(R.string.error_email_exists);
                 break;
             case "no user type":
