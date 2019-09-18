@@ -78,6 +78,8 @@ public class PictureRecognitionLevel extends GameLevel{
                     } else {
                         buttonAnswer.setText("אנא המתן");
                         mMediaRecorder.stop();
+
+                        //new thread for checking the answer
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {

@@ -57,7 +57,7 @@ public class AudioRecognitionLevel extends GameLevel {
         mAnsweredQuestions = new int [mQuestions.getSizeOfLevel(mLevel)];
         getNextQuestion(imageClue, true);
         textQuestionNumber.setText(String.format("שאלה %d מתוך %d", mQuestionNumber +1, mSizeOfLevel));
-        //if the user is recording - need to make the other button disabled and setup the recorder
+        //if the user is recording - make the other button disabled and setup the recorder
         buttonAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +86,8 @@ public class AudioRecognitionLevel extends GameLevel {
                     } else {
                         buttonAnswer.setText("אנא המתן");
                         mMediaRecorder.stop();
+
+                        //new thread for checking the answer
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {

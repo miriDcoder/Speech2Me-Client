@@ -113,11 +113,6 @@ public class SignUp extends AppCompatActivity {
     private boolean validateUserDetails(EditText iFirstName, EditText iLastName, EditText iEmail,
                                         EditText iPassword, boolean iIsStudent, EditText iTeacherID,
                                         EditText iGoal){
-//        return validateName(iFirstName) &&
-//                                    validateName(iLastName) &&
-//                                    validateMail(iEmail) &&
-//                                    validatePassword(iPassword) &&
-//                                    validateGoal(iGoal, iIsStudent);
         return validateMail(iEmail) &&
                 validatePassword(iPassword) &&
                 validateGoal(iGoal, iIsStudent);
@@ -145,22 +140,6 @@ public class SignUp extends AppCompatActivity {
 
         return isValid;
     }
-
-    //Validate name
-//    private boolean validateName(EditText iName){
-//        boolean isValidName = false;
-//
-//        if(iName.equals("") || iName == null || !(AppUtils.IsLetters(iName.getText().toString()))) {
-//            iName.setBackgroundColor(Color.RED);
-//            iName.setText("");
-//        }
-//        else {
-//            isValidName = true;
-//            iName.setBackgroundColor(Color.TRANSPARENT);
-//        }
-//
-//        return isValidName;
-//    }
 
     //Validate mail
     private boolean validateMail(EditText iEmail){
